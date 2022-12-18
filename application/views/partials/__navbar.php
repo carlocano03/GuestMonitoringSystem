@@ -1,37 +1,11 @@
 <body class="sb-nav-fixed" onload="startTime()">
-    <nav class="sb-topnav navbar navbar-expand navbar-dark" style="background: #474787;">
-        <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="index.html">Guest Monitoring <img src="assets/img/AUSTIN_LAND.png"
-                style="width: 45px;"></a>
-        <!-- Sidebar Toggle-->
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
-                class="fas fa-bars"></i></button>
+    <!-- <div class="sb-topnav">
 
-        <!-- <div class="d-none d-md-inline-block form-inline order-1 order-lg-0 me-4 me-lg-0 text-white fw-bold">Main Dashboard</div> -->
-        <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></div>
-
-        <!-- Navbar-->
-        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <i class="fas fa-user fa-fw me-1"></i>Hello, Sample User
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">Settings</a></li>
-                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                    <li>
-                        <hr class="dropdown-divider" />
-                    </li>
-                    <li><a class="dropdown-item" href="#!">Logout</a></li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
+    </div> -->
 
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion" style="background: #fbc531;">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion"> 
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading text-center">

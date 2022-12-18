@@ -11,7 +11,8 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 :root {
-  --bs-exodus: #6c5ce7;
+  --bs-exodus: #474787;
+  --bs-side-bar: #fbc531;
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
   --bs-purple: #6f42c1;
@@ -11350,7 +11351,7 @@ body {
   }
 }
 .sb-nav-fixed .sb-topnav {
-  z-index: 1039;
+  background: #474787;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav {
   width: 255px;
@@ -11358,7 +11359,8 @@ body {
   z-index: 1038;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav .sb-sidenav {
-  padding-top: 56px;
+  /* padding-top: 56px; */
+  padding-top: 15px;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav .sb-sidenav .sb-sidenav-menu {
   overflow-y: auto;
@@ -11452,7 +11454,7 @@ body {
 }
 
 .sb-sidenav-dark {
-  background-color: #212529;
+  background-color: var(--bs-side-bar);
   color: rgba(255, 255, 255, 0.5);
 }
 .sb-sidenav-dark .sb-sidenav-menu .sb-sidenav-menu-heading {

@@ -13,7 +13,12 @@ $(document).ready(function() {
     $('#table-guest').DataTable({
         language: {
             search: '',
-            searchPlaceholder: "Search Here..."
+            searchPlaceholder: "Search Here...",
+            "info": "_START_-_END_ of _TOTAL_ entries",
+            paginate: {
+                next: '<i class="fas fa-chevron-right"></i>',
+                previous: '<i class="fas fa-chevron-left"></i>'
+            }
         },
         "ordering": false,
         "bLengthChange": false,
