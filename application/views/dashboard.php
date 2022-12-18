@@ -3,16 +3,19 @@
     #table-guest td {
         text-align: center;
     }
+
     #table-guest th:nth-child(3) {
         background: #00b894;
     }
+
     #table-guest th:nth-child(4) {
         background: #b71540;
     }
+
 </style>
 <div id="layoutSidenav_content">
     <main>
-        <div class="container-fluid px-4 main-section">
+        <div class="container-fluid px-4 pb-3 main-section">
             <div class="row">
                 <div class="col-md-8">
                     <h2 class="mt-2 text-white">Main Dashboard</h2>
@@ -33,10 +36,9 @@
         </div>
         <div class="container-fluid px-4 mt-4">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-group mb-2">
-                        <input type="text" class="form-control" name="search_value" id="search_value"
-                            placeholder="Search Here...">
+                        <input type="text" class="form-control" name="search_value" id="search_value" placeholder="Search Here...">
                     </div>
                     <div class="col-6">
                         <div class="form-group mb-3">
@@ -45,11 +47,11 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-6 mb-2">
-                        <button class="btn btn-ube">GUEST REGISTRATION</button>
+                    <div class="col-8 mb-2">
+                        <button class="btn btn-ube"><i class="bi bi-person-plus-fill me-2"></i>GUEST REGISTRATION</button>
                     </div>
-                    <div class="col-6 mb-3">
-                        <button class="btn btn-leche">VIEW ALL CHECK OUT</button>
+                    <div class="col-8 mb-3">
+                        <button class="btn btn-leche"><i class="bi bi-folder2-open me-2"></i>VIEW ALL CHECK OUT</button>
                     </div>
 
                     <div class="details-body">
@@ -66,79 +68,69 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-8">
                     <div class="row">
-                        <div class="col-xl-4 col-md-6 mb-3">
+                        <div class="col-xl-6 col-md-6 mb-3">
                             <div class="card card-danger mb-4 guest">
                                 <div class="card-body p-2">
-                                    <img src="assets/img/avatar.png" alt="Avatar Image" class="card-avatar me-3">
+                                    <img src="<?= base_url('assets/img/avatar.png')?>" alt="Avatar Image" class="card-avatar me-3">
                                     <div class="card-text">
                                         <h5>Guest A</h5>
                                         <h5>Time Left: 2:31</h5>
-                                        <span class="btn-checkout me-1" title="Checkout"><i
-                                                class="fas fa-check-square me-1"></i>CHECK OUT</span>
-                                        <span class="btn-extend ms-1" title="Extend"><i
-                                                class="fas fa-clock me-1"></i>EXTEND</span>
+                                        <span class="btn-checkout me-1" title="Checkout"><i class="fas fa-check-square me-1"></i>CHECK OUT</span>
+                                        <span class="btn-extend ms-1" title="Extend"><i class="fas fa-clock me-1"></i>EXTEND</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-md-6 mb-3">
+                        <div class="col-xl-6 col-md-6 mb-3">
                             <div class="card card-danger mb-4 guest">
                                 <div class="card-body p-2">
-                                    <img src="assets/img/avatar.png" alt="Avatar Image" class="card-avatar me-3">
+                                    <img src="<?= base_url('assets/img/avatar.png')?>" alt="Avatar Image" class="card-avatar me-3">
                                     <div class="card-text">
                                         <h5>Guest B</h5>
                                         <h5>Time Left: 2:31</h5>
-                                        <span class="btn-checkout me-1" title="Checkout"><i
-                                                class="fas fa-check-square me-1"></i>CHECK OUT</span>
-                                        <span class="btn-extend ms-1" title="Extend"><i
-                                                class="fas fa-clock me-1"></i>EXTEND</span>
+                                        <span class="btn-checkout me-1" title="Checkout"><i class="fas fa-check-square me-1"></i>CHECK OUT</span>
+                                        <span class="btn-extend ms-1" title="Extend"><i class="fas fa-clock me-1"></i>EXTEND</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-md-6 mb-3">
+                        <div class="col-xl-6 col-md-6 mb-3">
                             <div class="card card-success mb-4 guest">
                                 <div class="card-body p-2">
-                                    <img src="assets/img/avatar.png" alt="Avatar Image" class="card-avatar me-3">
+                                    <img src="<?= base_url('assets/img/avatar.png')?>" alt="Avatar Image" class="card-avatar me-3">
                                     <div class="card-text">
                                         <h5>Guest C</h5>
                                         <h5>Time Left: 2:31</h5>
-                                        <span class="btn-checkout me-1" title="Checkout"><i
-                                                class="fas fa-check-square me-1"></i>CHECK OUT</span>
-                                        <span class="btn-extend ms-1" title="Extend"><i
-                                                class="fas fa-clock me-1"></i>EXTEND</span>
+                                        <span class="btn-checkout me-1" title="Checkout"><i class="fas fa-check-square me-1"></i>CHECK OUT</span>
+                                        <span class="btn-extend ms-1" title="Extend"><i class="fas fa-clock me-1"></i>EXTEND</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-md-6 mb-3">
+                        <div class="col-xl-6 col-md-6 mb-3">
                             <div class="card card-success mb-4 guest">
                                 <div class="card-body p-2">
-                                    <img src="assets/img/avatar.png" alt="Avatar Image" class="card-avatar me-3">
+                                    <img src="<?= base_url('assets/img/avatar.png')?>" alt="Avatar Image" class="card-avatar me-3">
                                     <div class="card-text">
                                         <h5>Guest D</h5>
                                         <h5>Time Left: 2:31</h5>
-                                        <span class="btn-checkout me-1" title="Checkout"><i
-                                                class="fas fa-check-square me-1"></i>CHECK OUT</span>
-                                        <span class="btn-extend ms-1" title="Extend"><i
-                                                class="fas fa-clock me-1"></i>EXTEND</span>
+                                        <span class="btn-checkout me-1" title="Checkout"><i class="fas fa-check-square me-1"></i>CHECK OUT</span>
+                                        <span class="btn-extend ms-1" title="Extend"><i class="fas fa-clock me-1"></i>EXTEND</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-md-6 mb-3">
+                        <div class="col-xl-6 col-md-6 mb-3">
                             <div class="card card-primary guest">
                                 <div class="card-body p-2">
-                                    <img src="assets/img/avatar.png" alt="Avatar Image" class="card-avatar me-3">
+                                    <img src="<?= base_url('assets/img/avatar.png')?>" alt="Avatar Image" class="card-avatar me-3">
                                     <div class="card-text">
                                         <h5>Guest D</h5>
                                         <h5>Time Left: 2:31</h5>
-                                        <span class="btn-checkout me-1" title="Checkout"><i
-                                                class="fas fa-check-square me-1"></i>CHECK OUT</span>
-                                        <span class="btn-extend ms-1" title="Extend"><i
-                                                class="fas fa-clock me-1"></i>EXTEND</span>
+                                        <span class="btn-checkout me-1" title="Checkout"><i class="fas fa-check-square me-1"></i>CHECK OUT</span>
+                                        <span class="btn-extend ms-1" title="Extend"><i class="fas fa-clock me-1"></i>EXTEND</span>
                                     </div>
                                 </div>
                             </div>
@@ -150,8 +142,7 @@
 
             <div class="table-holder">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped" width="100%" style="vertical-align:middle;"
-                        id="table-guest">
+                    <table class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table-guest">
                         <thead class="text-uppercase">
                             <tr>
                                 <th>Action</th>
@@ -171,6 +162,7 @@
                     <button class="btn btn-ube btn-sm"><i class="bi bi-printer-fill me-2"></i>PRINT REPORTS</button>
                 </div>
             </div>
+            <hr>
 
         </div>
         <!-- Main div -->

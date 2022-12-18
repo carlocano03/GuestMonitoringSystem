@@ -27,6 +27,22 @@ class Main extends CI_Controller
         $this->load->view('partials/__footer');
     }
 
+    public function payment()
+    {
+        $this->load->view('partials/__header');
+        $this->load->view('partials/__navbar');
+        $this->load->view('payment');
+        $this->load->view('partials/__footer');
+    }
+
+    public function registration()
+    {
+        $this->load->view('partials/__header');
+        $this->load->view('partials/__navbar');
+        $this->load->view('registration');
+        $this->load->view('partials/__footer');
+    }
+
 
 }
 //End CI_Controller

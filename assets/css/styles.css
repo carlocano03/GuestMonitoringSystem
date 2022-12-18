@@ -11349,6 +11349,10 @@ body {
   .sb-sidenav-toggled #layoutSidenav #layoutSidenav_content:before {
     display: none;
   }
+  /* .sb-nav-fixed #layoutSidenav #layoutSidenav_nav .sb-sidenav {
+    padding-top: 56px;
+    padding-top: 15px;
+  } */
 }
 .sb-nav-fixed .sb-topnav {
   background: #474787;
@@ -11358,10 +11362,7 @@ body {
   height: 100vh;
   z-index: 1038;
 }
-.sb-nav-fixed #layoutSidenav #layoutSidenav_nav .sb-sidenav {
-  /* padding-top: 56px; */
-  padding-top: 15px;
-}
+
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav .sb-sidenav .sb-sidenav-menu {
   overflow-y: auto;
 }
