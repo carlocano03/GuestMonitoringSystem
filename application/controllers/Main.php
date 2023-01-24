@@ -12,8 +12,8 @@ class Main extends CI_Controller
         parent::__construct();
         date_default_timezone_set('Asia/Manila');
         $this->load->helper('url');
-        $this->load->library('form_validation');
-        $this->load->database();
+        // $this->load->library('form_validation');
+        // $this->load->database();
         // if (!isset($_SESSION['loggedIn'])) {
         //     redirect('user');
         // }

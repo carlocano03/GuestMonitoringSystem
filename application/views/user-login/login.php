@@ -1,94 +1,57 @@
 <style>
-    /* body {
-        background-image: url("<?= base_url('assets/img/bg1.png')?>");
+    body {
+        background-image: url("<?= base_url('assets/img/bg-img.png') ?>");
         background-size: cover;
-        background-attachment:fixed;
-    } */
+        background-attachment: fixed;
+    }
 </style>
+
 <body>
     <main>
-        <div class="container d-flex align-items-center min-vh-100">
+        <div class="container d-flex align-items-center justify-content-center min-vh-100">
             <div class="container login-section">
-                <div class="row g-0">
-                    <div class="col-md-7">
-                        <div class="login-title">
-                            <h5>Welcome Guest & Visitors!</h5>
+                <div class="login-header"></div>
+                <div class="login-header-details text-center">
+                    <p>
+                        Toms World Philippines<br>
+                        Integrated Technology & Services Department
+                    </p>
+                    <div>GUEST MONITORING SYSTEM</div>
+                    <img src="<?= base_url('assets/img/logo/toms.png') ?>" alt="Toms-World">
+                    <h5>ACCOUNT LOGIN</h5>
+                </div>
+                <div class="login-form text-center">
+                    <form action="">
+                        <div class="form-group mb-3">
+                            <label for="username" class="fw-bold">USERNAME</label>
+                            <input type="text" class="form-control" name="username" id="username">
                         </div>
-                        <div class="title-footer">
-                            <div class="row g-0">
-                                <div class="col-md-3 p-3 text-center">
-                                    <img src="<?= base_url('assets/img/qr-code.png')?>" style="width:130px;"/>
-                                </div>
-                                <div class="col-md-9 p-3">
-                                    <img src="<?= base_url('assets/img/logoTW.png')?>"/>
-                                    <div>
-                                        <p class="mb-0" style="font-size: 20px;">A lifestyle of FUN cherished by Everyone</p>
-                                        <a href="#">www.tomsworld.com</a>
-                                    </div>
-                                </div>
+                        <div class="form-group mb-3">
+                            <label for="password" class="fw-bold">PASSWORD</label>
+                            <input type="password" class="form-control" name="password" id="password">
+                        </div>
+                        <button type="submit">LOGIN</button>
+                    </form>
+
+                    <div class="login-footer text-start mt-3">
+                        <p>
+                            For software assistance, contact us<br>
+                            Integrated Technology & Services Department - Head Office<br>
+                            Email: vhran.guanio@tomsworld.com.ph<br>
+                            (089) 6214
+                        </p>
+                        <div class="row g-0 d-flex align-items-center text-center">
+                            <div class="col-md-6 col-lg-3 col-sm-6">
+                                <img src="<?= base_url('assets/img/logo/jacks.png') ?>" alt="Jacks Adventure" width="100">
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-5">
-                        <div class="login-header">
-                            <h5>Guest Monitoring System Web App</h5>
-                        </div>
-                        <div class="sub-header">
-                            <h5>LOGIN FORM</h5>
-                        </div>
-                        <div class="row p-2">
-                            <div class="col-9">
-                                <p class="mb-1">Please select your login credentials</p>
-                                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1"
-                                        autocomplete="off">
-                                    <label class="btn btn-outline-secondary btn-sm" for="btnradio1">Austin Land</label>
-
-                                    <input type="radio" class="btn-check" name="btnradio" id="btnradio2"
-                                        autocomplete="off">
-                                    <label class="btn btn-outline-secondary btn-sm" for="btnradio2">Austin House</label>
-
-                                    <input type="radio" class="btn-check" name="btnradio" id="btnradio3"
-                                        autocomplete="off">
-                                    <label class="btn btn-outline-secondary btn-sm" for="btnradio3">Jack's
-                                        Adventure</label>
-                                </div>
+                            <div class="col-md-6 col-lg-3 col-sm-6">
+                                <img src="<?= base_url('assets/img/logo/austin_house.jpg') ?>" alt="Austin House" width="100">
                             </div>
-                            <div class="col-3">
-                                <img src="<?= base_url('assets/img/verified-account.png')?>" />
+                            <div class="col-md-6 col-lg-3 col-sm-6">
+                                <img src="<?= base_url('assets/img/logo/austin.png') ?>" alt="Austin Land" width="100">
                             </div>
-                        </div>
-                        <div class="login-form">
-                            <form method="POST">
-                                <div class="form-group mb-4">
-                                    <label>USERNAME</label>
-                                    <input type="text" class="form-control"
-                                        placeholder="Please Enter your Username here...">
-                                </div>
-                                <div class="form-group mb-4">
-                                    <label>PASSWORD</label>
-                                    <input type="password" class="form-control"
-                                        placeholder="Please Enter your Password here...">
-                                </div>
-                                <div class="d-grid gap-2 col-12 mx-auto mb-2">
-                                    <button class="btn-login" type="button">LOG IN</button>
-                                </div>
-                            </form>
-                            <p class="mb-0">Forgot Password?</p>
-                            <a href="">Click Here</a>
-                            <div class="login-footer mt-4">
-                                <p>For Software Assistance: <br>
-                                   Antel Global - Toms World Head Office <br>
-                                   <b>Integrated Technology & Services Department</b> <br>
-                                   Software Development Team <br><br>
-
-                                   
-                                   <i class="bi bi-telephone me-2"></i>(02) 737-6212 / 0918-921-7348 <br>
-                                   <i class="bi bi-envelope me-2"></i>Vhran.Guanio@tomsworld.com.ph <br>
-                                   Ticketing System <br>
-                                   <a href="#">123.456.789/ticketingSystem</a>
-                                </p>
+                            <div class="col-md-6 col-lg-3 col-sm-6">
+                                <img src="<?= base_url('assets/img/logo/adams.png') ?>" alt="Austin Land" width="100">
                             </div>
                         </div>
                     </div>

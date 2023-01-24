@@ -185,22 +185,66 @@
     box-shadow: 1px 2px 80px 2px rgba(102,101,101,0.38);
     -webkit-box-shadow: 1px 2px 80px 2px rgba(102,101,101,0.38);
     -moz-box-shadow: 1px 2px 80px 2px rgba(102,101,101,0.38);
+    background: #fff;
+    width: 500px;
+    border-radius: 5px;
+    margin:0 !important;
+    padding:0 !important;
 }
-.login-title {
-    background: var(--bs-exodus);
-    margin-top: 100px;
-    width: 25rem;
-    padding: 15px 10px 15px 10px;
+
+.login-header {
+    background: var(--bs-orange);
+    height: 25px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.login-header-details p {
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: -5px;
+}
+
+.login-header-details div {
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: -5px;
+    color: var(--bs-green);
+}
+
+.login-header-details img {
+    width: 80%;
+}
+
+.login-header-details h5 {
+    font-size: 35px;
+    font-weight: 800;
+    color: var(--bs-purple);
+}
+
+.login-form {
+    padding: 30px;
+}
+
+.login-form input {
+    border: 3px solid #bdc3c7;
+    border-radius: 8px;
+}
+
+.login-form button {
+    width: 100%;
+    border: none;
+    background: var(--bs-orange);
     color: #fff;
-    border-bottom-right-radius: 10px;
-    border-top-right-radius: 10px;
+    padding: 5px;
+    font-size: 23px;
+    font-weight: 500;
+    border-radius: 50px;
 }
-.login-title h5 {
-    font-size: 30px;
-}
-.title-footer {
-    background: #fdd156;
-    margin-top: 394px;
+
+.login-footer p {
+    font-size: 14px;
+    font-weight: 600;
 }
 
 @media (max-width: 1199px) {
@@ -213,52 +257,10 @@
     }
 }
 
-.login-section {
-    margin:0 !important;
-    padding:0 !important;
-}
-.login-header {
-    background: #fbc531;
-    padding: 20px 10px 10px 10px;
-    color: #1e272e;
-    text-align: center;
-    z-index: 1;
-}
-.login-header h5 {
-    font-size: 25px;
-}
-.sub-header {
-    background: var(--bs-exodus);
-    color: #fff;
-    padding: 5px 10px 1px;
-}
-.sub-header h5 {
-    font-weight: 400;
-}
-.login-form {
-    background: #dcdde1;
-    padding: 10px 40px 10px 40px;
-}
-.login-form input {
-    background: transparent !important;
-    border: 1px solid #2f3640;
-}
-.login-form .btn-login {
-    background: var(--bs-exodus);
-    border: none;
-    padding: 5px;
-    font-size: 20px;
-    font-weight: 500;
-    color: #fff;
-    border-radius: 5px;
-}
-.login-form .btn-login:hover {
-    opacity: 0.9;
-}
-.login-form a {
-    color: var(--bs-exodus);
-    font-weight: 500;
-}
+
+/* =============================== */
+/* End of Login Section */
+/* =============================== */
 
 /* custom table */
 .table {
