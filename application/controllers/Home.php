@@ -22,6 +22,13 @@ class Home extends CI_Controller
     public function index()
     {
         $this->load->view('partials/__header');
+        $this->load->view('services/home');
+        $this->load->view('partials/__footer');
+    }
+
+    public function services()
+    {
+        $this->load->view('partials/__header');
         $this->load->view('services/services');
         $this->load->view('partials/__footer');
     }

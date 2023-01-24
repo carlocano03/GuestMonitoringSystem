@@ -410,5 +410,17 @@
     width: 100%;
 }
 
+.pricing-header {
+    background: var(--bs-lightgreen);
+    padding: 5px;
+}
 
+.pricing-section {
+    background: rgba(255, 255, 255, 0.5);
+    padding-bottom: 30px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
 /* End Services Offered */
+
+
