@@ -1,9 +1,9 @@
 <style>
-    body {
+    /* body {
         background-image: url("<?= base_url('assets/img/bg1.png')?>");
         background-size: cover;
         background-attachment:fixed;
-    }
+    } */
 </style>
 <body>
     <main>
