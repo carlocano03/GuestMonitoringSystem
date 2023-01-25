@@ -16,7 +16,7 @@
                             <button style="width: 80%;" class="btn-register">PRE-REGISTER NOW! <img src="<?= base_url('assets/img/arrow.gif'); ?>" alt="" width="80"></button>
                         </div>
                         <div class="ms-5 mt-5">
-                            <img src="<?= base_url('assets/img/logo/jacks.png'); ?>" alt="" width="300">
+                            <img src="<?= base_url('assets/img/logo/jacks-adventure.png'); ?>" alt="" width="300">
                         </div>
                         <div class="register-details mt-2">
                             <p class="text-white">
@@ -46,7 +46,73 @@
                                             </button>
                                         </h2>
                                         <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                            <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+                                            <div class="accordion-body">
+                                                <table class="table mt-0 text-center">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>TYPE OF ADMISSION</th>
+                                                            <th>WEEKDAYS (MON-THURS)</th>
+                                                            <th>WEEKDAYS & HOLIDAYS</th>
+                                                        </tr>
+                                                    </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>1 HOUR</td>
+                                                                <td>250.00</td>
+                                                                <td>300.00</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>2 HOURS</td>
+                                                                <td>300.00</td>
+                                                                <td>350.00</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>3 HOURS</td>
+                                                                <td>350.00</td>
+                                                                <td>450.00</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-success">UNLIMITED</td>
+                                                                <td class="text-success">400.00</td>
+                                                                <td class="text-success">400.00</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="bg-warning text-black">TYPE OF ADMISSION</th>
+                                                            <th class="bg-warning text-black">WEEKDAYS (MON-THURS)</th>
+                                                            <th class="bg-warning text-black">WEEKDAYS & HOLIDAYS</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>GRIP SOCKS (Kids)</td>
+                                                            <td>50.00</td>
+                                                            <td>50.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>GRIP SOCKS (Adults)</td>
+                                                            <td>120.00</td>
+                                                            <td>120.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>REGULAR SOCKS</td>
+                                                            <td>100.00</td>
+                                                            <td>100.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-danger">EXTENSION BEYOND 5 MIN. (max of 15 minutes only)</td>
+                                                            <td>100.00</td>
+                                                            <td>100.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>ADDITIONAL GUARDIAN</td>
+                                                            <td>150.00</td>
+                                                            <td>150.00</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="accordion-item mb-3">

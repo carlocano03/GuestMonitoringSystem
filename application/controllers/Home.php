@@ -33,4 +33,11 @@ class Home extends CI_Controller
         $this->load->view('partials/__footer');
     }
 
+    public function park()
+    {
+        $this->load->view('partials/__header');
+        $this->load->view('services/park');
+        $this->load->view('partials/__footer');
+    }
+
 }
