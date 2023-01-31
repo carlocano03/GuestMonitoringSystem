@@ -40,4 +40,11 @@ class Home extends CI_Controller
         $this->load->view('partials/__footer');
     }
 
+    public function inflatables()
+    {
+        $this->load->view('partials/__header');
+        $this->load->view('services/inflatables');
+        $this->load->view('partials/__footer');
+    }
+
 }

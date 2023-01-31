@@ -15,7 +15,7 @@
             </div>
 
             <div class="img-holder text-center">
-                <img class="img-icon" src="<?= base_url('assets/img/logo/park.png'); ?>" alt="Park" style="margin-bottom: -20px;">
+                <img class="img-icon" src="<?= base_url('assets/img/logo/inflatables.png'); ?>" alt="Park" style="margin-bottom: -10px;">
                 <div class="text-header">
                     <div id="clock" class="mt-0"></div>
                     <div id="date"></div>
@@ -44,10 +44,9 @@
                             <input type="text" class="form-control" name="suffix" id="suffic" placeholder="Enter Suffix (Jr. Sr. III)" required>
                         </div>
                         <div class="form-group mb-3">
-                            <input type="text" class="form-control" name="birthday" id="birthday" placeholder="Enter Birthday" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <input type="text" class="form-control" name="age" id="age" placeholder="Enter Age" required>
+                            <select name="relationship" id="relationship" class="form-select">
+                                <option value="">Relationship</option>
+                            </select>
                         </div>
                         <div class="alert alert-secondary p-1 text-start">Complete Address</div>
                         <div class="form-group mb-3">
@@ -75,13 +74,37 @@
                         <div class="form-group mb-3">
                             <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" required>
                         </div>
-                        <div class="form-check text-start mb-3">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                I hereby acknowledge and accept the <a href="">"Waiver and Quitclaim"</a> and agree to <a href="">Data Privacy Act of 2012</a>
-                            </label>
-                        </div>
-                        <button type="submit">SAVED RECORD</button>
+                </div>
+                <div class="sub-header-section text-center">
+                    <h5 class="mb-0">KIDS / CHILDREN INFORMATION</h5>
+                </div>
+                <div class="reg-form text-center">
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" name="kid_fname" id="kid_fname" placeholder="Enter First Name (Juan)" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" name="kid_lname" id="kid_lname" placeholder="Enter Last Name (Bonifacion, Jr.)" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" name="kid_mname" id="kid_mname" placeholder="Enter Middle Name (Cruz)" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" name="kid_suffix" id="kid_suffix" placeholder="Enter Suffix (Jr. Sr. III)" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" name="kid_birthday" id="kid_birthday" placeholder="Enter Birthday" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" name="kid_age" id="kid_age" placeholder="Enter Age" required>
+                    </div>
+
+                    <div class="form-check text-start mb-3">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            I hereby acknowledge and accept the <a href="">"Waiver and Quitclaim"</a> and agree to <a href="">Data Privacy Act of 2012</a>
+                        </label>
+                    </div>
+                    <button type="submit">SAVED RECORD</button>
                     </form>
                 </div>
             </div>
