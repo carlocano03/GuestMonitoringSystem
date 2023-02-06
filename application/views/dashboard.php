@@ -1,17 +1,16 @@
 <style>
     #table-guest th,
-    #table-guest td {
+    #table-guest td,
+    #table-inventory th,
+    #table-inventory td {
         text-align: center;
     }
 
-    #table-guest th:nth-child(3) {
-        background: #00b894;
+    #table-guest th:nth-child(3),
+    #table-inventory th:nth-child(3) {
+        background: var(--bs-yellow);
+        color: #2d3436;
     }
-
-    #table-guest th:nth-child(4) {
-        background: #b71540;
-    }
-
 </style>
 <div id="layoutSidenav_content">
     <main>
@@ -36,134 +35,236 @@
         </div>
         <div class="container-fluid px-4 mt-4">
             <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group mb-2">
-                        <input type="text" class="form-control" name="search_value" id="search_value" placeholder="Search Here...">
+                <div class="col-md-7">
+                    <div class="row g-1">
+                        <div class="col-7">
+                            <div class="form-group mb-2">
+                                <input type="text" class="form-control" name="search_value" id="search_value" placeholder="Search Pre-Registration No. / Name / Here...">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group mb-2">
+                                <button class="btn btn-primary"><i class="bi bi-search me-2"></i>SEARCH</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-6">
-                        <div class="form-group mb-3">
-                            <select class="form-select" name="sort_by" id="sort_by">
-                                <option value="">Sort By</option>
+                    <hr>
+                    <div class="box-section">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped text-uppercase" width="100%" style="vertical-align:middle;" id="table-guest">
+                                <thead class="text-uppercase">
+                                    <tr>
+                                        <th>SERIAL NO.</th>
+                                        <th>DATE</th>
+                                        <th>PLAY CATEGORY</th>
+                                        <th>KIDS/CHILDS NAME</th>
+                                        <th>PARENT/GUARDIAN</th>
+                                        <th>ACTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>12345</td>
+                                        <td>JAN. 24, 2023</td>
+                                        <td>Park</td>
+                                        <td>Juan Dela Cruz</td>
+                                        <td>N/A</td>
+                                        <td>
+                                            <button class="btn btn-warning btn-sm"><i class="bi bi-check2-square me-1"></i>REGISTER NOW</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 mb-5">
+                    <div class="box-section mb-3">
+                        <div class="box-header">
+                            ENTRANCE APPLICATION
+                        </div>
+                        <div class="form-group mb-2">
+                            <input type="text" name="serial_no" id="serial_no" class="form-control" placeholder="Serial Number (Auto Generate)">
+                        </div>
+                        <div class="fw-bold"><small>GURDIAN DETAILS</small></div>
+                        <hr class="mt-0">
+                        <div class="form-group mb-2">
+                            <input type="text" name="f_name" id="f_name" class="form-control" placeholder="Enter First Name (Juan)">
+                        </div>
+                        <div class="row g-1">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <input type="text" name="m_name" id="m_name" class="form-control" placeholder="Enter Middle Name (Cruz)">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <input type="text" name="l_name" id="l_name" class="form-control" placeholder="Enter Last Name (Bonifacio)">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <input type="text" name="suffix" id="suffix" class="form-control" placeholder="Suffix (Jr. Sr. III)">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <select name="relationship" id="relationship" class="form-select">
+                                        <option value="">Relationship</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-2">
+                            <select name="province" id="province" class="form-select">
+                                <option value="">Select Province</option>
                             </select>
                         </div>
-                    </div>
-                    <div class="col-8 mb-2">
-                        <button class="btn btn-ube"><i class="bi bi-person-plus-fill me-2"></i>GUEST REGISTRATION</button>
-                    </div>
-                    <div class="col-8 mb-3">
-                        <button class="btn btn-leche"><i class="bi bi-folder2-open me-2"></i>VIEW ALL CHECK OUT</button>
+                        <div class="form-group mb-2">
+                            <select name="municipality" id="municipality" class="form-select">
+                                <option value="">Select Municipality</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-2">
+                            <select name="barangay" id="barangay" class="form-select">
+                                <option value="">Select Barangay</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-2">
+                            <input type="text" name="street" id="street" class="form-control" placeholder="House No. / Bldg No. / Street">
+                        </div>
+                        <div class="form-group mb-2">
+                            <input type="text" name="contact" id="contact" class="form-control" placeholder="Contact Number / Details">
+                        </div>
+                        <div class="form-group mb-2">
+                            <input type="email" name="email_add" id="email_add" class="form-control" placeholder="Email Address">
+                        </div>
+                        <div class="row g-1">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <input type="file" name="image" id="image" class="form-control" placeholder="Email Address">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <button class="btn btn-primary"><i class="bi bi-camera-fill me-2"></i>CAPTURE IMAGE</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-2">
+                            <input type="text" name="service_crew" id="service_crew" class="form-control" placeholder="GUEST / SERVICE CREW (Created By)">
+                        </div>
+                        <div class="row g-1">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <input type="text" name="bag_no" id="bag_no" class="form-control" placeholder="BAG Number">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <input type="text" name="shoe_box" id="shoe_box" class="form-control" placeholder="Shoe Box Number">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    I hereby acknowledge and accept the "Waiver and Quitclaim" and agree to <a href="">Data Privacy Act of 2012</a>
+                                </label>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="details-body">
-                        <h3 class="text-ube">Counter Breakdown: 5</h3>
-                        <div class="counter d-flex align-items-center mb-2">
-                            <div class="counter-danger me-2"></div><span class="counter-danger-text">5 Minutes
-                                Left</span>
+                    <div class="box-section mb-3">
+                        <div class="fw-bold"><small>PACKAGE DETAILS</small></div>
+                        <div class="form-group mb-2">
+                            <select name="package" id="package" class="form-select">
+                                <option value="">Select Package</option>
+                            </select>
                         </div>
-                        <div class="counter d-flex align-items-center mb-2">
-                            <div class="counter-success me-2"></div><span class="counter-text">15 Minutes Left</span>
+                        <div class="form-group mb-2">
+                            <select name="time" id="time" class="form-select">
+                                <option value="">Select Time</option>
+                            </select>
                         </div>
-                        <div class="counter d-flex align-items-center mb-2">
-                            <div class="counter-primary me-2"></div><span class="counter-text">30 Minutes Left</span>
+                        <div class="form-group mb-2">
+                            <select name="category" id="category" class="form-select">
+                                <option value="">Select Category</option>
+                            </select>
+                        </div>
+                        <div class="fw-bold"><small>KIDS / CHILD INFORMATION</small></div>
+                        <div class="form-group mb-2">
+                            <input type="text" name="child_fname" id="child_fname" class="form-control" placeholder="Enter First Name (Juan)">
+                        </div>
+                        <div class="form-group mb-2">
+                            <input type="text" name="child_lname" id="child_lname" class="form-control" placeholder="Enter Last Name (Bonifacio)">
+                        </div>
+                        <div class="form-group mb-2">
+                            <input type="text" name="child_mname" id="child_mname" class="form-control" placeholder="Enter Middle Name (Cruz)">
+                        </div>
+                        <div class="form-group mb-2">
+                            <input type="text" name="child_bday" id="child_bday" class="form-control" placeholder="Birthday (dd/mm/yyyy)" onfocus="(this.type='date')" onfocusout="(this.type='text')">
+                        </div>
+                        <div class="form-group mb-2">
+                            <input type="text" name="child_age" id="child_age" class="form-control" placeholder="Age">
+                        </div>
+                        <div class="row g-1">
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <input type="file" name="child_image" id="child_image" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-2">
+                                    <button class="btn btn-primary"><i class="bi bi-camera-fill me-2"></i>CAPTURE IMAGE</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fw-bold"><small>OTHERS</small></div>
+                        <div class="form-group mb-2">
+                            <input type="text" name="child_guardian" id="child_guardian" class="form-control" placeholder="Name of Additional Guardian">
+                        </div>
+                        <div class="form-group mb-2">
+                            <button class="btn btn-primary btn-lg w-100 mt-3">NEXT</button>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-8">
-                    <div class="row">
-                        <div class="col-xl-6 col-md-6 mb-3">
-                            <div class="card card-danger mb-4 guest">
-                                <div class="card-body p-2">
-                                    <img src="<?= base_url('assets/img/avatar.png')?>" alt="Avatar Image" class="card-avatar me-3">
-                                    <div class="card-text">
-                                        <h5>Guest A</h5>
-                                        <h5>Time Left: 2:31</h5>
-                                        <span class="btn-checkout me-1" title="Checkout"><i class="fas fa-check-square me-1"></i>CHECK OUT</span>
-                                        <span class="btn-extend ms-1" title="Extend"><i class="fas fa-clock me-1"></i>EXTEND</span>
-                                    </div>
-                                </div>
-                            </div>
+
+                    <div class="box-section">
+                        <div class="fw-bold"><small>INVENTORY</small></div>
+                        <div class="form-group mb-2">
+                            <select name="category" id="category" class="form-select">
+                                <option value="">Socks Type</option>
+                            </select>
                         </div>
-                        <div class="col-xl-6 col-md-6 mb-3">
-                            <div class="card card-danger mb-4 guest">
-                                <div class="card-body p-2">
-                                    <img src="<?= base_url('assets/img/avatar.png')?>" alt="Avatar Image" class="card-avatar me-3">
-                                    <div class="card-text">
-                                        <h5>Guest B</h5>
-                                        <h5>Time Left: 2:31</h5>
-                                        <span class="btn-checkout me-1" title="Checkout"><i class="fas fa-check-square me-1"></i>CHECK OUT</span>
-                                        <span class="btn-extend ms-1" title="Extend"><i class="fas fa-clock me-1"></i>EXTEND</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="form-group mb-2">
+                            <input type="text" name="quantity" id="quantity" class="form-control" placeholder="Quantity">
                         </div>
-                        <div class="col-xl-6 col-md-6 mb-3">
-                            <div class="card card-success mb-4 guest">
-                                <div class="card-body p-2">
-                                    <img src="<?= base_url('assets/img/avatar.png')?>" alt="Avatar Image" class="card-avatar me-3">
-                                    <div class="card-text">
-                                        <h5>Guest C</h5>
-                                        <h5>Time Left: 2:31</h5>
-                                        <span class="btn-checkout me-1" title="Checkout"><i class="fas fa-check-square me-1"></i>CHECK OUT</span>
-                                        <span class="btn-extend ms-1" title="Extend"><i class="fas fa-clock me-1"></i>EXTEND</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="form-group mb-2">
+                            <button class="btn btn-warning fw-bold w-100"><i class="bi bi-plus-square me-2"></i>ADD</button>
                         </div>
-                        <div class="col-xl-6 col-md-6 mb-3">
-                            <div class="card card-success mb-4 guest">
-                                <div class="card-body p-2">
-                                    <img src="<?= base_url('assets/img/avatar.png')?>" alt="Avatar Image" class="card-avatar me-3">
-                                    <div class="card-text">
-                                        <h5>Guest D</h5>
-                                        <h5>Time Left: 2:31</h5>
-                                        <span class="btn-checkout me-1" title="Checkout"><i class="fas fa-check-square me-1"></i>CHECK OUT</span>
-                                        <span class="btn-extend ms-1" title="Extend"><i class="fas fa-clock me-1"></i>EXTEND</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="fw-bold mt-3"><small>INVENTORY DETAILS</small></div>
+                        <div class="table-responsive mt-0">
+                            <table class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table-inventory">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Total Amount</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+
+                            </table>
                         </div>
-                        <div class="col-xl-6 col-md-6 mb-3">
-                            <div class="card card-primary guest">
-                                <div class="card-body p-2">
-                                    <img src="<?= base_url('assets/img/avatar.png')?>" alt="Avatar Image" class="card-avatar me-3">
-                                    <div class="card-text">
-                                        <h5>Guest D</h5>
-                                        <h5>Time Left: 2:31</h5>
-                                        <span class="btn-checkout me-1" title="Checkout"><i class="fas fa-check-square me-1"></i>CHECK OUT</span>
-                                        <span class="btn-extend ms-1" title="Extend"><i class="fas fa-clock me-1"></i>EXTEND</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="form-group mb-2">
+                            <button class="btn btn-primary btn-lg w-100">NEXT</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- End of row -->
-
-            <div class="table-holder">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table-guest">
-                        <thead class="text-uppercase">
-                            <tr>
-                                <th>Action</th>
-                                <th>Serial No.</th>
-                                <th>Date</th>
-                                <th>Time In</th>
-                                <th>Time Out</th>
-                                <th>Guest Name</th>
-                                <th>Parent / Guardian</th>
-                                <th>Contact #</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
-                <hr>
-                <div class="text-end">
-                    <button class="btn btn-ube btn-sm"><i class="bi bi-printer-fill me-2"></i>PRINT REPORTS</button>
-                </div>
-            </div>
-            <hr>
-
+            <!-- end of row -->
         </div>
         <!-- Main div -->
 
@@ -179,3 +280,22 @@
 
 </div>
 <!-- End of layoutSidenav -->
+
+<script>
+    $(document).ready(function() {
+        $('#table-guest').DataTable({
+            language: {
+                search: '',
+                searchPlaceholder: "Search Here...",
+                "info": "_START_-_END_ of _TOTAL_ entries",
+                paginate: {
+                    next: '<i class="fas fa-chevron-right"></i>',
+                    previous: '<i class="fas fa-chevron-left"></i>'
+                }
+            },
+            "searching": false,
+            "ordering": false,
+            "bLengthChange": false,
+        });
+    });
+</script>

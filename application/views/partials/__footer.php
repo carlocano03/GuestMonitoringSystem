@@ -8,23 +8,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
 
-<script>
-$(document).ready(function() {
-    $('#table-guest').DataTable({
-        language: {
-            search: '',
-            searchPlaceholder: "Search Here...",
-            "info": "_START_-_END_ of _TOTAL_ entries",
-            paginate: {
-                next: '<i class="fas fa-chevron-right"></i>',
-                previous: '<i class="fas fa-chevron-left"></i>'
-            }
-        },
-        "ordering": false,
-        "bLengthChange": false,
-    });
-});
-</script>
+
 </body>
 
 </html>

@@ -31,7 +31,7 @@
                             <div class="avatar-text">Austin Land</div>
                         </div>
                         <hr class="mt-0" style="background: #474787;">
-                        <a class="nav-link <?= ($this->uri->segment(2) == '' || $this->uri->segment(2) == 'main' ? 'active' : '') ?>" href="index.html">
+                        <a class="nav-link <?= ($this->uri->segment(2) == '' || $this->uri->segment(2) == 'main' ? 'active' : '') ?>" href="<?= base_url('main')?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Main Dashboard
                         </a>
@@ -63,7 +63,7 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
                             Party Package
                         </a>
-                        <a class="nav-link" href="#">
+                        <a class="nav-link <?= ($this->uri->segment(2) == 'account' ? 'active' : '') ?>" href="<?= base_url('main/account')?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-user-alt"></i></div>
                             Account Management
                         </a>
