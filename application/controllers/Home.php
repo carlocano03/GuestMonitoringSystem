@@ -22,8 +22,8 @@ class Home extends CI_Controller
     public function index()
     {
         $this->load->view('partials/__header');
-        $this->load->view('services/home');
         $this->load->view('partials/__footer');
+        $this->load->view('services/home');
     }
 
     public function services()
@@ -36,15 +36,15 @@ class Home extends CI_Controller
     public function park()
     {
         $this->load->view('partials/__header');
-        $this->load->view('services/park');
         $this->load->view('partials/__footer');
+        $this->load->view('services/park');
     }
 
     public function inflatables()
     {
         $this->load->view('partials/__header');
-        $this->load->view('services/inflatables');
         $this->load->view('partials/__footer');
+        $this->load->view('services/inflatables');
     }
 
 }

@@ -1,8 +1,8 @@
 <body onload="startTime()">
     <main>
         <div class="container">
-            <p class="mt-2 fw-bold">
-                < Go Back</p>
+            <a href="<?= base_url('home/services')?>"><p class="mt-2 fw-bold">
+                < Go Back</p></a>
         </div>
         <div class="container">
 

@@ -29,7 +29,7 @@
                 <div class="col-md-4 text-end">
                     <h2 class="mt-2 text-yellow"><span id="clock" class="fw-bold"></h2>
                     <h5 class="text-white"><span id="date" class="fw-bold"></span></h5>
-                    <a href="" class="btn-signout">SIGN OUT <i class="bi bi-box-arrow-right ms-1"></i></a>
+                    <a href="<?= base_url('main/logout')?>" class="btn-signout">SIGN OUT <i class="bi bi-box-arrow-right ms-1"></i></a>
                 </div>
             </div>
         </div>

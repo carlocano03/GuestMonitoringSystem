@@ -1,6 +1,6 @@
 <style>
     #table-account th,
-    #table-account td{
+    #table-account td {
         text-align: center;
     }
 </style>
@@ -69,10 +69,47 @@
     </div>
     <div class="offcanvas-body">
         <div class="form-group mb-2">
-            <button class="btn btn-primary w-100"><i class="bi bi-person-plus-fill me-2"></i>ADD NEW ACCOUNT</button>
+            <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#accountModal">
+                <i class="bi bi-person-plus-fill me-2"></i>ADD NEW ACCOUNT
+            </button>
         </div>
         <div class="form-group mb-2">
             <button class="btn btn-primary w-100"><i class="bi bi-person-fill-lock me-2"></i>MANAGE PERMISSION</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="accountModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #474787; color:#fff;">
+                <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-person-plus-fill me-2"></i>Account Management</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="registerAccount" method="POST">
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" name="fullname" placeholder="Enter your fullname" autocomplete="off" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <input type="text" class="form-control" name="username" placeholder="Enter your username" autocomplete="off" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <input type="email" class="form-control" name="email" placeholder="Enter your email address" autocomplete="off" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <select name="branch" class="form-select" required>
+                            <option value="">Select Branch</option>
+                            <option value="Branch 1">Branch 1</option>
+                        </select>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+            </form>
         </div>
     </div>
 </div>
@@ -90,6 +127,38 @@
                 }
             },
             "ordering": false,
+        });
+
+        $(document).on('submit', '#registerAccount', function(event) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+
+            $.ajax({
+                url: "<?= base_url() . 'user/account_register' ?>",
+                method: "POST",
+                data: new FormData(this),
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                success: function(data) {
+                    if (data.message != '') {
+                        Swal.fire('Warning!', 'Account already exist.', 'warning');
+                    } else {
+                        Swal.fire(
+                            'Thank you!',
+                            'Account successfully created.',
+                            'success'
+                        );
+                        $('#accountModal').modal('hide');
+                        $('#registerAccount').trigger('reset');
+                        var table = $('#table_account').DataTable();
+                        table.draw();
+                    }
+                },
+                error: function() {
+                    Swal.fire('Error!', 'Something went wrong. Please try again later!', 'error');
+                }
+            });
         });
     });
 </script>

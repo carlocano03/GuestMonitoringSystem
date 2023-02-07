@@ -154,3 +154,11 @@
             </div>
         </div>
     </main>
+
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.btn-register', function() {
+                window.location.href = "<?= base_url('home/services')?>";
+            });
+        });
+    </script>

@@ -21,14 +21,15 @@
                     <h5>ACCOUNT LOGIN</h5>
                 </div>
                 <div class="login-form text-center">
-                    <form action="">
+                    <div class="message"></div>
+                    <form id="loginAccount" method="POST">
                         <div class="form-group mb-3">
-                            <label for="username" class="fw-bold">USERNAME</label>
-                            <input type="text" class="form-control" name="username" id="username">
+                            <label for="username" class="fw-bold">USERNAME/EMAIL</label>
+                            <input type="text" class="form-control" name="username" id="username" required>
                         </div>
                         <div class="form-group mb-3">
                             <label for="password" class="fw-bold">PASSWORD</label>
-                            <input type="password" class="form-control" name="password" id="password">
+                            <input type="password" class="form-control" name="password" id="password" required>
                         </div>
                         <button type="submit">LOGIN</button>
                     </form>
@@ -59,3 +60,35 @@
             </div>
         </div>
     </main>
+
+    <script>
+        $(document).ready(function() {
+            $(document).on('submit', '#loginAccount', function(event) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+
+                $.ajax({
+                    url: "<?= base_url() . 'user/login_process' ?>",
+                    method: "POST",
+                    data: new FormData(this),
+                    dataType: "json",
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        if (data.error != '') {
+                            $('.message').html(data.error);
+                            setTimeout(function() {
+                                $('.message').html('');
+                            }, 3000)
+                        } else {
+                            $('.message').html(data.success);
+                            setTimeout(function() {
+                                $('#message').html('');
+                                window.location.href = "<?= base_url() . 'main' ?>";
+                            }, 3000);
+                        }
+                    }
+                });
+            });
+        });
+    </script>

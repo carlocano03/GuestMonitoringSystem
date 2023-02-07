@@ -11,7 +11,7 @@
         <div class="container d-flex justify-content-center min-vh-100">
             <div class="container mt-3">
                 <div class="text-end mb-5 pb-3">
-                    <button class="btn btn-warning fw-bold">GO BACK</button>
+                    <a href="<?= base_url('home');?>"><button class="btn btn-warning fw-bold">GO BACK</button></a>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
@@ -39,7 +39,7 @@
                                 <li>All customers are required to observe <span class="text-white"><u>Jack's Adventures General Guidelines</u></span> at all times.</li>
                             </ul>
                             <div class="btn-div">
-                                <button class="btn-register">CLICK HERE TO REGISTER <img src="<?= base_url('assets/img/arrow.gif'); ?>" alt="" width="80"></button>
+                                <a href="<?= base_url('home/inflatables')?>"><button class="btn-register">CLICK HERE TO REGISTER <img src="<?= base_url('assets/img/arrow.gif'); ?>" alt="" width="80"></button></a>
                             </div>
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                             </ul>
                             <br><br>
                             <div class="btn-div mt-3">
-                                <button class="btn-register">CLICK HERE TO REGISTER <img src="<?= base_url('assets/img/arrow.gif'); ?>" alt="" width="80"></button>
+                                <a href="<?= base_url('home/park')?>"><button class="btn-register">CLICK HERE TO REGISTER <img src="<?= base_url('assets/img/arrow.gif'); ?>" alt="" width="80"></button></a>
                             </div>
                         </div>
                     </div>

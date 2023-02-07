@@ -25,10 +25,9 @@
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading text-center">
                             <img src="<?= base_url('assets/img/avatar.png')?>" alt="Avatar Image">
-                            <h5>Mr. VA GUANIO</h5>
-                            <div class="avatar-text">System Administrator</div>
-                            <div class="avatar-text">0931-106-2880</div>
-                            <div class="avatar-text">Austin Land</div>
+                            <h5><?= $_SESSION['loggedIn']['fullname']; ?></h5>
+                            <div class="avatar-text"><i><?= $_SESSION['loggedIn']['email']; ?></i></div>
+                            <div class="avatar-text"><?= $_SESSION['loggedIn']['branch']; ?></div>
                         </div>
                         <hr class="mt-0" style="background: #474787;">
                         <a class="nav-link <?= ($this->uri->segment(2) == '' || $this->uri->segment(2) == 'main' ? 'active' : '') ?>" href="<?= base_url('main')?>">

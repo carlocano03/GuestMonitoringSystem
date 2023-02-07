@@ -20,5 +20,43 @@ class UserModel extends CI_Model
         $this->load->database();
     }
 
+    function existing_account($username, $email)
+    {
+        $this->db->where('username', $username);
+        $this->db->or_where('email', $email);
+        $query = $this->db->get('user');
+        return $query->num_rows();
+    }
+
+    public function user_check_admin($username, $password)
+    {
+        $this->db->where('username', $username);
+        $this->db->or_where('email', $username);
+        $res = $this->db->get('user')->row();
+        if (!$res) {
+            return false;
+        } else {
+            $hash = $res->password;
+            if ($this->verify_password_hash($password, $hash)) {
+                return $res;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    private function verify_password_hash($password, $hash)
+    {
+        return password_verify($password, $hash);
+    }
+
+    function userCheck($username)
+    {
+        $this->db->where('username', $username);
+        $this->db->or_where('email', $username);
+        $query = $this->db->get('user');
+        return $query->num_rows();
+    }
+
 
 }

@@ -12,11 +12,11 @@ class Main extends CI_Controller
         parent::__construct();
         date_default_timezone_set('Asia/Manila');
         $this->load->helper('url');
-        // $this->load->library('form_validation');
-        // $this->load->database();
-        // if (!isset($_SESSION['loggedIn'])) {
-        //     redirect('user');
-        // }
+        $this->load->library('form_validation');
+        $this->load->database();
+        if (!isset($_SESSION['loggedIn'])) {
+            redirect('user');
+        }
     }//End __construct
 
     public function index()
@@ -51,6 +51,12 @@ class Main extends CI_Controller
         $this->load->view('partials/__navbar');
         $this->load->view('registration');
         $this->load->view('partials/__footer');
+    }
+
+    public function logout()
+    {
+        $this->session->sess_destroy();
+        redirect('user');
     }
 
 
