@@ -12,12 +12,12 @@ class Home extends CI_Controller
         parent::__construct();
         date_default_timezone_set('Asia/Manila');
         $this->load->helper('url');
+        $this->load->database();
         // $this->load->library('form_validation');
-        // $this->load->database();
         // if (!isset($_SESSION['loggedIn'])) {
         //     redirect('user');
         // }
-    }//End __construct
+    } //End __construct
 
     public function index()
     {
@@ -35,16 +35,127 @@ class Home extends CI_Controller
 
     public function park()
     {
+        $data['province'] = $this->db->order_by('name', 'ASC')->get('psgc_province')->result();
         $this->load->view('partials/__header');
         $this->load->view('partials/__footer');
-        $this->load->view('services/park');
+        $this->load->view('services/park', $data);
     }
 
     public function inflatables()
     {
+        $data['province'] = $this->db->order_by('name', 'ASC')->get('psgc_province')->result();
         $this->load->view('partials/__header');
         $this->load->view('partials/__footer');
-        $this->load->view('services/inflatables');
+        $this->load->view('services/inflatables', $data);
+    }
+
+
+    //Back End Process
+    public function get_municipal($prov = NULL, $value = NULL)
+    {
+        $code = $prov ? $prov : $this->input->post('code', TRUE);
+        $res = $this->db->like('code', substr($code, 0, 4), 'after')->order_by('name', 'ASC')->get('psgc_municipal')->result();
+        $option = '<option value="">Select Municipality</option>';
+        foreach ($res as $val) {
+            $option .= '<option value="' . $val->code . '" ' . ($value && $value == $val->code ? 'selected' : '') . '>' . strtoupper($val->name) . '</option>';
+        }
+        if ($prov)
+            return $option;
+        else
+            echo json_encode($option);
+    }
+
+    public function get_barangay($muni = NULL, $value = NULL)
+    {
+        $code = $muni ? $muni : $this->input->post('code', TRUE);
+
+        $brgy = $this->db->like('code', substr($code, 0, 6), 'after')->order_by('name', 'ASC')->get('psgc_brgy')->result();
+        // print_r($brgy);
+        $option = '<option value="">Select Barangay</option>';
+        foreach ($brgy as $val) {
+            $option .= '<option value="' . $val->code . '" ' . ($value && $value == $val->code ? 'selected' : '') . '>' . strtoupper($val->name) . '</option>';
+        }
+        if ($muni)
+            return $option;
+        else
+            echo json_encode($option);
+    }
+
+    public function registerPark()
+    {
+        $message = '';
+        $insertPark = array(
+            'guest_fname' => $this->input->post('fname'),
+            'guest_mname' => $this->input->post('mname'),
+            'guest_lname' => $this->input->post('lname'),
+            'guest_suffix' => $this->input->post('suffix'),
+            'guest_bday' => date('Y-m-d', strtotime($this->input->post('birthday'))),
+            'guest_age' => $this->input->post('age'),
+            'province_code' => $this->input->post('province_code'),
+            'province' => $this->input->post('province'),
+            'municipal_code' => $this->input->post('municipal_code'),
+            'municipal' => $this->input->post('municipal'),
+            'brgy_code' => $this->input->post('barangay_code'),
+            'brgy' => $this->input->post('brgy'),
+            'house_street' => $this->input->post('street'),
+            'contact_no' => $this->input->post('contact_no'),
+            'email_address' => $this->input->post('email'),
+            'service' => 'PARK',
+            'status' => 'PRE-REGISTRATION',
+        );
+        if ($this->db->insert('guest_details', $insertPark)) {
+            $message = 'Success';
+        } else {
+            $message = 'Error';
+        }
+        $output['message'] = $message;
+        echo json_encode($output);
+    }
+
+    public function registerInflatables()
+    {
+        $message = '';
+        $insertPark = array(
+            'guest_fname' => $this->input->post('fname'),
+            'guest_mname' => $this->input->post('mname'),
+            'guest_lname' => $this->input->post('lname'),
+            'guest_suffix' => $this->input->post('suffix'),
+            'province_code' => $this->input->post('province_code'),
+            'province' => $this->input->post('province'),
+            'municipal_code' => $this->input->post('municipal_code'),
+            'municipal' => $this->input->post('municipal'),
+            'brgy_code' => $this->input->post('barangay_code'),
+            'brgy' => $this->input->post('brgy'),
+            'house_street' => $this->input->post('street'),
+            'contact_no' => $this->input->post('contact_no'),
+            'email_address' => $this->input->post('email'),
+            'service' => 'INFLATABLES',
+            'status' => 'PRE-REGISTRATION',
+        );
+        $this->db->insert('guest_details', $insertPark);
+        $parentID = $this->db->insert_id();
+
+        $insertChildren = array();
+        foreach($this->input->post('kid_fname') as $key => $value) {
+            $insertChildren[] = array (
+                'parent_id' => $parentID,
+                'child_fname' => $value,
+                'child_lname' => $this->input->post('kid_lname')[$key],
+                'child_mname' => $this->input->post('kid_mname')[$key],
+                'child_suffix' => $this->input->post('kid_suffix')[$key],
+                'child_bday' => date('Y-m-d', strtotime($this->input->post('kid_birthday')[$key])),
+                'child_age' => $this->input->post('kid_age')[$key],
+            );
+        }
+        $this->db->insert_batch('guest_children', $insertChildren);
+        $message = 'Success';
+        // if ($this->db->insert('guest_details', $insertPark)) {
+        //     $message = 'Success';
+        // } else {
+        //     $message = 'Error';
+        // }
+        $output['message'] = $message;
+        echo json_encode($output);
     }
 
 }

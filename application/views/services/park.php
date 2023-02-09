@@ -1,16 +1,18 @@
 <body onload="startTime()">
     <main>
         <div class="container">
-            <a href="<?= base_url('home/services')?>"><p class="mt-2 fw-bold">
-                < Go Back</p></a>
+            <a href="<?= base_url('home/services') ?>">
+                <p class="mt-2 fw-bold">
+                    < Go Back</p>
+            </a>
         </div>
         <div class="container">
 
             <div class="float">
                 <p class="float">
-                    SLIDE DOWN<br>
+                    <img src="<?= base_url('assets/img/arrow-down.gif'); ?>" alt="" width="100"><br>
+                    SLIDE UP<br>
                     TO CONTINUE<br>
-                    <img src="<?= base_url('assets/img/arrow-down.gif'); ?>" alt="" width="100">
                 </p>
             </div>
 
@@ -30,61 +32,131 @@
                     <p>Tired waiting in line, for your convenience fill up your</p>
                 </div>
                 <div class="reg-form text-center">
-                    <form action="">
+                    <form id="registerPark" method="POST">
                         <div class="form-group mb-3">
-                            <input type="text" class="form-control" name="fname" id="fname" placeholder="Enter First Name (Juan)" required>
+                            <input type="text" class="form-control text-uppercase" name="fname" id="fname" placeholder="Enter First Name (Juan)" required autocomplete="off">
                         </div>
                         <div class="form-group mb-3">
-                            <input type="text" class="form-control" name="lname" id="lname" placeholder="Enter Last Name (Bonifacion, Jr.)" required>
+                            <input type="text" class="form-control text-uppercase" name="lname" id="lname" placeholder="Enter Last Name (Bonifacion, Jr.)" required autocomplete="off">
                         </div>
                         <div class="form-group mb-3">
-                            <input type="text" class="form-control" name="mname" id="mname" placeholder="Enter Middle Name (Cruz)" required>
+                            <input type="text" class="form-control text-uppercase" name="mname" id="mname" placeholder="Enter Middle Name (Cruz)" autocomplete="off">
                         </div>
                         <div class="form-group mb-3">
-                            <input type="text" class="form-control" name="suffix" id="suffic" placeholder="Enter Suffix (Jr. Sr. III)" required>
+                            <input type="text" class="form-control text-uppercase" name="suffix" id="suffix" placeholder="Enter Suffix (Jr. Sr. III)" autocomplete="off">
                         </div>
                         <div class="form-group mb-3">
-                            <input type="text" class="form-control" name="birthday" id="birthday" placeholder="Enter Birthday" required>
+                            <input type="text" class="form-control text-uppercase" name="birthday" id="birthday" placeholder="Enter Birthday" required autocomplete="off">
                         </div>
                         <div class="form-group mb-3">
-                            <input type="text" class="form-control" name="age" id="age" placeholder="Enter Age" required>
+                            <input type="text" class="form-control text-uppercase" name="age" id="age" placeholder="Enter Age" readonly required>
                         </div>
                         <div class="alert alert-secondary p-1 text-start">Complete Address</div>
                         <div class="form-group mb-3">
-                            <select name="province" id="province" class="form-select">
+                            <select name="province_code" id="province_code" class="form-select text-uppercase" required>
                                 <option value="">Select Province</option>
+                                <?php foreach ($province as $pval) { ?>
+                                    <option value="<?= $pval->code ?>"><?= strtoupper($pval->name) ?></option>
+                                <?php } ?>
                             </select>
+                            <input type="hidden" name="province" id="province">
                         </div>
                         <div class="form-group mb-3">
-                            <select name="municipality" id="municipality" class="form-select">
+                            <select name="municipal_code" id="municipal_code" class="form-select text-uppercase" required>
                                 <option value="">Select Municipality</option>
                             </select>
+                            <input type="hidden" name="municipal" id="municipal">
                         </div>
                         <div class="form-group mb-3">
-                            <select name="brgy" id="brgy" class="form-select">
+                            <select name="barangay_code" id="barangay_code" class="form-select text-uppercase" required>
                                 <option value="">Select Barangay</option>
                             </select>
+                            <input type="hidden" name="brgy" id="brgy">
                         </div>
                         <div class="form-group mb-3">
-                            <input type="text" class="form-control" name="street" id="street" placeholder="Enter House No. Street" required>
+                            <input type="text" class="form-control text-uppercase" name="street" id="street" placeholder="Enter House No. Street" required autocomplete="off">
                         </div>
                         <hr>
                         <div class="form-group mb-3">
-                            <input type="text" class="form-control" name="contact_no" id="contact_no" placeholder="Contact Number" required>
+                            <input type="number" class="form-control" name="contact_no" id="contact_no" placeholder="Contact Number" required oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" autocomplete="off">
                         </div>
                         <div class="form-group mb-3">
-                            <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" required>
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" required autocomplete="off">
                         </div>
                         <div class="form-check text-start mb-3">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" id="waiver_check">
+                            <label class="form-check-label" for="waiver_check">
                                 I hereby acknowledge and accept the <a href="">"Waiver and Quitclaim"</a> and agree to <a href="">Data Privacy Act of 2012</a>
                             </label>
                         </div>
-                        <button type="submit">SAVED RECORD</button>
+                        <button class="save_record" type="submit">SAVED RECORD</button>
                     </form>
                 </div>
             </div>
             <hr>
         </div>
     </main>
+
+    <script>
+        $(document).ready(function() {
+            $(document).on('submit', '#registerPark', function(event) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                if ($('#waiver_check').prop('checked')) {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You want to continue this registration",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, Proceed'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: "<?= base_url('home/registerPark') ?>",
+                                method: "POST",
+                                data: new FormData(this),
+                                contentType: false,
+                                processData: false,
+                                dataType: "json",
+                                beforeSend: function() {
+                                    $('#loading').show();
+                                },
+                                success: function(data) {
+                                    if (data.message == 'Success') {
+                                        Swal.fire({
+                                            title: 'Thank You!',
+                                            text: 'Successfully submitted',
+                                            icon: 'success'
+                                        });
+                                        setTimeout(function() {
+                                            window.location.href = "<?= base_url('home') ?>";
+                                        }, 2000);
+                                        $('#registerPark').trigger('reset');
+                                    }
+                                },
+                                complete: function() {
+                                    $('#loading').hide();
+                                },
+                                error: function() {
+                                    $('#loading').hide();
+                                    Swal.fire({
+                                        title: 'Error!',
+                                        text: 'Something went wrong. Please contact the system administrator.',
+                                        icon: 'error'
+                                    });
+                                }
+                            });
+                        }
+                    })
+                } else {
+                    Swal.fire({
+                        title: 'Terms and Conditions!',
+                        text: 'Please check the terms and conditions before you proceed.',
+                        icon: 'warning'
+                    });
+                }
+            });
+        });
+    </script>
