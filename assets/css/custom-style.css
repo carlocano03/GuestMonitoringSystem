@@ -605,3 +605,7 @@ input[type=number] {
     width: 200px;
 
 }
+
+.text-green {
+    color: var(--bs-lightgreen);
+}

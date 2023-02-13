@@ -17,5 +17,5 @@
 </head>
 
 <div id="loading" class="mx-auto" style="display:none;">
-        <img id="loading-image" src="<?= base_url('assets/img/AUSTIN_LAND.png')?>" alt="Loading..." />
+        <img id="loading-image" src="<?= base_url('assets/img/jacks-loading.gif')?>" alt="Loading..." />
 </div>

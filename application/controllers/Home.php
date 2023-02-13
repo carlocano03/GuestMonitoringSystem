@@ -115,6 +115,8 @@ class Home extends CI_Controller
     public function registerInflatables()
     {
         $message = '';
+        $dateReg = date('F j, Y H:i a');
+        $regNo = time(). rand(10, 1000);
         $insertPark = array(
             'guest_fname' => $this->input->post('fname'),
             'guest_mname' => $this->input->post('mname'),
@@ -131,31 +133,32 @@ class Home extends CI_Controller
             'email_address' => $this->input->post('email'),
             'service' => 'INFLATABLES',
             'status' => 'PRE-REGISTRATION',
+            'guest_slip_no' => $regNo,
         );
         $this->db->insert('guest_details', $insertPark);
         $parentID = $this->db->insert_id();
 
-        $insertChildren = array();
-        foreach($this->input->post('kid_fname') as $key => $value) {
-            $insertChildren[] = array (
-                'parent_id' => $parentID,
-                'child_fname' => $value,
-                'child_lname' => $this->input->post('kid_lname')[$key],
-                'child_mname' => $this->input->post('kid_mname')[$key],
-                'child_suffix' => $this->input->post('kid_suffix')[$key],
-                'child_bday' => date('Y-m-d', strtotime($this->input->post('kid_birthday')[$key])),
-                'child_age' => $this->input->post('kid_age')[$key],
-            );
+        $number = count($this->input->post('kid_fname'));
+
+        $dtBday = date('Y-m-d', strtotime($this->input->post('kid_birthday')));
+        for ($i = 0; $i < $number; $i++) {
+            if (trim($this->input->post("kid_fname")[$i]) != '') {
+                $data = array(
+                    'parent_id' => $parentID,
+                    'child_fname' => $this->db->escape_str($this->input->post('kid_fname')[$i]),
+                    'child_lname' => $this->db->escape_str($this->input->post('kid_lname')[$i]),
+                    'child_mname' => $this->db->escape_str($this->input->post('kid_mname')[$i]),
+                    'child_suffix' => $this->db->escape_str($this->input->post('kid_suffix')[$i]),
+                    'child_bday' => $this->db->escape_str($dtBday[$i]),
+                    'child_age' => $this->db->escape_str($this->input->post('kid_age')[$i]),
+                );
+                $this->db->insert('guest_children', $data);
+            }
         }
-        $this->db->insert_batch('guest_children', $insertChildren);
         $message = 'Success';
-        // if ($this->db->insert('guest_details', $insertPark)) {
-        //     $message = 'Success';
-        // } else {
-        //     $message = 'Error';
-        // }
         $output['message'] = $message;
+        $output['reg_no'] = $regNo;
+        $output['date_reg'] = $dateReg;
         echo json_encode($output);
     }
-
 }

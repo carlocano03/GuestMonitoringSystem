@@ -81,59 +81,83 @@
                             <input type="number" class="form-control" name="contact_no" id="contact_no" placeholder="Contact Number" required oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" autocomplete="off">
                         </div>
                         <div class="form-group mb-3">
-                            <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" required  autocomplete="off">
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" required autocomplete="off">
                         </div>
-                </div>
-                <div class="sub-header-section text-center">
-                    <h5 class="mb-0">KIDS / CHILDREN INFORMATION</h5>
-                </div>
-                <div class="reg-form text-center">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-3 text-start">
-                                <button class="btn btn-primary btn-sm" id="add_children"><i class="bi bi-plus-circle me-2"></i>Add More</button>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <span><b>Total Children:</b> <span class="badge bg-danger" id="count">1</span></span>
-                        </div>
-                    </div>
-                    <div class="children-item">
-                        <div class="children-data">
-                            <div class="form-group mb-3">
-                                <input type="text" class="form-control text-uppercase" name="kid_fname[]" id="kid_fname" placeholder="Enter First Name (Juan)" required autocomplete="off">
-                            </div>
-                            <div class="form-group mb-3">
-                                <input type="text" class="form-control text-uppercase" name="kid_lname[]" id="kid_lname" placeholder="Enter Last Name (Bonifacion, Jr.)" required autocomplete="off">
-                            </div>
-                            <div class="form-group mb-3">
-                                <input type="text" class="form-control text-uppercase" name="kid_mname[]" id="kid_mname" placeholder="Enter Middle Name (Cruz)" required autocomplete="off">
-                            </div>
-                            <div class="form-group mb-3">
-                                <input type="text" class="form-control text-uppercase" name="kid_suffix[]" id="kid_suffix" placeholder="Enter Suffix (Jr. Sr. III)" autocomplete="off">
-                            </div>
-                            <div class="form-group mb-3">
-                                <input type="text" class="form-control text-uppercase kid_birthday" name="kid_birthday[]" id="kid_birthday" placeholder="Enter Birthday" required autocomplete="off">
-                            </div>
-                            <div class="form-group mb-3">
-                                <input type="text" class="form-control text-uppercase" name="kid_age[]" id="kid_age" placeholder="Enter Age" readonly>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="form-check text-start mb-3">
-                        <input class="form-check-input" type="checkbox" value="" id="waiver_check">
-                        <label class="form-check-label" for="waiver_check">
-                            I hereby acknowledge and accept the <a href="">"Waiver and Quitclaim"</a> and agree to <a href="">Data Privacy Act of 2012</a>
-                        </label>
-                    </div>
-                    <button class="save_record" type="submit">SAVED RECORD</button>
+                        <div class="sub-header-section text-center">
+                            <h5 class="mb-0">KIDS / CHILDREN INFORMATION</h5>
+                        </div>
+                        <!-- <div class="reg-form text-center"> -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3 text-start">
+                                    <button class="btn btn-primary btn-sm" id="add_children"><i class="bi bi-plus-circle me-2"></i>Add More</button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <span><b>Total Children:</b> <span class="badge bg-danger" id="count">1</span></span>
+                            </div>
+                        </div>
+                        <div class="children-item">
+                            <div class="children-data">
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control text-uppercase" name="kid_fname[]" id="kid_fname" placeholder="Enter First Name (Juan)" required autocomplete="off">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control text-uppercase" name="kid_lname[]" id="kid_lname" placeholder="Enter Last Name (Bonifacion, Jr.)" required autocomplete="off">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control text-uppercase" name="kid_mname[]" id="kid_mname" placeholder="Enter Middle Name (Cruz)" required autocomplete="off">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control text-uppercase" name="kid_suffix[]" id="kid_suffix" placeholder="Enter Suffix (Jr. Sr. III)" autocomplete="off">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control text-uppercase kid_birthday" name="kid_birthday[]" id="kid_birthday" placeholder="Enter Birthday" required autocomplete="off">
+                                </div>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control text-uppercase" name="kid_age[]" id="kid_age" placeholder="Enter Age" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-check text-start mb-3">
+                            <input class="form-check-input" type="checkbox" value="" id="waiver_check">
+                            <label class="form-check-label" for="waiver_check">
+                                I hereby acknowledge and accept the <a href="">"Waiver and Quitclaim"</a> and agree to <a href="">Data Privacy Act of 2012</a>
+                            </label>
+                        </div>
+                        <button class="save_record" type="submit">SAVED RECORD</button>
                     </form>
                 </div>
             </div>
             <hr>
         </div>
     </main>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalSuccess" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <h2 class="text-green">REGISTRATION SUCCESSFULLY</h2>
+                    <p>Print / Capture your Registration No. Present this information to Jack's Adventure Staff Personnel.<br>
+                        <b>Registration Date:</b> <span id="date_reg"></span>
+                    </p>
+                    <hr>
+                    <h5 class="text-green">REGISTRATION NO.</h5>
+                    <h4 id="reg_no"></h4>
+                    <button class="btn btn-primary w-100 mb-3">PRINT</button>
+                    <div class="text-start">
+                        <img src="<?= base_url('assets/img/logo/jacks.png') ?>" alt="" width="200">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         $(document).ready(function() {
@@ -157,13 +181,13 @@
                                 <input type="text" class="form-control text-uppercase" name="kid_mname[]" id="kid_mname" placeholder="Enter Middle Name (Cruz)" required>
                             </div>
                             <div class="form-group mb-3">
-                                <input type="text" class="form-control text-uppercase" name="kid_suffix[]" id="kid_suffix" placeholder="Enter Suffix (Jr. Sr. III)" required>
+                                <input type="text" class="form-control text-uppercase" name="kid_suffix[]" id="kid_suffix" placeholder="Enter Suffix (Jr. Sr. III)">
                             </div>
                             <div class="form-group mb-3">
-                                <input type="text" class="form-control text-uppercase kid_birthday" name="kid_birthday[]" id="kid_birthday`+ clicks +`" placeholder="Enter Birthday" required>
+                                <input type="text" class="form-control text-uppercase kid_birthday" name="kid_birthday[]" id="kid_birthday` + clicks + `" placeholder="Enter Birthday" required>
                             </div>
                             <div class="form-group mb-3">
-                                <input type="text" class="form-control text-uppercase" name="kid_age[]" id="kid_age`+ clicks +`" placeholder="Enter Age" readonly>
+                                <input type="text" class="form-control text-uppercase" name="kid_age[]" id="kid_age` + clicks + `" placeholder="Enter Age" readonly>
                             </div>
                             <div class="form-group mb-3 text-start">
                                 <button class="btn btn-danger btn-sm" id="remove"><i class="bi bi-x-circle me-2"></i>Remove</button>
@@ -192,7 +216,7 @@
                     $('#count').text(clicks);
                     $('#add_children').attr("disabled", false);
                 }
-            }); 
+            });
 
             $(document).on('submit', '#registerInflatables', function(event) {
                 event.preventDefault();
@@ -211,6 +235,7 @@
                             $.ajax({
                                 url: "<?= base_url('home/registerInflatables') ?>",
                                 method: "POST",
+                                // data: $(this).serialize(),
                                 data: new FormData(this),
                                 contentType: false,
                                 processData: false,
@@ -220,14 +245,17 @@
                                 },
                                 success: function(data) {
                                     if (data.message == 'Success') {
-                                        Swal.fire({
-                                            title: 'Thank You!',
-                                            text: 'Successfully submitted',
-                                            icon: 'success'
-                                        });
-                                        setTimeout(function() {
-                                            window.location.href = "<?= base_url('home') ?>";
-                                        }, 2000);
+                                        $('#modalSuccess').modal('show');
+                                        $('#date_reg').html(data.date_reg);
+                                        $('#reg_no').html(data.reg_no);
+                                        // Swal.fire({
+                                        //     title: 'Thank You!',
+                                        //     text: 'Successfully submitted',
+                                        //     icon: 'success'
+                                        // });
+                                        // setTimeout(function() {
+                                        //     window.location.href = "<?= base_url('home') ?>";
+                                        // }, 2000);
                                         $('#registerInflatables').trigger('reset');
                                     }
                                 },

@@ -283,6 +283,10 @@
 
 <script>
     $(document).ready(function() {
+        $('#loading').show();
+        setTimeout(function(){
+            $('#loading').hide();
+        },2000);
         $('#table-guest').DataTable({
             language: {
                 search: '',
