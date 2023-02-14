@@ -32,15 +32,24 @@
                     <p>Tired waiting in line, for your convenience fill up your</p>
                 </div>
                 <div class="reg-form text-center">
-                    <form id="registerInflatables" method="POST">
+                    <form id="registerInflatables" method="POST" class="needs-validation" novalidate>
                         <div class="form-group mb-3">
                             <input type="text" class="form-control text-uppercase" name="fname" id="fname" placeholder="Enter First Name (Juan)" required autocomplete="off">
+                            <div class="invalid-feedback text-start">
+                                Please input your firstname.
+                            </div>
                         </div>
                         <div class="form-group mb-3">
                             <input type="text" class="form-control text-uppercase" name="lname" id="lname" placeholder="Enter Last Name (Bonifacion, Jr.)" required autocomplete="off">
+                            <div class="invalid-feedback text-start">
+                                Please input your lastname.
+                            </div>
                         </div>
                         <div class="form-group mb-3">
                             <input type="text" class="form-control text-uppercase" name="mname" id="mname" placeholder="Enter Middle Name (Cruz)" required autocomplete="off">
+                            <div class="invalid-feedback text-start">
+                                Please input your middlename.
+                            </div>
                         </div>
                         <div class="form-group mb-3">
                             <input type="text" class="form-control text-uppercase" name="suffix" id="suffix" placeholder="Enter Suffix (Jr. Sr. III)" autocomplete="off">
@@ -50,6 +59,9 @@
                                 <option value="">Relationship</option>
                                 <option value="Mother">Mother</option>
                             </select>
+                            <div class="invalid-feedback text-start">
+                                Please select relationship.
+                            </div>
                         </div>
                         <div class="alert alert-secondary p-1 text-start">Complete Address</div>
                         <div class="form-group mb-3">
@@ -59,29 +71,56 @@
                                     <option value="<?= $pval->code ?>"><?= strtoupper($pval->name) ?></option>
                                 <?php } ?>
                             </select>
+                            <div class="invalid-feedback text-start">
+                                Please select your province.
+                            </div>
                             <input type="hidden" name="province" id="province">
                         </div>
                         <div class="form-group mb-3">
                             <select name="municipal_code" id="municipal_code" class="form-select text-uppercase" required>
                                 <option value="">Select Municipality</option>
                             </select>
+                            <div class="invalid-feedback text-start">
+                                Please select your municipality.
+                            </div>
                             <input type="hidden" name="municipal" id="municipal">
                         </div>
                         <div class="form-group mb-3">
                             <select name="barangay_code" id="barangay_code" class="form-select text-uppercase" required>
                                 <option value="">Select Barangay</option>
                             </select>
+                            <div class="invalid-feedback text-start">
+                                Please select your barangay.
+                            </div>
                             <input type="hidden" name="brgy" id="brgy">
                         </div>
                         <div class="form-group mb-3">
                             <input type="text" class="form-control text-uppercase" name="street" id="street" placeholder="Enter House No. Street" required autocomplete="off">
+                            <div class="invalid-feedback text-start">
+                                Please input your street.
+                            </div>
                         </div>
                         <hr>
                         <div class="form-group mb-3">
                             <input type="number" class="form-control" name="contact_no" id="contact_no" placeholder="Contact Number" required oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" autocomplete="off">
+                            <div class="invalid-feedback text-start">
+                                Please input your contact no.
+                            </div>
                         </div>
                         <div class="form-group mb-3">
                             <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" required autocomplete="off">
+                            <div class="invalid-feedback text-start">
+                                Please input your email address.
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control text-uppercase" name="inflatables_birthday" id="inflatables_birthday" placeholder="Enter Birthday" required autocomplete="off">
+                            <div class="invalid-feedback text-start">
+                                Please input your birthday.
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control text-uppercase" name="age" id="age" placeholder="Enter Age" readonly required>
                         </div>
 
                         <div class="sub-header-section text-center">
@@ -102,21 +141,36 @@
                             <div class="children-data">
                                 <div class="form-group mb-3">
                                     <input type="text" class="form-control text-uppercase" name="kid_fname[]" id="kid_fname" placeholder="Enter First Name (Juan)" required autocomplete="off">
+                                    <div class="invalid-feedback text-start">
+                                        Please input kid firstname.
+                                    </div>
                                 </div>
                                 <div class="form-group mb-3">
                                     <input type="text" class="form-control text-uppercase" name="kid_lname[]" id="kid_lname" placeholder="Enter Last Name (Bonifacion, Jr.)" required autocomplete="off">
+                                    <div class="invalid-feedback text-start">
+                                        Please input kid lastname.
+                                    </div>
                                 </div>
                                 <div class="form-group mb-3">
                                     <input type="text" class="form-control text-uppercase" name="kid_mname[]" id="kid_mname" placeholder="Enter Middle Name (Cruz)" required autocomplete="off">
+                                    <div class="invalid-feedback text-start">
+                                        Please input kid middlename.
+                                    </div>
                                 </div>
                                 <div class="form-group mb-3">
                                     <input type="text" class="form-control text-uppercase" name="kid_suffix[]" id="kid_suffix" placeholder="Enter Suffix (Jr. Sr. III)" autocomplete="off">
                                 </div>
                                 <div class="form-group mb-3">
                                     <input type="text" class="form-control text-uppercase kid_birthday" name="kid_birthday[]" id="kid_birthday" placeholder="Enter Birthday" required autocomplete="off">
+                                    <div class="invalid-feedback text-start">
+                                        Please input kid birthday.
+                                    </div>
                                 </div>
                                 <div class="form-group mb-3">
                                     <input type="text" class="form-control text-uppercase" name="kid_age[]" id="kid_age" placeholder="Enter Age" readonly>
+                                </div>
+                                <div class="form-group mb-3 text-start">
+                                    <button class="btn btn-danger btn-sm" id="remove"><i class="bi bi-x-circle me-2"></i>Remove</button>
                                 </div>
                             </div>
                         </div>
@@ -148,18 +202,39 @@
                     <h5 class="text-green">REGISTRATION NO.</h5>
                     <h4 id="reg_no"></h4>
                     <button class="btn btn-primary w-100 mb-3">PRINT</button>
-                    <div class="text-start">
-                        <img src="<?= base_url('assets/img/logo/jacks.png') ?>" alt="" width="200">
+                    <div class="text-end">
+                        <img src="<?= base_url('assets/img/jacks-loading.gif') ?>" alt="" width="200">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary close_modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+
         $(document).ready(function() {
             var clicks = 1;
             $(document).on('click', '#add_children', function(event) {
@@ -172,19 +247,31 @@
                         <div class="children-data">
                         <hr>
                             <div class="form-group mb-3">
-                                <input type="text" class="form-control text-uppercase" name="kid_fname[]" id="kid_fname" placeholder="Enter First Name (Juan)" required>
+                                <input type="text" class="form-control text-uppercase" name="kid_fname[]" id="kid_fname" placeholder="Enter First Name (Juan)" required autocomplete="off">
+                                <div class="invalid-feedback text-start">
+                                    Please input kid firstname.
+                                </div>
                             </div>
                             <div class="form-group mb-3">
-                                <input type="text" class="form-control text-uppercase" name="kid_lname[]" id="kid_lname" placeholder="Enter Last Name (Bonifacion, Jr.)" required>
+                                <input type="text" class="form-control text-uppercase" name="kid_lname[]" id="kid_lname" placeholder="Enter Last Name (Bonifacion, Jr.)" required autocomplete="off">
+                                <div class="invalid-feedback text-start">
+                                    Please input kid lastname.
+                                </div>
                             </div>
                             <div class="form-group mb-3">
-                                <input type="text" class="form-control text-uppercase" name="kid_mname[]" id="kid_mname" placeholder="Enter Middle Name (Cruz)" required>
+                                <input type="text" class="form-control text-uppercase" name="kid_mname[]" id="kid_mname" placeholder="Enter Middle Name (Cruz)" required autocomplete="off">
+                                <div class="invalid-feedback text-start">
+                                    Please input kid middlename.
+                                </div>
                             </div>
                             <div class="form-group mb-3">
-                                <input type="text" class="form-control text-uppercase" name="kid_suffix[]" id="kid_suffix" placeholder="Enter Suffix (Jr. Sr. III)">
+                                <input type="text" class="form-control text-uppercase" name="kid_suffix[]" id="kid_suffix" placeholder="Enter Suffix (Jr. Sr. III)" autocomplete="off">
                             </div>
                             <div class="form-group mb-3">
-                                <input type="text" class="form-control text-uppercase kid_birthday" name="kid_birthday[]" id="kid_birthday` + clicks + `" placeholder="Enter Birthday" required>
+                                <input type="text" class="form-control text-uppercase kid_birthday" name="kid_birthday[]" id="kid_birthday` + clicks + `" placeholder="Enter Birthday" required autocomplete="off">
+                                <div class="invalid-feedback text-start">
+                                    Please input kid birthday.
+                                </div>
                             </div>
                             <div class="form-group mb-3">
                                 <input type="text" class="form-control text-uppercase" name="kid_age[]" id="kid_age` + clicks + `" placeholder="Enter Age" readonly>
@@ -209,7 +296,7 @@
                 event.preventDefault();
                 event.stopImmediatePropagation();
 
-                if (clicks > 1) {
+                if (clicks > 0) {
                     clicks--;
                     let row_item = $(this).parent().parent();
                     $(row_item).remove();
@@ -280,6 +367,10 @@
                         icon: 'warning'
                     });
                 }
+            });
+
+            $(document).on('click', '.close_modal', function() {
+                window.location.href = "<?= base_url('home') ?>";
             });
         });
     </script>

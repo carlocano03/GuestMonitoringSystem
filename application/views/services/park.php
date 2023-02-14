@@ -32,21 +32,33 @@
                     <p>Tired waiting in line, for your convenience fill up your</p>
                 </div>
                 <div class="reg-form text-center">
-                    <form id="registerPark" method="POST">
+                    <form id="registerPark" method="POST" class="needs-validation" novalidate>
                         <div class="form-group mb-3">
                             <input type="text" class="form-control text-uppercase" name="fname" id="fname" placeholder="Enter First Name (Juan)" required autocomplete="off">
+                            <div class="invalid-feedback text-start">
+                                Please input your firstname.
+                            </div>
                         </div>
                         <div class="form-group mb-3">
                             <input type="text" class="form-control text-uppercase" name="lname" id="lname" placeholder="Enter Last Name (Bonifacion, Jr.)" required autocomplete="off">
+                            <div class="invalid-feedback text-start">
+                                Please input your lastname.
+                            </div>
                         </div>
                         <div class="form-group mb-3">
-                            <input type="text" class="form-control text-uppercase" name="mname" id="mname" placeholder="Enter Middle Name (Cruz)" autocomplete="off">
+                            <input type="text" class="form-control text-uppercase" name="mname" id="mname" placeholder="Enter Middle Name (Cruz)" required autocomplete="off">
+                            <div class="invalid-feedback text-start">
+                                Please input your middlename.
+                            </div>
                         </div>
                         <div class="form-group mb-3">
                             <input type="text" class="form-control text-uppercase" name="suffix" id="suffix" placeholder="Enter Suffix (Jr. Sr. III)" autocomplete="off">
                         </div>
                         <div class="form-group mb-3">
                             <input type="text" class="form-control text-uppercase" name="birthday" id="birthday" placeholder="Enter Birthday" required autocomplete="off">
+                            <div class="invalid-feedback text-start">
+                                Please input your birthday.
+                            </div>
                         </div>
                         <div class="form-group mb-3">
                             <input type="text" class="form-control text-uppercase" name="age" id="age" placeholder="Enter Age" readonly required>
@@ -59,29 +71,47 @@
                                     <option value="<?= $pval->code ?>"><?= strtoupper($pval->name) ?></option>
                                 <?php } ?>
                             </select>
+                            <div class="invalid-feedback text-start">
+                                Please select your province.
+                            </div>
                             <input type="hidden" name="province" id="province">
                         </div>
                         <div class="form-group mb-3">
                             <select name="municipal_code" id="municipal_code" class="form-select text-uppercase" required>
                                 <option value="">Select Municipality</option>
                             </select>
+                            <div class="invalid-feedback text-start">
+                                Please select your municipality.
+                            </div>
                             <input type="hidden" name="municipal" id="municipal">
                         </div>
                         <div class="form-group mb-3">
                             <select name="barangay_code" id="barangay_code" class="form-select text-uppercase" required>
                                 <option value="">Select Barangay</option>
                             </select>
+                            <div class="invalid-feedback text-start">
+                                Please select your barangay.
+                            </div>
                             <input type="hidden" name="brgy" id="brgy">
                         </div>
                         <div class="form-group mb-3">
                             <input type="text" class="form-control text-uppercase" name="street" id="street" placeholder="Enter House No. Street" required autocomplete="off">
+                            <div class="invalid-feedback text-start">
+                                Please input your street.
+                            </div>
                         </div>
                         <hr>
                         <div class="form-group mb-3">
                             <input type="number" class="form-control" name="contact_no" id="contact_no" placeholder="Contact Number" required oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" autocomplete="off">
+                            <div class="invalid-feedback text-start">
+                                Please input your contact no.
+                            </div>
                         </div>
                         <div class="form-group mb-3">
                             <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" required autocomplete="off">
+                            <div class="invalid-feedback text-start">
+                                Please input your email address.
+                            </div>
                         </div>
                         <div class="form-check text-start mb-3">
                             <input class="form-check-input" type="checkbox" id="waiver_check">
@@ -97,7 +127,51 @@
         </div>
     </main>
 
+    <!-- Modal -->
+    <div class="modal fade" id="modalSuccess" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <h2 class="text-green">REGISTRATION SUCCESSFULLY</h2>
+                    <p>Print / Capture your Registration No. Present this information to Jack's Adventure Staff Personnel.<br>
+                        <b>Registration Date:</b> <span id="date_reg"></span>
+                    </p>
+                    <hr>
+                    <h5 class="text-green">REGISTRATION NO.</h5>
+                    <h4 id="reg_no"></h4>
+                    <button class="btn btn-primary w-100 mb-3">PRINT</button>
+                    <div class="text-end">
+                        <img src="<?= base_url('assets/img/jacks-loading.gif');?>" alt="" width="200">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary close_modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
         $(document).ready(function() {
             $(document).on('submit', '#registerPark', function(event) {
                 event.preventDefault();
@@ -125,14 +199,17 @@
                                 },
                                 success: function(data) {
                                     if (data.message == 'Success') {
-                                        Swal.fire({
-                                            title: 'Thank You!',
-                                            text: 'Successfully submitted',
-                                            icon: 'success'
-                                        });
-                                        setTimeout(function() {
-                                            window.location.href = "<?= base_url('home') ?>";
-                                        }, 2000);
+                                        $('#modalSuccess').modal('show');
+                                        $('#date_reg').html(data.date_reg);
+                                        $('#reg_no').html(data.reg_no);
+                                        // Swal.fire({
+                                        //     title: 'Thank You!',
+                                        //     text: 'Successfully submitted',
+                                        //     icon: 'success'
+                                        // });
+                                        // setTimeout(function() {
+                                        //     window.location.href = "<?= base_url('home') ?>";
+                                        // }, 2000);
                                         $('#registerPark').trigger('reset');
                                     }
                                 },
@@ -157,6 +234,10 @@
                         icon: 'warning'
                     });
                 }
+            });
+
+            $(document).on('click', '.close_modal', function(){
+                window.location.href = "<?= base_url('home')?>";
             });
         });
     </script>

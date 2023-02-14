@@ -29,13 +29,20 @@
                 <div class="col-md-4 text-end">
                     <h2 class="mt-2 text-yellow"><span id="clock" class="fw-bold"></h2>
                     <h5 class="text-white"><span id="date" class="fw-bold"></span></h5>
-                    <a href="<?= base_url('main/logout')?>" class="btn-signout">SIGN OUT <i class="bi bi-box-arrow-right ms-1"></i></a>
+                    <a href="<?= base_url('main/logout') ?>" class="btn-signout">SIGN OUT <i class="bi bi-box-arrow-right ms-1"></i></a>
                 </div>
             </div>
         </div>
         <div class="container-fluid px-4 mt-4">
+            <div class="row g-1">
+                <div class="col-4">
+                    <div class="form-group mb-2">
+                        <input type="text" class="form-control" name="search_value" id="search_value" placeholder="Search Pre-Registration No. / Name / Here...">
+                    </div>
+                </div>
+            </div>
             <div class="row">
-                <div class="col-md-7">
+                <!-- <div class="col-md-7">
                     <div class="row g-1">
                         <div class="col-7">
                             <div class="form-group mb-2">
@@ -77,8 +84,8 @@
                             </table>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-5 mb-5">
+                </div> -->
+                <div class="col-md-4 mb-5">
                     <div class="box-section mb-3">
                         <div class="box-header">
                             ENTRANCE APPLICATION
@@ -89,49 +96,60 @@
                         <div class="fw-bold"><small>GURDIAN DETAILS</small></div>
                         <hr class="mt-0">
                         <div class="form-group mb-2">
-                            <input type="text" name="f_name" id="f_name" class="form-control" placeholder="Enter First Name (Juan)">
+                            <input type="text" name="f_name" id="f_name" class="form-control text-uppercase" placeholder="Enter First Name (Juan)">
                         </div>
                         <div class="row g-1">
                             <div class="col-md-6">
                                 <div class="form-group mb-2">
-                                    <input type="text" name="m_name" id="m_name" class="form-control" placeholder="Enter Middle Name (Cruz)">
+                                    <input type="text" name="m_name" id="m_name" class="form-control text-uppercase" placeholder="Enter Middle Name (Cruz)">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-2">
-                                    <input type="text" name="l_name" id="l_name" class="form-control" placeholder="Enter Last Name (Bonifacio)">
+                                    <input type="text" name="l_name" id="l_name" class="form-control text-uppercase" placeholder="Enter Last Name (Bonifacio)">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-2">
-                                    <input type="text" name="suffix" id="suffix" class="form-control" placeholder="Suffix (Jr. Sr. III)">
+                                    <input type="text" name="suffix" id="suffix" class="form-control text-uppercase" placeholder="Suffix (Jr. Sr. III)">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-2">
-                                    <select name="relationship" id="relationship" class="form-select">
+                                    <select name="relationship" id="relationship" class="form-select text-uppercase">
                                         <option value="">Relationship</option>
+                                        <option value="Mother">Mother</option>
+                                        <option value="Father">Father</option>
+                                        <option value="Brother">Brother</option>
+                                        <option value="Sister">Sister</option>
+                                        <option value="Grandmother">Grandmother</option>
+                                        <option value="Grandfather">Grandfather</option>
+                                        <option value="Auntie">Auntie</option>
+                                        <option value="Uncle">Uncle</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group mb-2">
-                            <select name="province" id="province" class="form-select">
+                            <select name="province" id="province" class="form-select text-uppercase">
                                 <option value="">Select Province</option>
+                                <?php foreach ($province as $pval) { ?>
+                                    <option value="<?= $pval->code ?>"><?= strtoupper($pval->name) ?></option>
+                                <?php } ?>
                             </select>
                         </div>
                         <div class="form-group mb-2">
-                            <select name="municipality" id="municipality" class="form-select">
+                            <select name="municipality" id="municipality" class="form-select text-uppercase">
                                 <option value="">Select Municipality</option>
                             </select>
                         </div>
                         <div class="form-group mb-2">
-                            <select name="barangay" id="barangay" class="form-select">
+                            <select name="barangay" id="barangay" class="form-select text-uppercase">
                                 <option value="">Select Barangay</option>
                             </select>
                         </div>
                         <div class="form-group mb-2">
-                            <input type="text" name="street" id="street" class="form-control" placeholder="House No. / Bldg No. / Street">
+                            <input type="text" name="street" id="street" class="form-control text-uppercase" placeholder="House No. / Bldg No. / Street">
                         </div>
                         <div class="form-group mb-2">
                             <input type="text" name="contact" id="contact" class="form-control" placeholder="Contact Number / Details">
@@ -152,17 +170,17 @@
                             </div>
                         </div>
                         <div class="form-group mb-2">
-                            <input type="text" name="service_crew" id="service_crew" class="form-control" placeholder="GUEST / SERVICE CREW (Created By)">
+                            <input type="text" name="service_crew" id="service_crew" class="form-control text-uppercase" value="<?= $_SESSION['loggedIn']['fullname'];?>" placeholder="GUEST / SERVICE CREW (Created By)" readonly>
                         </div>
                         <div class="row g-1">
                             <div class="col-md-6">
                                 <div class="form-group mb-2">
-                                    <input type="text" name="bag_no" id="bag_no" class="form-control" placeholder="BAG Number">
+                                    <input type="text" name="bag_no" id="bag_no" class="form-control text-uppercase" placeholder="BAG Number">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-2">
-                                    <input type="text" name="shoe_box" id="shoe_box" class="form-control" placeholder="Shoe Box Number">
+                                    <input type="text" name="shoe_box" id="shoe_box" class="form-control text-uppercase" placeholder="Shoe Box Number">
                                 </div>
                             </div>
                         </div>
@@ -175,7 +193,9 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
+                <div class="col-md-4">
                     <div class="box-section mb-3">
                         <div class="fw-bold"><small>PACKAGE DETAILS</small></div>
                         <div class="form-group mb-2">
@@ -229,7 +249,9 @@
                             <button class="btn btn-primary btn-lg w-100 mt-3">NEXT</button>
                         </div>
                     </div>
+                </div>
 
+                <div class="col-md-4">
                     <div class="box-section">
                         <div class="fw-bold"><small>INVENTORY</small></div>
                         <div class="form-group mb-2">
@@ -284,9 +306,9 @@
 <script>
     $(document).ready(function() {
         $('#loading').show();
-        setTimeout(function(){
+        setTimeout(function() {
             $('#loading').hide();
-        },2000);
+        }, 2000);
         $('#table-guest').DataTable({
             language: {
                 search: '',
@@ -301,5 +323,58 @@
             "ordering": false,
             "bLengthChange": false,
         });
+
+        $("#search_value").autocomplete({
+            source: function(request, response) {
+                // Fetch data
+                $.ajax({
+                    url: "<?= base_url('main/search') ?>",
+                    type: 'post',
+                    dataType: "json",
+                    data: {
+                        search: request.term
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            select: function (event, ui) {
+                $('#search_value').val(ui.item.label);
+
+                var slip_no = ui.item.slip_no;
+                var parent_id = ui.item.parent_id;
+                
+                $.ajax({
+                    url: "<?= base_url('main/getGuestData')?>",
+                    method: "POST",
+                    data: {
+                        slip_no: slip_no, 
+                        parent_id: parent_id
+                    },
+                    // dataType: "json",
+                    success: function(data) {
+                        if (Object.keys(data).length > 0) {
+                            $('#f_name').val(data.guest_fname == null ? '' : data.guest_fname);
+                            $('#l_name').val(data.guest_lname == null ? '' : data.guest_lname);
+                            $('#m_name').val(data.guest_mname == null ? '' : data.guest_mname);
+                            $("#relationship").val(data.relationship == null ? '' : data.relationship).trigger('change');
+                            $('#street').val(data.house_street == null ? '' : data.house_street);
+                            $('#contact').val(data.contact_no == null ? '' : data.contact_no);
+                            $('#email_add').val(data.email_address == null ? '' : data.email_address);
+                            // $('#province').val(data.province_code).trigger('change');
+                        }
+                    }
+                });
+            }
+        });
+
+        // $(document).on('keypress', '#search_value', function() {
+        //     var val = $(this).val();
+
+        //     if(val == '') {
+
+        //     }
+        // });
     });
 </script>

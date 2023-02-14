@@ -24,7 +24,7 @@
         }).on('change', function() {
             var age = getAge(this);
             var newAge = age + " years old";
-            if (age < 10) {
+            if (age < 13) {
                 Swal.fire({
                     title: 'Warning!',
                     text: 'You are underage.',
@@ -37,6 +37,27 @@
         });
 
         //INFLATABLES
+        $("#inflatables_birthday").datepicker({
+            maxDate: "-1d",
+            minDate: new Date(1900, 6, 12),
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "1950:+nn",
+        }).on('change', function() {
+            var age = getAge(this);
+            var newAge = age + " years old";
+            if (age < 10) {
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'You are underage.',
+                    icon: 'warning'
+                });
+                $(this).val('');
+            } else {
+                $('#age').val(newAge);
+            }
+        });
+
         $(document).on('focus', '.kid_birthday', function() {
             $(this).datepicker({
                 maxDate: "-1d",
@@ -95,30 +116,6 @@
             // }
         });
 
-
-
-
-        // $("#kid_birthday").datepicker({
-        //     maxDate: "-1d",
-        //     minDate: new Date(1900, 6, 12),
-        //     changeMonth: true,
-        //     changeYear: true,
-        //     yearRange: "1950:+nn",
-        // }).on('change', function() {
-        //     var age = getAge(this);
-        //     var newAge = age + " years old";
-        //     $('#kid_age').val(newAge);
-        //     // if (age < 10) {
-        //     //     Swal.fire({
-        //     //         title: 'Warning!',
-        //     //         text: 'You are underage.',
-        //     //         icon: 'warning'
-        //     //     });
-        //     //     $(this).val('');
-        //     // } else {
-        //     //     $('#age').val(newAge);
-        //     // }
-        // });
     });
 
     function getAge(dateVal) {

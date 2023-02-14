@@ -84,6 +84,8 @@ class Home extends CI_Controller
     public function registerPark()
     {
         $message = '';
+        $dateReg = date('F j, Y H:i a');
+        $regNo = time(). rand(10, 1000);
         $insertPark = array(
             'guest_fname' => $this->input->post('fname'),
             'guest_mname' => $this->input->post('mname'),
@@ -102,6 +104,7 @@ class Home extends CI_Controller
             'email_address' => $this->input->post('email'),
             'service' => 'PARK',
             'status' => 'PRE-REGISTRATION',
+            'guest_slip_no' => $regNo,
         );
         if ($this->db->insert('guest_details', $insertPark)) {
             $message = 'Success';
@@ -109,6 +112,8 @@ class Home extends CI_Controller
             $message = 'Error';
         }
         $output['message'] = $message;
+        $output['reg_no'] = $regNo;
+        $output['date_reg'] = $dateReg;
         echo json_encode($output);
     }
 
@@ -122,6 +127,8 @@ class Home extends CI_Controller
             'guest_mname' => $this->input->post('mname'),
             'guest_lname' => $this->input->post('lname'),
             'guest_suffix' => $this->input->post('suffix'),
+            'guest_bday' => date('Y-m-d', strtotime($this->input->post('inflatables_birthday'))),
+            'guest_age' => $this->input->post('age'),
             'province_code' => $this->input->post('province_code'),
             'province' => $this->input->post('province'),
             'municipal_code' => $this->input->post('municipal_code'),
@@ -131,6 +138,7 @@ class Home extends CI_Controller
             'house_street' => $this->input->post('street'),
             'contact_no' => $this->input->post('contact_no'),
             'email_address' => $this->input->post('email'),
+            'relationship' => $this->input->post('relationship'),
             'service' => 'INFLATABLES',
             'status' => 'PRE-REGISTRATION',
             'guest_slip_no' => $regNo,
@@ -140,7 +148,7 @@ class Home extends CI_Controller
 
         $number = count($this->input->post('kid_fname'));
 
-        $dtBday = date('Y-m-d', strtotime($this->input->post('kid_birthday')));
+        // $dtBday = date('Y-m-d', strtotime($this->input->post('kid_birthday')));
         for ($i = 0; $i < $number; $i++) {
             if (trim($this->input->post("kid_fname")[$i]) != '') {
                 $data = array(
@@ -149,7 +157,7 @@ class Home extends CI_Controller
                     'child_lname' => $this->db->escape_str($this->input->post('kid_lname')[$i]),
                     'child_mname' => $this->db->escape_str($this->input->post('kid_mname')[$i]),
                     'child_suffix' => $this->db->escape_str($this->input->post('kid_suffix')[$i]),
-                    'child_bday' => $this->db->escape_str($dtBday[$i]),
+                    'child_bday' => date('Y-m-d', strtotime($this->input->post('kid_birthday')[$i])),
                     'child_age' => $this->db->escape_str($this->input->post('kid_age')[$i]),
                 );
                 $this->db->insert('guest_children', $data);
