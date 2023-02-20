@@ -34,7 +34,7 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Main Dashboard
                         </a>
-                        <a class="nav-link" href="#">
+                        <a class="nav-link <?= ($this->uri->segment(2) == 'monitoring_board' ? 'active' : '') ?>" href="<?= base_url('main/monitoring_board')?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                             Guest Monitoring Board
                         </a>
@@ -45,6 +45,10 @@
                         <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-user-cog"></i></div>
                             Customer Registration
+                        </a>
+                        <a class="nav-link <?= ($this->uri->segment(2) == 'sales_transaction' ? 'active' : '') ?>" href="<?= base_url('main/sales_transaction')?>">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-line"></i></div>
+                            Sales & Transaction
                         </a>
                         <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-money-check"></i></div>

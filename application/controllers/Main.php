@@ -22,11 +22,26 @@ class Main extends CI_Controller
 
     public function index()
     {
-        $data['province'] = $this->db->order_by('name', 'ASC')->get('psgc_province')->result();
         $this->load->view('partials/__header');
         $this->load->view('partials/__navbar');
         $this->load->view('partials/__footer');
-        $this->load->view('dashboard', $data);
+        $this->load->view('dashboard');
+    }
+
+    public function monitoring_board()
+    {
+        $this->load->view('partials/__header');
+        $this->load->view('partials/__navbar');
+        $this->load->view('partials/__footer');
+        $this->load->view('monitoring_board');
+    }
+
+    public function sales_transaction()
+    {
+        $this->load->view('partials/__header');
+        $this->load->view('partials/__navbar');
+        $this->load->view('partials/__footer');
+        $this->load->view('sales');
     }
 
     public function account()
@@ -79,6 +94,45 @@ class Main extends CI_Controller
         return $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($results));
+    }
+
+    public function getProvince()
+    {
+        $psgc_province = $this->db
+            ->order_by('name')
+            ->get('psgc_province')
+            ->result();
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($psgc_province));
+    }
+
+    public function psgc_munc()
+    {
+        $codes = $this->input->post('codes');
+        $results = $this->db->select('*')
+            ->from('psgc_municipal')
+            ->where("code LIKE '$codes%'")
+            ->order_by('name')
+            ->get()
+            ->result();
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode(['data' => $results]));
+    }
+
+    public function psgc_brgy()
+    {
+        $codes = $this->input->post('codes');
+        $results = $this->db->select('*')
+            ->from('psgc_brgy')
+            ->where("code LIKE '$codes%'")
+            ->order_by('name')
+            ->get()
+            ->result();
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode(['data' => $results]));
     }
 }
 //End CI_Controller

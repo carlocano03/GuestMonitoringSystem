@@ -133,20 +133,23 @@
                         <div class="form-group mb-2">
                             <select name="province" id="province" class="form-select text-uppercase">
                                 <option value="">Select Province</option>
-                                <?php foreach ($province as $pval) { ?>
+                                <!-- <?php foreach ($province as $pval) { ?>
                                     <option value="<?= $pval->code ?>"><?= strtoupper($pval->name) ?></option>
-                                <?php } ?>
+                                <?php } ?> -->
                             </select>
+                            <input type="hidden" id="province_name" name="province_name">
                         </div>
                         <div class="form-group mb-2">
                             <select name="municipality" id="municipality" class="form-select text-uppercase">
                                 <option value="">Select Municipality</option>
                             </select>
+                            <input type="hidden" id="municipality_name" name="municipality_name">
                         </div>
                         <div class="form-group mb-2">
                             <select name="barangay" id="barangay" class="form-select text-uppercase">
                                 <option value="">Select Barangay</option>
                             </select>
+                            <input type="hidden" id="barangay_name" name="barangay_name">
                         </div>
                         <div class="form-group mb-2">
                             <input type="text" name="street" id="street" class="form-control text-uppercase" placeholder="House No. / Bldg No. / Street">
@@ -199,35 +202,38 @@
                     <div class="box-section mb-3">
                         <div class="fw-bold"><small>PACKAGE DETAILS</small></div>
                         <div class="form-group mb-2">
-                            <select name="package" id="package" class="form-select">
+                            <select name="package" id="package" class="form-select text-uppercase">
                                 <option value="">Select Package</option>
+                                <option value="INFLATABLES">INFLATABLES</option>
+                                <option value="PARK">PARK</option>
                             </select>
                         </div>
                         <div class="form-group mb-2">
-                            <select name="time" id="time" class="form-select">
+                            <select name="time" id="time" class="form-select text-uppercase">
                                 <option value="">Select Time</option>
                             </select>
                         </div>
                         <div class="form-group mb-2">
-                            <select name="category" id="category" class="form-select">
+                            <select name="category" id="category" class="form-select text-uppercase">
                                 <option value="">Select Category</option>
                             </select>
                         </div>
+                        <div class="child-info">
                         <div class="fw-bold"><small>KIDS / CHILD INFORMATION</small></div>
                         <div class="form-group mb-2">
-                            <input type="text" name="child_fname" id="child_fname" class="form-control" placeholder="Enter First Name (Juan)">
+                            <input type="text" name="child_fname" id="child_fname" class="form-control text-uppercase" placeholder="Enter First Name (Juan)">
                         </div>
                         <div class="form-group mb-2">
-                            <input type="text" name="child_lname" id="child_lname" class="form-control" placeholder="Enter Last Name (Bonifacio)">
+                            <input type="text" name="child_lname" id="child_lname" class="form-control text-uppercase" placeholder="Enter Last Name (Bonifacio)">
                         </div>
                         <div class="form-group mb-2">
-                            <input type="text" name="child_mname" id="child_mname" class="form-control" placeholder="Enter Middle Name (Cruz)">
+                            <input type="text" name="child_mname" id="child_mname" class="form-control text-uppercase" placeholder="Enter Middle Name (Cruz)">
                         </div>
                         <div class="form-group mb-2">
-                            <input type="text" name="child_bday" id="child_bday" class="form-control" placeholder="Birthday (dd/mm/yyyy)" onfocus="(this.type='date')" onfocusout="(this.type='text')">
+                            <input type="text" name="child_bday" id="child_bday" class="form-control text-uppercase" placeholder="Birthday (dd/mm/yyyy)" onfocus="(this.type='date')" onfocusout="(this.type='text')">
                         </div>
                         <div class="form-group mb-2">
-                            <input type="text" name="child_age" id="child_age" class="form-control" placeholder="Age">
+                            <input type="text" name="child_age" id="child_age" class="form-control text-uppercase" placeholder="Age">
                         </div>
                         <div class="row g-1">
                             <div class="col-md-6">
@@ -243,7 +249,8 @@
                         </div>
                         <div class="fw-bold"><small>OTHERS</small></div>
                         <div class="form-group mb-2">
-                            <input type="text" name="child_guardian" id="child_guardian" class="form-control" placeholder="Name of Additional Guardian">
+                            <input type="text" name="child_guardian" id="child_guardian" class="form-control text-uppercase" placeholder="Name of Additional Guardian">
+                        </div>
                         </div>
                         <div class="form-group mb-2">
                             <button class="btn btn-primary btn-lg w-100 mt-3">NEXT</button>
@@ -255,12 +262,12 @@
                     <div class="box-section">
                         <div class="fw-bold"><small>INVENTORY</small></div>
                         <div class="form-group mb-2">
-                            <select name="category" id="category" class="form-select">
+                            <select name="category" id="category" class="form-select text-uppercase">
                                 <option value="">Socks Type</option>
                             </select>
                         </div>
                         <div class="form-group mb-2">
-                            <input type="text" name="quantity" id="quantity" class="form-control" placeholder="Quantity">
+                            <input type="text" name="quantity" id="quantity" class="form-control text-uppercase" placeholder="Quantity">
                         </div>
                         <div class="form-group mb-2">
                             <button class="btn btn-warning fw-bold w-100"><i class="bi bi-plus-square me-2"></i>ADD</button>
@@ -304,6 +311,9 @@
 <!-- End of layoutSidenav -->
 
 <script>
+    var present_provcode;
+    var present_muncode;
+    var present_brgycode;
     $(document).ready(function() {
         $('#loading').show();
         setTimeout(function() {
@@ -322,6 +332,79 @@
             "searching": false,
             "ordering": false,
             "bLengthChange": false,
+        });
+
+        $.getJSON('/guestmonitoringsystem/main/getProvince', function(options) {
+            $.each(options, function(index, option) {
+                $('#province').append($('<option>', {
+                    value: option.code,
+                    text: option.name.toUpperCase()
+                }));
+            });
+        });
+
+        $(document).on('change', '#province', function(){
+            if (present_provcode) {
+                var codes = present_provcode;
+            } else {
+                var codes = $(this).val();
+            }
+            var subss = codes.substring(0, 4);
+            // console.log(subss);
+            console.log(codes);
+            $.ajax({
+                url: "<?= base_url('main/psgc_munc')?>",
+                method: "POST",
+                dataType: "json",
+                data: {
+                    codes: subss
+                },
+                success: function(data) {
+                    var options = '<option value="">Select Municipal</option>';
+                    $.each(data.data, function(index, item) {
+                        options += '<option value="' + item.code + '">' + item.name
+                            .toUpperCase() + '</option>';
+                    });
+                    $("#municipality").html(options);
+                    $("#province_name").val($("#province").find("option:selected")
+                        .text());
+                    if (present_muncode) {
+                        var mun_code = present_muncode;
+                        $("#municipality").val(mun_code).change();
+                    }
+                }
+            });
+        });
+
+        $(document).on('change', '#municipality', function() {
+            if (present_muncode) {
+                var codes = present_muncode;
+            } else {
+                var codes = $(this).val();
+            }
+            var subss = codes.substring(0, 6);
+            // console.log(subss);
+            $.ajax({
+                url: "<?= base_url('main/psgc_brgy')?>",
+                method: "POST",
+                data: {
+                    codes: subss
+                },
+                success: function(data) {
+                    var options = '<option value="">Select Barangay</option>';
+                    $.each(data.data, function(index, item) {
+                        options += '<option value="' + item.code + '">' + item.name
+                            .toUpperCase() + '</option>';
+                    });
+                    $("#barangay").html(options);
+                    $("#municipality_name").val($("#municipality").find("option:selected")
+                        .text());
+                    if (present_brgycode) {
+                        var brgy_code = present_brgycode;
+                        $("#barangay").val(brgy_code).change();
+                    }
+                }
+            });
         });
 
         $("#search_value").autocomplete({
@@ -362,19 +445,34 @@
                             $('#street').val(data.house_street == null ? '' : data.house_street);
                             $('#contact').val(data.contact_no == null ? '' : data.contact_no);
                             $('#email_add').val(data.email_address == null ? '' : data.email_address);
-                            // $('#province').val(data.province_code).trigger('change');
+                            present_provcode = data.province_code;
+                            $('#province').val(data.province_code).trigger('change');
+                            $('#province_name').val(data.province);
+                            present_muncode = data.municipal_code;
+                            $('#municipality').val(data.municipal_code).trigger('change');
+                            present_brgycode = data.brgy_code;
+                            $('#municipality_name').val(data.municipal);
+
+                            //Package Details
+                            $("#package").val(data.service == null ? '' : data.service).trigger('change');
                         }
                     }
                 });
             }
         });
-
-        // $(document).on('keypress', '#search_value', function() {
-        //     var val = $(this).val();
-
-        //     if(val == '') {
-
-        //     }
-        // });
+        
+        $(document).on('change', '#package', function(){
+            var service = $(this).val();
+            
+            switch (service) {
+                case 'PARK':
+                    $('.child-info').hide(200);
+                    break;
+            
+                default:
+                    $('.child-info').show(200);
+                    break;
+            }
+        });
     });
 </script>
