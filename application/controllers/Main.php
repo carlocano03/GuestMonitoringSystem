@@ -134,5 +134,32 @@ class Main extends CI_Controller
             ->set_content_type('application/json')
             ->set_output(json_encode(['data' => $results]));
     }
+
+    public function getAccount()
+    {
+        $account = $this->main->getAccount();
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($account as $list) {
+            $no++;
+            $row = array();
+
+            $row[] = '';
+            $row[] = $list->username;
+            $row[] = $list->in_word;
+            $row[] = $list->fullname;
+            $row[] = $list->branch;
+            $row[] = $list->created_at;
+            $row[] = $list->status;
+            $data[] = $row;
+        }
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->main->count_all(),
+            "recordsFiltered" => $this->main->count_filtered(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
 }
 //End CI_Controller

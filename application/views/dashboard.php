@@ -160,16 +160,13 @@
                         <div class="form-group mb-2">
                             <input type="email" name="email_add" id="email_add" class="form-control" placeholder="Email Address">
                         </div>
-                        <div class="row g-1">
-                            <div class="col-md-6">
-                                <div class="form-group mb-2">
-                                    <input type="file" name="image" id="image" class="form-control" placeholder="Email Address">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-2">
-                                    <button class="btn btn-primary"><i class="bi bi-camera-fill me-2"></i>CAPTURE IMAGE</button>
-                                </div>
+
+                        <div class="form-group mb-2">
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cameraModal"><i class="bi bi-camera-fill me-2"></i>CAPTURE IMAGE</button>
+                        </div>
+                        <div class="form-group mb-2 camera">
+                            <div id="results">
+                                <img style="width: 200px;" class="after_capture_frame" src="image_placeholder.jpg" />
                             </div>
                         </div>
                         <div class="form-group mb-2">
@@ -235,18 +232,16 @@
                         <div class="form-group mb-2">
                             <input type="text" name="child_age" id="child_age" class="form-control text-uppercase" placeholder="Age">
                         </div>
-                        <div class="row g-1">
-                            <div class="col-md-6">
-                                <div class="form-group mb-2">
-                                    <input type="file" name="child_image" id="child_image" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-2">
-                                    <button class="btn btn-primary"><i class="bi bi-camera-fill me-2"></i>CAPTURE IMAGE</button>
-                                </div>
+                        
+                        <div class="form-group mb-2">
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cameraModalChild"><i class="bi bi-camera-fill me-2"></i>CAPTURE IMAGE</button>
+                        </div>
+                        <div class="form-group mb-2 camera_child">
+                            <div id="results_child">
+                                <img style="width: 200px;" class="after_capture_frame_child" src="image_placeholder.jpg" />
                             </div>
                         </div>
+
                         <div class="fw-bold"><small>OTHERS</small></div>
                         <div class="form-group mb-2">
                             <input type="text" name="child_guardian" id="child_guardian" class="form-control text-uppercase" placeholder="Name of Additional Guardian">
@@ -296,8 +291,46 @@
             <!-- end of row -->
         </div>
         <!-- Main div -->
-
     </main>
+
+    <!-- Modal -->
+    <div class="modal fade" id="cameraModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-camera-fill me-2"></i>Live Camera</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div id="my_camera" class="pre_capture_frame mx-auto" ></div>
+		            <input type="hidden" name="captured_image_data" id="captured_image_data">
+		            <br>
+		            <input type="button" class="btn btn-primary btn-rounded" value="Take Picture" onClick="take_snapshot()">	
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="cameraModalChild" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-camera-fill me-2"></i>Live Camera</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div id="my_camera_child" class="pre_capture_frame_child mx-auto" ></div>
+		            <input type="hidden" name="captured_image_data_child" id="captured_image_data_child">
+		            <br>
+		            <input type="button" class="btn btn-primary btn-rounded" value="Take Picture" onClick="take_snapshot_child()">	
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+
     <footer class="py-3 text-white mt-auto" style="background: #474787;">
         <div class="container-fluid px-4">
             <div class="d-flex align-items-center justify-content-between small">
@@ -311,6 +344,53 @@
 <!-- End of layoutSidenav -->
 
 <script>
+    // Camera for Guardian/Parent
+    $('.camera').hide();
+    $('.camera_child').hide();
+	Webcam.set({
+	    width: 360,
+	    height: 287,
+	    image_format: 'jpeg',
+	    jpeg_quality: 90
+	});	 
+	Webcam.attach('#my_camera');
+	
+	function take_snapshot() {
+	 // play sound effect
+	 //shutter.play();
+	 // take snapshot and get image data
+        $('.camera').show(200);
+	    Webcam.snap( function(data_uri) {
+	 // display results in page
+            document.getElementById('results').innerHTML = 
+            '<img class="after_capture_frame" src="'+data_uri+'"/>';
+            $("#captured_image_data").val(data_uri);
+	    });	 
+	}
+
+    //Camera for Children
+    Webcam.set({
+	    width: 360,
+	    height: 287,
+	    image_format: 'jpeg',
+	    jpeg_quality: 90
+	});	 
+	Webcam.attach('#my_camera_child');
+	
+	function take_snapshot_child() {
+	 // play sound effect
+	 //shutter.play();
+	 // take snapshot and get image data
+        $('.camera_child').show(200);
+	    Webcam.snap( function(data_uri) {
+	 // display results in page
+            document.getElementById('results_child').innerHTML = 
+            '<img class="after_capture_frame_child" src="'+data_uri+'"/>';
+            $("#captured_image_data_child").val(data_uri);
+	    });	 
+	}
+
+
     var present_provcode;
     var present_muncode;
     var present_brgycode;

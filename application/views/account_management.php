@@ -39,7 +39,7 @@
                             <th>Password</th>
                             <th>Fullname</th>
                             <th>Branch/Store</th>
-                            <th>Area</th>
+                            <!-- <th>Area</th> -->
                             <th>Date Created</th>
                             <th>Status</th>
                         </tr>
@@ -127,6 +127,14 @@
                 }
             },
             "ordering": false,
+            "serverSide": true,
+            "processing": true,
+            "pageLength": 25,
+            "deferRender": true,
+            "ajax": {
+                "url": "<?= base_url('main/getAccount') ?>",
+                "type": "POST",
+            },
         });
 
         $(document).on('submit', '#registerAccount', function(event) {
