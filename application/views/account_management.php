@@ -26,10 +26,28 @@
             </div>
         </div>
         <div class="container-fluid px-4 mt-4">
-            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
+            <!-- <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
                 <i class="bi bi-menu-button-wide-fill me-2"></i>TOGGLE MENU
             </button>
-            <hr>
+            <hr> -->
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <input type="text" class="form-control form-control-sm" placeholder="Search Here...">
+                </div>
+                <div class="col-md-5">
+                    <div class="row g-0">
+                        <div class="col-sm-4 mb-2">
+                            <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#accountModal"><i class="bi bi-plus-square-fill me-2"></i>ADD ACCOUNT</button>
+                        </div>
+                        <div class="col-sm-3 mb-2">
+                            <button class="btn btn-primary btn-sm"><i class="bi bi-printer-fill me-2"></i>PRINT RECORDS</button>
+                        </div>
+                        <div class="col-sm-4">
+                            <button class="btn btn-primary btn-sm"><i class="bi bi-download me-2"></i>EXPORT THIS FILE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table-account">
                     <thead class="text-uppercase">
@@ -83,33 +101,45 @@
 <div class="modal fade" id="accountModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header" style="background-color: #474787; color:#fff;">
-                <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-person-plus-fill me-2"></i>Account Management</h5>
+            <div class="modal-header" style="background-color: #6f42c1; color:#fff;">
+                <h5 class="modal-title" id="exampleModalLabel">Account Creation</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <h4 class="fw-bold">CREATE NEW ACCOUNT</h4>
+                <hr class="mt-0">
                 <form id="registerAccount" method="POST">
                     <div class="form-group mb-3">
-                        <input type="text" class="form-control" name="fullname" placeholder="Enter your fullname" autocomplete="off" required>
+                        <input type="text" class="form-control" name="fullname" placeholder="ENTER YOUR NAME" autocomplete="off" required>
                     </div>
                     <div class="form-group mb-3">
-                        <input type="text" class="form-control" name="username" placeholder="Enter your username" autocomplete="off" required>
+                        <input type="text" class="form-control" name="username" placeholder="USERNAME" autocomplete="off" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <input type="password" class="form-control" name="password" placeholder="PASSWORD" autocomplete="off" required>
                     </div>
                     <div class="form-group mb-3">
                         <input type="email" class="form-control" name="email" placeholder="Enter your email address" autocomplete="off" required>
                     </div>
                     <div class="form-group mb-3">
-                        <select name="branch" class="form-select" required>
-                            <option value="">Select Branch</option>
-                            <option value="Branch 1">Branch 1</option>
+                        <select name="access_level" class="form-select" required>
+                            <option value="">USER ACCESS LEVEL</option>
+                            <option value="Administrator">ADMINISTRATOR</option>
+                            <option value="User">User</option>
                         </select>
                     </div>
+                    <div class="form-group mb-3">
+                        <input type="password" class="form-control" name="passcode" placeholder="PASSCODE IF ADMINISTRATOR ACCESS LEVEL" autocomplete="off">
+                    </div>
+                    <div class="form-group mb-3">
+                        <button class="btn btn-secondary w-100 btn-rounded">CLEAR</button>
+                    </div>
+                    <div class="form-group mb-3">
+                        <button class="btn btn-primary w-100 btn-rounded">SUBMIT</button>
+                    </div>
+                </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
-            </div>
-            </form>
+
         </div>
     </div>
 </div>
@@ -126,7 +156,9 @@
                     previous: '<i class="fas fa-chevron-left"></i>'
                 }
             },
+            "searching": false,
             "ordering": false,
+            "bLengthChange": false,
             "serverSide": true,
             "processing": true,
             "pageLength": 25,

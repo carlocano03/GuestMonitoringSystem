@@ -50,30 +50,30 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-line"></i></div>
                             Sales & Transaction
                         </a>
-                        <a class="nav-link" href="#">
+                        <a class="nav-link <?= ($this->uri->segment(2) == 'pricing_promo' ? 'active' : '') ?>" href="<?= base_url('main/pricing_promo')?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-money-check"></i></div>
                             Pricing & Promo
                         </a>
-                        <a class="nav-link" href="#">
+                        <a class="nav-link <?= ($this->uri->segment(2) == 'inventory' ? 'active' : '') ?>" href="<?= base_url('main/inventory')?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
                             Inventory Module
                         </a>
-                        <a class="nav-link" href="#">
+                        <!-- <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-info-circle"></i></div>
                             Reservation & Inquiry
                         </a>
                         <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
                             Party Package
-                        </a>
+                        </a> -->
                         <a class="nav-link <?= ($this->uri->segment(2) == 'account' ? 'active' : '') ?>" href="<?= base_url('main/account')?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-user-alt"></i></div>
                             Account Management
                         </a>
-                        <a class="nav-link" href="#">
+                        <!-- <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-cogs"></i></div>
                             Configuration & Settings
-                        </a>
+                        </a> -->
                         <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-bar"></i></div>
                             General Reports

@@ -44,6 +44,22 @@ class Main extends CI_Controller
         $this->load->view('sales');
     }
 
+    public function pricing_promo()
+    {
+        $this->load->view('partials/__header');
+        $this->load->view('partials/__navbar');
+        $this->load->view('partials/__footer');
+        $this->load->view('pricing_promo');
+    }
+
+    public function inventory()
+    {
+        $this->load->view('partials/__header');
+        $this->load->view('partials/__navbar');
+        $this->load->view('partials/__footer');
+        $this->load->view('inventory');
+    }
+
     public function account()
     {
         $this->load->view('partials/__header');

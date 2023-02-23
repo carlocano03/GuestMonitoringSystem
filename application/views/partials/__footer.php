@@ -1,3 +1,33 @@
+<!-- Modal -->
+<div class="modal fade" id="passcodeModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #fbc531; color:#fff;">
+                <h5 class="modal-title" id="exampleModalLabel">NOTICE TO USER</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex align-items-center">
+                    <img src="<?= base_url('assets/img/warning.gif')?>" alt="Warning-Img" width="60">
+                    <div class="ms-2 mb-0"><b>REQUIRED PASSCODE</b><br>
+                        <small style="font-size:11px; margin-top:-100px;">This process required passcode for security purposes only.</small>
+                    </div>
+                </div>
+                <hr class="mt-0">
+                <form id="registerAccount" method="POST">
+                    <div class="form-group mb-3">
+                        <input type="password" class="form-control" name="fullname" placeholder="Enter your passcode ****" autocomplete="off" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <button class="btn btn-warning w-100 btn-rounded">SUBMIT</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
 <!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -14,6 +44,9 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.24/webcam.js"></script>
 
 <script>
+    // $(document).ready(function(){
+    //     $('#passcodeModal').modal('show');
+    // });
     $(function() {
         //PARK
         $("#birthday").datepicker({
