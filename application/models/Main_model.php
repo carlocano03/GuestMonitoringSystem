@@ -68,16 +68,24 @@ class Main_model extends CI_Model
     public function count_all()
     {
         $this->db->from($this->user);
+        $this->db->where('is_deleted', NULL);
         return $this->db->count_all_results();
     }
 
     private function _getAccount_query()
     {
-        // if ($this->input->post('status')) {
-        //     $this->db->where('product_status', $this->input->post('status'));
-        // }
+        $searchValue = $this->input->post('search_value');
+        if ($searchValue) {
+            $this->db->group_start();
+            $this->db->or_like('username', $searchValue);
+            $this->db->or_like('status', $searchValue);
+            $this->db->or_like('access_level', $searchValue);
+            $this->db->or_like('fullname', $searchValue);
+            $this->db->group_end();
+        }
         
         $this->db->from($this->user);
+        $this->db->where('is_deleted', NULL);
         $i = 0;
         foreach ($this->user_search as $item) // loop column 
         {

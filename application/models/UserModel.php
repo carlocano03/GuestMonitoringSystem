@@ -20,10 +20,9 @@ class UserModel extends CI_Model
         $this->load->database();
     }
 
-    function existing_account($username, $email)
+    function existing_account($username)
     {
         $this->db->where('username', $username);
-        $this->db->or_where('email', $email);
         $query = $this->db->get('user');
         return $query->num_rows();
     }
@@ -31,7 +30,6 @@ class UserModel extends CI_Model
     public function user_check_admin($username, $password)
     {
         $this->db->where('username', $username);
-        $this->db->or_where('email', $username);
         $res = $this->db->get('user')->row();
         if (!$res) {
             return false;
@@ -53,7 +51,6 @@ class UserModel extends CI_Model
     function userCheck($username)
     {
         $this->db->where('username', $username);
-        $this->db->or_where('email', $username);
         $query = $this->db->get('user');
         return $query->num_rows();
     }

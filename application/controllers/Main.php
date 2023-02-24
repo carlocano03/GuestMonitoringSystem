@@ -160,13 +160,14 @@ class Main extends CI_Controller
             $no++;
             $row = array();
 
-            $row[] = '';
+            $row[] = $list->user_id;
             $row[] = $list->username;
             $row[] = $list->in_word;
             $row[] = $list->fullname;
-            $row[] = $list->branch;
-            $row[] = $list->created_at;
-            $row[] = $list->status;
+            $row[] = $list->access_level;
+            $isChecked = isset($list->status) && $list->status == 'Active';
+            $row[] = '<label class="switch"><input type="checkbox" class="account_activation" id="' . $list->user_id . '"' . ($isChecked ? ' checked' : '') . '><span class="slider round"></span></label><br>' . $list->status;
+            $row[] = '<button class="btn btn-outline-danger btn-sm remove_acct" id="'.$list->user_id.'"><i class="bi bi-trash-fill me-1"></i>Remove</button>';
             $data[] = $row;
         }
         $output = array(

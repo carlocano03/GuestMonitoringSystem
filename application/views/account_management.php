@@ -21,7 +21,7 @@
                 <div class="col-md-4 text-end">
                     <h2 class="mt-2 text-yellow"><span id="clock" class="fw-bold"></h2>
                     <h5 class="text-white"><span id="date" class="fw-bold"></span></h5>
-                    <a href="" class="btn-signout">SIGN OUT <i class="bi bi-box-arrow-right ms-1"></i></a>
+                    <a href="<?= base_url('main/logout') ?>" class="btn-signout">SIGN OUT <i class="bi bi-box-arrow-right ms-1"></i></a>
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
             <hr> -->
             <div class="row g-3">
                 <div class="col-md-3">
-                    <input type="text" class="form-control form-control-sm" placeholder="Search Here...">
+                    <input type="text" id="search_value" class="form-control form-control-sm" placeholder="Search Here...">
                 </div>
                 <div class="col-md-5">
                     <div class="row g-0">
@@ -52,14 +52,13 @@
                 <table class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table-account">
                     <thead class="text-uppercase">
                         <tr>
-                            <th>Action</th>
-                            <th>Username</th>
+                            <th>User ID</th>
+                            <th>Username / Email</th>
                             <th>Password</th>
                             <th>Fullname</th>
-                            <th>Branch/Store</th>
-                            <!-- <th>Area</th> -->
-                            <th>Date Created</th>
+                            <th>User Access Level</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                 </table>
@@ -113,29 +112,26 @@
                         <input type="text" class="form-control" name="fullname" placeholder="ENTER YOUR NAME" autocomplete="off" required>
                     </div>
                     <div class="form-group mb-3">
-                        <input type="text" class="form-control" name="username" placeholder="USERNAME" autocomplete="off" required>
+                        <input type="text" class="form-control" name="username" placeholder="USERNAME / EMAIL" autocomplete="off" required>
                     </div>
                     <div class="form-group mb-3">
                         <input type="password" class="form-control" name="password" placeholder="PASSWORD" autocomplete="off" required>
                     </div>
                     <div class="form-group mb-3">
-                        <input type="email" class="form-control" name="email" placeholder="Enter your email address" autocomplete="off" required>
-                    </div>
-                    <div class="form-group mb-3">
-                        <select name="access_level" class="form-select" required>
+                        <select name="access_level" id="access_level" class="form-select" required>
                             <option value="">USER ACCESS LEVEL</option>
                             <option value="Administrator">ADMINISTRATOR</option>
-                            <option value="User">User</option>
+                            <option value="User">USER</option>
                         </select>
                     </div>
                     <div class="form-group mb-3">
-                        <input type="password" class="form-control" name="passcode" placeholder="PASSCODE IF ADMINISTRATOR ACCESS LEVEL" autocomplete="off">
+                        <input type="password" readonly class="form-control" id="passcode" name="passcode" placeholder="PASSCODE IF ADMINISTRATOR ACCESS LEVEL" autocomplete="off">
                     </div>
                     <div class="form-group mb-3">
                         <button class="btn btn-secondary w-100 btn-rounded">CLEAR</button>
                     </div>
                     <div class="form-group mb-3">
-                        <button class="btn btn-primary w-100 btn-rounded">SUBMIT</button>
+                        <button type="submit" class="btn btn-primary w-100 btn-rounded">SUBMIT</button>
                     </div>
                 </form>
             </div>
@@ -146,7 +142,7 @@
 
 <script>
     $(document).ready(function() {
-        $('#table-account').DataTable({
+        var table_account = $('#table-account').DataTable({
             language: {
                 search: '',
                 searchPlaceholder: "Search Here...",
@@ -166,7 +162,29 @@
             "ajax": {
                 "url": "<?= base_url('main/getAccount') ?>",
                 "type": "POST",
+                "data": function(data) {
+                    data.search_value = $('#search_value').val();
+                }
             },
+        });
+        $('#search_value').on('input', function() {
+            table_account.draw();
+        });
+
+
+        $(document).on('change', '#access_level', function(){
+            var access = $(this).val();
+            switch (access) {
+                case 'Administrator':
+                    $('#passcode').attr('readonly', false);
+                    $('#passcode').attr('required', true);
+                    break;
+            
+                default:
+                    $('#passcode').attr('readonly', true);
+                    $('#passcode').attr('required', false);
+                    break;
+            }
         });
 
         $(document).on('submit', '#registerAccount', function(event) {
@@ -199,6 +217,77 @@
                     Swal.fire('Error!', 'Something went wrong. Please try again later!', 'error');
                 }
             });
+        });
+
+        $(document).on('click', '.account_activation', function() {
+            var userID = $(this).attr('id');
+            if ($(this).is(":checked")) {
+                $.ajax({
+                    url: "<?= base_url() . 'user/account_activated' ?>",
+                    type: "POST",
+                    data: {
+                        userID: userID
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        if (data.success == 'Success') {
+                            Swal.fire('Thank you!', 'Account activated.', 'success');
+                            table_account.draw();
+                        } else {
+                            Swal.fire("Error in updating", "Clicked button to close!", "error");
+                        }
+                    }
+                });
+            } else {
+                $.ajax({
+                    url: "<?= base_url() . 'user/account_deactivated' ?>",
+                    type: "POST",
+                    data: {
+                        userID: userID
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        if (data.success == 'Success') {
+                            Swal.fire('Thank you!', 'Account deactivated.', 'success');
+                            table_account.draw();
+                        } else {
+                            Swal.fire("Error in updating", "Clicked button to close!", "error");
+                        }
+                    }
+                });
+            }
+        });
+
+        $(document).on('click', '.remove_acct', function(){
+            var userID = $(this).attr('id');
+                Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "<?= base_url() . 'user/delete_account' ?>",
+                        type: "POST",
+                        data: {
+                            userID: userID
+                        },
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.success == 'Success') {
+                                Swal.fire('Thank you!', 'Account deleted successfully.', 'success');
+                                table_account.draw();
+                            } else {
+                                Swal.fire("Failed to delete.", "Clicked button to close!", "error");
+                            }
+                        }
+                    });
+                }
+            })
         });
     });
 </script>

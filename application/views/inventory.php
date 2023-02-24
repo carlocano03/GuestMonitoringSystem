@@ -101,16 +101,16 @@
                                 <input type="number" class="form-control" name="qty" placeholder="QUANTITY" required>
                             </div>
                             <div class="form-group mb-3">
-                                <input type="text" class="form-control" name="weekdays_price" placeholder="WEEKDAYS PRICE" required>
+                                <input type="number" class="form-control" name="weekdays_price" placeholder="WEEKDAYS PRICE" required>
                             </div>
                             <div class="form-group mb-3">
-                                <input type="text" class="form-control" name="weekends_price" placeholder="WEEKENDS & HOLIDAY PRICE" required>
+                                <input type="number" class="form-control" name="weekends_price" placeholder="WEEKENDS & HOLIDAY PRICE" required>
                             </div>
                             <div class="form-group mb-3">
-                                <button class="btn btn-secondary w-100 btn-rounded">CLEAR</button>
+                                <button type="button" class="btn btn-secondary w-100 btn-rounded clear">CLEAR</button>
                             </div>
                             <div class="form-group mb-3">
-                                <button class="btn btn-primary w-100 btn-rounded">SUBMIT</button>
+                                <button type="submit" class="btn btn-primary w-100 btn-rounded">SUBMIT</button>
                             </div>
                         </form>
                     </div>
@@ -136,7 +136,7 @@
         setTimeout(function() {
             $('#loading').hide();
         }, 2000);
-        $('#tbl_inventory').DataTable({
+        var table_inventory = $('#tbl_inventory').DataTable({
             language: {
                 search: '',
                 searchPlaceholder: "Search Here...",
@@ -149,6 +149,38 @@
             "searching": false,
             "ordering": false,
             "bLengthChange": false,
+        });
+
+        $(document).on('submit', '#addInventory', function(event){
+            event.preventDefault();
+
+            $.ajax({
+                url: "<?= base_url('inventory/add_inventory')?>",
+                method: "POST",
+                data: new FormData(this),
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success: function(data) {
+                    if (data.success == 'Exist') {
+                        Swal.fire('Warning!', 'Stocks already exists.', 'warning');
+                    } else if (data.success == 'Success') {
+                        Swal.fire('Thank you!', 'Stocks successfully added.', 'success');
+                        table_inventory.draw();
+                        $('#inventoryModal').modal('hide');
+                        $('#addInventory').trigger('reset');
+                    } else {
+                        Swal.fire("Failed to add.", "Clicked button to  close!", "error");
+                    }
+                },
+                error: function() {
+                    Swal.fire('Error!', 'Something went wrong. Please try again later!', 'error');
+                }
+            });
+        });
+
+        $(document).on('click', '.clear', function(){
+            $('#addInventory').trigger('reset');
         });
 
     });
