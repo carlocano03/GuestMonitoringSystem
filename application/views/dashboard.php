@@ -41,57 +41,13 @@
                     </div>
                 </div>
             </div>
+            <form method="POST" id="registerGuest" enctype="multipart/form-data">
+                <input type="hidden" name="serial_no" value="<?= $serial?>">
             <div class="row">
-                <!-- <div class="col-md-7">
-                    <div class="row g-1">
-                        <div class="col-7">
-                            <div class="form-group mb-2">
-                                <input type="text" class="form-control" name="search_value" id="search_value" placeholder="Search Pre-Registration No. / Name / Here...">
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="form-group mb-2">
-                                <button class="btn btn-primary"><i class="bi bi-search me-2"></i>SEARCH</button>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="box-section">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped text-uppercase" width="100%" style="vertical-align:middle;" id="table-guest">
-                                <thead class="text-uppercase">
-                                    <tr>
-                                        <th>SERIAL NO.</th>
-                                        <th>DATE</th>
-                                        <th>PLAY CATEGORY</th>
-                                        <th>KIDS/CHILDS NAME</th>
-                                        <th>PARENT/GUARDIAN</th>
-                                        <th>ACTION</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>12345</td>
-                                        <td>JAN. 24, 2023</td>
-                                        <td>Park</td>
-                                        <td>Juan Dela Cruz</td>
-                                        <td>N/A</td>
-                                        <td>
-                                            <button class="btn btn-warning btn-sm"><i class="bi bi-check2-square me-1"></i>REGISTER NOW</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div> -->
                 <div class="col-md-4 mb-5">
                     <div class="box-section mb-3">
                         <div class="box-header">
                             ENTRANCE APPLICATION
-                        </div>
-                        <div class="form-group mb-2">
-                            <input type="text" name="serial_no" id="serial_no" class="form-control" placeholder="Serial Number (Auto Generate)">
                         </div>
                         <div class="fw-bold"><small>GURDIAN DETAILS</small></div>
                         <hr class="mt-0">
@@ -133,9 +89,6 @@
                         <div class="form-group mb-2">
                             <select name="province" id="province" class="form-select text-uppercase">
                                 <option value="">Select Province</option>
-                                <!-- <?php foreach ($province as $pval) { ?>
-                                    <option value="<?= $pval->code ?>"><?= strtoupper($pval->name) ?></option>
-                                <?php } ?> -->
                             </select>
                             <input type="hidden" id="province_name" name="province_name">
                         </div>
@@ -208,13 +161,16 @@
                         <div class="form-group mb-2">
                             <select name="time" id="time" class="form-select text-uppercase">
                                 <option value="">Select Time</option>
+                                <?php foreach($pricing as $row) : ?>
+                                    <option value="<?= $row->time_admission?>"><?= $row->admission_type?></option>
+                                <?php endforeach;?>
                             </select>
                         </div>
-                        <div class="form-group mb-2">
+                        <!-- <div class="form-group mb-2">
                             <select name="category" id="category" class="form-select text-uppercase">
                                 <option value="">Select Category</option>
                             </select>
-                        </div>
+                        </div> -->
                         <div class="child-info">
                         <div class="fw-bold"><small>KIDS / CHILD INFORMATION</small></div>
                         <div class="form-group mb-2">
@@ -247,9 +203,6 @@
                             <input type="text" name="child_guardian" id="child_guardian" class="form-control text-uppercase" placeholder="Name of Additional Guardian">
                         </div>
                         </div>
-                        <div class="form-group mb-2">
-                            <button class="btn btn-primary btn-lg w-100 mt-3">NEXT</button>
-                        </div>
                     </div>
                 </div>
 
@@ -257,15 +210,21 @@
                     <div class="box-section">
                         <div class="fw-bold"><small>INVENTORY</small></div>
                         <div class="form-group mb-2">
-                            <select name="category" id="category" class="form-select text-uppercase">
+                            <select name="inventory" id="inventory" class="form-select text-uppercase">
                                 <option value="">Socks Type</option>
+                                <?php foreach($stocks as $row) : ?>
+                                    <option value="<?= $row->inv_id?>"><?= $row->descriptions?> - <?= $row->quantity?> Pairs</option>
+                                <?php endforeach;?>
                             </select>
                         </div>
                         <div class="form-group mb-2">
                             <input type="text" name="quantity" id="quantity" class="form-control text-uppercase" placeholder="Quantity">
+                            <input type="text" name="price" id="price">
+                            <input type="text" name="stocks" id="stocks">
+                            <input type="text" name="total_amount" id="total_amount">
                         </div>
                         <div class="form-group mb-2">
-                            <button class="btn btn-warning fw-bold w-100"><i class="bi bi-plus-square me-2"></i>ADD</button>
+                            <button type="button" class="btn btn-warning fw-bold w-100"><i class="bi bi-plus-square me-2"></i>ADD</button>
                         </div>
                         <div class="fw-bold mt-3"><small>INVENTORY DETAILS</small></div>
                         <div class="table-responsive mt-0">
@@ -283,8 +242,9 @@
                             </table>
                         </div>
                         <div class="form-group mb-2">
-                            <button class="btn btn-primary btn-lg w-100">NEXT</button>
+                            <button type="submit" class="btn btn-primary btn-lg w-100">NEXT</button>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -553,6 +513,36 @@
                     $('.child-info').show(200);
                     break;
             }
+        });
+
+        $(document).on('change', '#inventory', function(){
+            var inv_id = $(this).val();
+            $.ajax({
+                url: "<?= base_url('main/get_inv')?>",
+                method: "POST",
+                data: {
+                    inv_id: inv_id
+                },
+                success: function(data) { 
+                    if (Object.keys(data).length > 0) {
+                        $('#price').val(data.weekdays_price == null ? '' : data.weekdays_price);
+                        $('#stocks').val(data.quantity == null ? '' : data.quantity);
+                    }
+                }
+            })
+        });
+
+        $(document).on('keyup', '#quantity', function(){
+            var input1 = parseFloat($('#quantity').val());
+            var input2 = parseFloat($('#price').val());
+            var sum = input1 * input2;
+            // $('#total_amount').val(sum.toFixed(2));
+            if (input1 == '') {
+                $('#total_amount').val('0');
+            } else {
+                $('#total_amount').val(sum);
+            }
+            
         });
     });
 </script>

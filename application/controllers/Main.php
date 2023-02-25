@@ -22,10 +22,13 @@ class Main extends CI_Controller
 
     public function index()
     {
+        $data['pricing'] = $this->db->get('pricing_promo')->result();
+        $data['stocks'] = $this->db->get('inventory_stocks')->result();
+        $data['serial'] = 'JCK-'.rand(100,1000).time();
         $this->load->view('partials/__header');
         $this->load->view('partials/__navbar');
         $this->load->view('partials/__footer');
-        $this->load->view('dashboard');
+        $this->load->view('dashboard', $data);
     }
 
     public function monitoring_board()
@@ -178,5 +181,19 @@ class Main extends CI_Controller
         );
         echo json_encode($output);
     }
+
+    public function get_inv()
+    {
+        $inv_id = $this->input->post('inv_id');
+        $results = $this->db
+            ->from('inventory_stocks')
+            ->where('inv_id', $inv_id)
+            ->get()
+            ->row();
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($results));
+    }
+    
 }
 //End CI_Controller
