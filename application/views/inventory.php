@@ -5,8 +5,8 @@
         text-transform: uppercase;
     }
 
-    #tbl_inventory td:nth-child(3),
-    #tbl_inventory td:nth-child(4) {
+    #tbl_inventory td:nth-child(4),
+    #tbl_inventory td:nth-child(5) {
         font-weight: bolder;
     }
 </style>
@@ -34,7 +34,7 @@
         <div class="container-fluid px-4 mt-4">
             <div class="row g-3">
                 <div class="col-md-3">
-                    <input type="text" class="form-control form-control-sm" placeholder="Search Here...">
+                    <input type="text" class="form-control form-control-sm" id="search_value" placeholder="Search Here...">
                 </div>
                 <div class="col-md-5">
                     <div class="row g-0">
@@ -64,17 +64,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>IN-001</td>
-                            <td>Grip Socks (Kids)</td>
-                            <td>10</td>
-                            <td>250.00</td>
-                            <td>300.00</td>
-                            <td>
-                                <button class="btn btn-primary btn-sm edit" title="Edit"><i class="bi bi-pencil-square"></i></button>
-                                <button class="btn btn-danger btn-sm remove" title="Remove"><i class="bi bi-trash-fill"></i></button>
-                            </td>
-                        </tr>
+
                     </tbody>
                 </table>
             </div>
@@ -87,7 +77,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #6f42c1; color:#fff;">
-                    <h5 class="modal-title" id="exampleModalLabel">RATES & PRICING</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">ADD INVENTORY</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                     <div class="modal-body">
@@ -105,6 +95,43 @@
                             </div>
                             <div class="form-group mb-3">
                                 <input type="number" class="form-control" name="weekends_price" placeholder="WEEKENDS & HOLIDAY PRICE" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <button type="button" class="btn btn-secondary w-100 btn-rounded clear">CLEAR</button>
+                            </div>
+                            <div class="form-group mb-3">
+                                <button type="submit" class="btn btn-primary w-100 btn-rounded">SUBMIT</button>
+                            </div>
+                        </form>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="inventoryEditModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #6f42c1; color:#fff;">
+                    <h5 class="modal-title" id="exampleModalLabel">UPDATE INVENTORY</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                    <div class="modal-body">
+                        <h4 class="fw-bold">INVENTORY MODULE</h4>
+                        <hr class="mt-0">
+                        <form id="updateInventory" method="POST">
+                            <input type="hidden" name="inv_id" id="inv_id">
+                            <div class="form-group mb-3">
+                                <input type="text" class="form-control" name="descriptions" id="descriptions" placeholder="DESCRIPTIONS" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="number" class="form-control" name="qty" id="qty" placeholder="QUANTITY" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="number" class="form-control" name="weekdays_price" id="weekdays_price" placeholder="WEEKDAYS PRICE" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <input type="number" class="form-control" name="weekends_price" id="weekends_price" placeholder="WEEKENDS & HOLIDAY PRICE" required>
                             </div>
                             <div class="form-group mb-3">
                                 <button type="button" class="btn btn-secondary w-100 btn-rounded clear">CLEAR</button>
@@ -149,6 +176,20 @@
             "searching": false,
             "ordering": false,
             "bLengthChange": false,
+            "serverSide": true,
+            "processing": true,
+            "pageLength": 25,
+            "deferRender": true,
+            "ajax": {
+                "url": "<?= base_url('inventory/get_inventory') ?>",
+                "type": "POST",
+                "data": function(data) {
+                    data.search_value = $('#search_value').val();
+                }
+            },
+        });
+        $('#search_value').on('input', function() {
+            table_inventory.draw();
         });
 
         $(document).on('submit', '#addInventory', function(event){
@@ -181,6 +222,88 @@
 
         $(document).on('click', '.clear', function(){
             $('#addInventory').trigger('reset');
+        });
+
+        $(document).on('click', '.edit_inv', function(){
+            var inv_id = $(this).attr('id');
+            $.ajax({
+                    url: "<?= base_url('inventory/get_inv_data')?>",
+                    method: "POST",
+                    data: {
+                        inv_id: inv_id, 
+                    },
+                    success: function(data) { 
+                        $('#inventoryEditModal').modal('show');
+                        if (Object.keys(data).length > 0) {
+                            $('#inv_id').val(data.inv_id == null ? '' : data.inv_id);
+                            $('#descriptions').val(data.descriptions == null ? '' : data.descriptions);
+                            $('#qty').val(data.quantity == null ? '' : data.quantity);
+                            $('#weekdays_price').val(data.weekdays_price == null ? '' : data.weekdays_price);
+                            $('#weekends_price').val(data.weekends_price == null ? '' : data.weekends_price);
+                        }
+                    }
+            });
+        });
+
+        $(document).on('submit', '#updateInventory', function(event){
+            event.preventDefault();
+
+            $.ajax({
+                url: "<?= base_url('inventory/update_inventory')?>",
+                method: "POST",
+                data: new FormData(this),
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success: function(data) {
+                    if (data.success == 'Success') {
+                        Swal.fire('Thank you!', 'Stocks successfully updated.', 'success');
+                        table_inventory.draw();
+                        $('#inventoryEditModal').modal('hide');
+                        $('#updateInventory').trigger('reset');
+                    } else {
+                        Swal.fire("Failed to add.", "Clicked button to  close!", "error");
+                    }
+                },
+                error: function() {
+                    Swal.fire('Error!', 'Something went wrong. Please try again later!', 'error');
+                }
+            });
+        });
+
+        $(document).on('click', '.remove_inv', function(){
+            var inv_id = $(this).attr('id');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "<?= base_url('inventory/delete_inventory')?>",
+                        method: "POST",
+                        data: {
+                            inv_id: inv_id
+                        },
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.success == 'Success') {
+                                Swal.fire('Thank you!', 'Stocks successfully deleted.', 'success');
+                                table_inventory.draw();
+                            } else {
+                                Swal.fire("Failed to add.", "Clicked button to  close!", "error");
+                            }
+                        },
+                        error: function() {
+                            Swal.fire('Error!', 'Something went wrong. Please try again later!', 'error');
+                        }
+                    });
+                }
+            })
         });
 
     });

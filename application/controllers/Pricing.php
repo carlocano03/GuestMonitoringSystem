@@ -5,7 +5,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
-class Inventory extends CI_Controller
+class Pricing extends CI_Controller
 {
     public function __construct()
     {
@@ -13,27 +13,27 @@ class Inventory extends CI_Controller
         date_default_timezone_set('Asia/Manila');
         $this->load->helper('url');
         $this->load->library('form_validation');
-        $this->load->model('Inventory_model', 'inventory');
+        $this->load->model('Pricing_model', 'pricing');
         $this->load->database();
     } //End __construct
 
-    public function add_inventory()
+    public function add_pricing()
     {
         $message = '';
-        $descriptions = $this->input->post('descriptions');
+        $pricing = $this->input->post('admission_type');
         $query = $this->db
-                      ->where('descriptions', $descriptions)
-                      ->get('inventory_stocks');
+                      ->where('admission_type', $pricing)
+                      ->get('pricing_promo');
         if ($query->num_rows() > 0) {
             $message = 'Exist';
         } else {
-            $add_inv = array(
-                'descriptions' => $descriptions,
-                'quantity' => $this->input->post('qty'),
+            $add_pricing = array(
+                'admission_type' => $pricing,
+                'time_admission' => $this->input->post('time'),
                 'weekdays_price' => $this->input->post('weekdays_price'),
                 'weekends_price' => $this->input->post('weekends_price'),
             );
-            if ($this->db->insert('inventory_stocks', $add_inv)) {
+            if ($this->db->insert('pricing_promo', $add_pricing)) {
                 $message = 'Success';
             } else {
                 $message = 'Error';
@@ -43,39 +43,39 @@ class Inventory extends CI_Controller
         echo json_encode($output);
     }
 
-    public function get_inventory()
+    public function get_pricing()
     {
-        $inv = $this->inventory->get_inventory();
+        $pricing = $this->pricing->get_pricing();
         $data = array();
         $no = $_POST['start'];
-        foreach ($inv as $list) {
+        foreach ($pricing as $list) {
             $no++;
             $row = array();
 
-            $row[] = $list->inv_id;
-            $row[] = $list->descriptions;
-            $row[] = $list->quantity;
+            $row[] = $list->pricing_id;
+            $row[] = $list->admission_type;
+            $row[] = $list->time_admission;
             $row[] = $list->weekdays_price;
             $row[] = $list->weekends_price;
-            $row[] = '<button class="btn btn-primary btn-sm edit_inv" id="'.$list->inv_id.'" title="Edit"><i class="bi bi-pencil-square"></i></button>
-                      <button class="btn btn-danger btn-sm remove_inv" id="'.$list->inv_id.'" title="Remove"><i class="bi bi-trash-fill"></i></button>';
+            $row[] = '<button class="btn btn-primary btn-sm edit_pricing" id="'.$list->pricing_id.'" title="Edit"><i class="bi bi-pencil-square"></i></button>
+                      <button class="btn btn-danger btn-sm remove_pricing" id="'.$list->pricing_id.'" title="Remove"><i class="bi bi-trash-fill"></i></button>';
             $data[] = $row;
         }
         $output = array(
             "draw" => $_POST['draw'],
-            "recordsTotal" => $this->inventory->count_all(),
-            "recordsFiltered" => $this->inventory->count_filtered(),
+            "recordsTotal" => $this->pricing->count_all(),
+            "recordsFiltered" => $this->pricing->count_filtered(),
             "data" => $data,
         );
         echo json_encode($output);
     }
 
-    public function get_inv_data()
+    public function get_pricing_data()
     {
-        $inv_id = $this->input->post('inv_id');
+        $pricing_id = $this->input->post('pricing_id');
         $results = $this->db
-            ->from('inventory_stocks')
-            ->where('inv_id', $inv_id)
+            ->from('pricing_promo')
+            ->where('pricing_id', $pricing_id)
             ->get()
             ->row();
         return $this->output
@@ -83,16 +83,16 @@ class Inventory extends CI_Controller
             ->set_output(json_encode($results));
     }
 
-    public function update_inventory()
+    public function update_pricing()
     {
         $message = '';
-        $update_inv = array(
-            'descriptions' => $this->input->post('descriptions'),
-            'quantity' => $this->input->post('qty'),
+        $update_pricing = array(
+            'admission_type' => $this->input->post('admission_type'),
+            'time_admission' => $this->input->post('time'),
             'weekdays_price' => $this->input->post('weekdays_price'),
             'weekends_price' => $this->input->post('weekends_price'),
         );
-        if ($this->db->where('inv_id', $this->input->post('inv_id'))->update('inventory_stocks', $update_inv)) {
+        if ($this->db->where('pricing_id', $this->input->post('pricing_id'))->update('pricing_promo', $update_pricing)) {
             $message = 'Success';
         } else {
             $message = 'Error';
@@ -101,15 +101,15 @@ class Inventory extends CI_Controller
         echo json_encode($output);
     }
 
-    public function delete_inventory()
+    public function delete_pricing()
     {
         $message = '';
         $date_created = date('Y-m-d H:i:s');
-        $update_inv = array(
+        $update_pricing = array(
             'is_deleted' => 1,
             'date_deleted' => $date_created
         );
-        if ($this->db->where('inv_id', $this->input->post('inv_id'))->update('inventory_stocks', $update_inv)) {
+        if ($this->db->where('pricing_id', $this->input->post('pricing_id'))->update('pricing_promo', $update_pricing)) {
             $message = 'Success';
         } else {
             $message = 'Error';
@@ -117,4 +117,5 @@ class Inventory extends CI_Controller
         $output['success'] = $message;
         echo json_encode($output);
     }
+
 }
