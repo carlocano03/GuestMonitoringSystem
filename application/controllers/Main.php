@@ -194,6 +194,29 @@ class Main extends CI_Controller
             ->set_content_type('application/json')
             ->set_output(json_encode($results));
     }
+
+    public function register_guest()
+    {
+        $guest_id = $this->input->post('guest_id');
+        $message = '';
+        $folderPath = 'capture_images/parents/';
+        $image_parts = explode(";base64,", $this->input->post('captured_image_data'));
+        $image_type_aux = explode("image/", $image_parts[0]);
+        $image_type = $image_type_aux[1];
+        $image_base64 = base64_decode($image_parts[1]);
+        $file = $folderPath . uniqid() . '.png';
+        file_put_contents($file, $image_base64);
+
+        $update = array(
+            'status' => 'REGISTERED',
+            'slip_app_no' => $this->input->post('serial_no'),
+            'picture' => $file
+        );
+        $this->db->where('guest_id', $guest_id)->update('guest_details', $update);
+        $message = "Success";
+        $output['message'] = $message;
+        echo json_encode($output);
+    }
     
 }
 //End CI_Controller

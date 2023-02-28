@@ -705,3 +705,11 @@ input[type=number] {
   .slider.round:before {
     border-radius: 50%;
   }
+
+  .remove_row {
+    color: var(--bs-red);
+    cursor: pointer;
+  }
+  .remove_row:hover{
+    text-decoration: underline;
+  }

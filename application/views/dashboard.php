@@ -1,13 +1,13 @@
 <style>
     #table-guest th,
     #table-guest td,
-    #table-inventory th,
-    #table-inventory td {
+    #table_inventory th,
+    #table_inventory td {
         text-align: center;
     }
 
     #table-guest th:nth-child(3),
-    #table-inventory th:nth-child(3) {
+    #table_inventory th:nth-child(3) {
         background: var(--bs-yellow);
         color: #2d3436;
     }
@@ -43,6 +43,7 @@
             </div>
             <form method="POST" id="registerGuest" enctype="multipart/form-data">
                 <input type="hidden" name="serial_no" value="<?= $serial?>">
+                <input type="hidden" name="guest_id" id="guest_id">
             <div class="row">
                 <div class="col-md-4 mb-5">
                     <div class="box-section mb-3">
@@ -115,12 +116,13 @@
                         </div>
 
                         <div class="form-group mb-2">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cameraModal"><i class="bi bi-camera-fill me-2"></i>CAPTURE IMAGE</button>
+                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#cameraModal"><i class="bi bi-camera-fill me-2"></i>CAPTURE IMAGE</button>
                         </div>
                         <div class="form-group mb-2 camera">
                             <div id="results">
                                 <img style="width: 200px;" class="after_capture_frame" src="image_placeholder.jpg" />
                             </div>
+                            <input type="hidden" name="captured_image_data" id="captured_image_data">
                         </div>
                         <div class="form-group mb-2">
                             <input type="text" name="service_crew" id="service_crew" class="form-control text-uppercase" value="<?= $_SESSION['loggedIn']['fullname'];?>" placeholder="GUEST / SERVICE CREW (Created By)" readonly>
@@ -190,12 +192,13 @@
                         </div>
                         
                         <div class="form-group mb-2">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cameraModalChild"><i class="bi bi-camera-fill me-2"></i>CAPTURE IMAGE</button>
+                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#cameraModalChild"><i class="bi bi-camera-fill me-2"></i>CAPTURE IMAGE</button>
                         </div>
                         <div class="form-group mb-2 camera_child">
                             <div id="results_child">
                                 <img style="width: 200px;" class="after_capture_frame_child" src="image_placeholder.jpg" />
                             </div>
+                            <input type="hidden" name="captured_image_data_child" id="captured_image_data_child">
                         </div>
 
                         <div class="fw-bold"><small>OTHERS</small></div>
@@ -222,13 +225,14 @@
                             <input type="text" name="price" id="price">
                             <input type="text" name="stocks" id="stocks">
                             <input type="text" name="total_amount" id="total_amount">
+                            <input type="text" name="type" id="type">
                         </div>
                         <div class="form-group mb-2">
-                            <button type="button" class="btn btn-warning fw-bold w-100"><i class="bi bi-plus-square me-2"></i>ADD</button>
+                            <button type="button" class="btn btn-warning fw-bold w-100 add_inventory"><i class="bi bi-plus-square me-2"></i>ADD</button>
                         </div>
                         <div class="fw-bold mt-3"><small>INVENTORY DETAILS</small></div>
                         <div class="table-responsive mt-0">
-                            <table class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table-inventory">
+                            <table class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table_inventory">
                                 <thead>
                                     <tr>
                                         <th>Type</th>
@@ -238,7 +242,15 @@
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-
+                                <tbody>
+                                    <tr style="display:none;" id="row1">
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                         <div class="form-group mb-2">
@@ -263,7 +275,7 @@
             </div>
             <div class="modal-body text-center">
                 <div id="my_camera" class="pre_capture_frame mx-auto" ></div>
-		            <input type="hidden" name="captured_image_data" id="captured_image_data">
+		            <!-- <input type="hidden" name="captured_image_data" id="captured_image_data"> -->
 		            <br>
 		            <input type="button" class="btn btn-primary btn-rounded" value="Take Picture" onClick="take_snapshot()">	
                 </div>
@@ -282,7 +294,7 @@
             </div>
             <div class="modal-body text-center">
                 <div id="my_camera_child" class="pre_capture_frame_child mx-auto" ></div>
-		            <input type="hidden" name="captured_image_data_child" id="captured_image_data_child">
+		            <!-- <input type="hidden" name="captured_image_data_child" id="captured_image_data_child"> -->
 		            <br>
 		            <input type="button" class="btn btn-primary btn-rounded" value="Take Picture" onClick="take_snapshot_child()">	
                 </div>
@@ -478,6 +490,7 @@
                     // dataType: "json",
                     success: function(data) {
                         if (Object.keys(data).length > 0) {
+                            $('#guest_id').val(data.guest_id == null ? '' : data.guest_id);
                             $('#f_name').val(data.guest_fname == null ? '' : data.guest_fname);
                             $('#l_name').val(data.guest_lname == null ? '' : data.guest_lname);
                             $('#m_name').val(data.guest_mname == null ? '' : data.guest_mname);
@@ -527,6 +540,7 @@
                     if (Object.keys(data).length > 0) {
                         $('#price').val(data.weekdays_price == null ? '' : data.weekdays_price);
                         $('#stocks').val(data.quantity == null ? '' : data.quantity);
+                        $('#type').val(data.descriptions == null ? '' : data.descriptions);
                     }
                 }
             })
@@ -536,13 +550,61 @@
             var input1 = parseFloat($('#quantity').val());
             var input2 = parseFloat($('#price').val());
             var sum = input1 * input2;
-            // $('#total_amount').val(sum.toFixed(2));
+            
             if (input1 == '') {
                 $('#total_amount').val('0');
             } else {
-                $('#total_amount').val(sum);
+                $('#total_amount').val(sum.toFixed(2));
             }
-            
+        });
+
+        $(document).on('click', '.add_inventory', function(){
+            var qty = $('#quantity').val();
+            var stocks = $('#stocks').val();
+            var price = $('#price').val();
+            var amt = $('#total_amount').val();
+            var type = $('#type').val();
+
+            if (qty == '') {
+                Swal.fire('Warning!', 'Please input valid quantity.', 'warning');
+            } else {
+                $('#table_inventory tbody').append(
+                    '<tr class="row2">' +
+                        '<td>'+type+'</td>' +
+                        '<td>'+price+'</td>' +
+                        '<td>'+qty+'</td>' +
+                        '<td>'+amt+'</td>' +
+                        '<td><span class="remove_row">Remove</span></td>' +
+                    '</tr>'
+                );
+            }
+        });
+        $('#table_inventory tbody').on('click', '.remove_row', function() {
+            $(this).closest('tr').remove(); // Remove the parent row
+        });
+
+        $(document).on('submit', '#registerGuest', function(event){
+            event.preventDefault();
+
+            $.ajax({
+                url: "<?= base_url('main/register_guest')?>",
+                method: "POST",
+                data: new FormData(this),
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success: function(data) {
+                    if (data.message == 'Success') {
+                        alert('Success');
+                        $('registerGuest').trigger('reset');
+                    } else {
+                        alert('Failed to save');
+                    }
+                },
+                error: function() {
+                    alert('Failed');
+                }
+            });
         });
     });
 </script>
