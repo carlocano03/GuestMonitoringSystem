@@ -38,7 +38,7 @@
         <div class="container-fluid px-4 mt-4">
             <div class="row g-1">
                 <div class="col-sm-3">
-                    <input type="text" name="search" id="search" class="form-control form-control-sm" placeholder="Search Here...">
+                    <input type="text" name="search_value" id="search_value" class="form-control form-control-sm" placeholder="Search Here...">
                 </div>
                 <div class="col-sm-3">
                     <select name="sort_by" id="sort_by" class="form-select form-select-sm">
@@ -64,7 +64,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <!-- <tr>
                                 <td>1234</td>
                                 <td>Feburary 15, 2023</td>
                                 <td>1 Hour</td>
@@ -79,7 +79,7 @@
                                     <button class="btn btn-success btn-sm extend" title="Extend"><i class="bi bi-check2-square"></i></button>
                                     <button class="btn btn-secondary btn-sm view" title="View"><i class="bi bi-eye-fill"></i></button>
                                 </td>
-                            </tr>
+                            </tr> -->
                         </tbody>
                     </table>
                 </div>
@@ -225,11 +225,39 @@
 
 <script>
     $(document).ready(function() {
+        // Update remaining time every second
+        setInterval(function() {
+            $('.remaining-time').each(function() {
+                // Retrieve remaining time from data attribute
+                var remaining_time = $(this).data('remaining-time');
+                
+                // Subtract one second from remaining time
+                remaining_time -= 1;
+                
+                // If remaining time is negative, set it to zero
+                if (remaining_time < 0) {
+                    remaining_time = 0;
+                }
+                
+                // Format remaining time as HH:MM:SS
+                var hours = Math.floor(remaining_time / 3600);
+                var minutes = Math.floor((remaining_time % 3600) / 60);
+                var seconds = remaining_time % 60;
+                var remaining_time_formatted = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
+                
+                // Update displayed countdown
+                $(this).html(remaining_time_formatted);
+                
+                // Update remaining time data attribute
+                $(this).data('remaining-time', remaining_time);
+            });
+        }, 1000); // Update every second
+
         $('#loading').show();
         setTimeout(function() {
             $('#loading').hide();
         }, 2000);
-        $('#tbl_monitoring').DataTable({
+        var tbl_monitoring = $('#tbl_monitoring').DataTable({
             language: {
                 search: '',
                 searchPlaceholder: "Search Here...",
@@ -242,6 +270,20 @@
             "searching": false,
             "ordering": false,
             "bLengthChange": false,
+            "serverSide": true,
+            "processing": true,
+            "pageLength": 25,
+            "deferRender": true,
+            "ajax": {
+                "url": "<?= base_url('time_monitoring/getTimeMonitoring') ?>",
+                "type": "POST",
+                "data": function(data) {
+                    data.search_value = $('#search_value').val();
+                }
+            },
+        });
+        $('#search_value').on('input', function() {
+            tbl_monitoring.draw();
         });
 
         $(document).on('click', '.extend', function(){

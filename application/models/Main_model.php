@@ -33,6 +33,7 @@ class Main_model extends CI_Model
         if (isset($postData['search'])) {
 
             $this->db->from('guest_details');
+            $this->db->where('status', 'PRE-REGISTRATION');
             $this->db->where("guest_slip_no like '%" . $postData['search'] . "%'");
             $this->db->or_where("guest_fname like '%" . $postData['search'] . "%'");
             $this->db->or_where("guest_lname like '%" . $postData['search'] . "%'");
