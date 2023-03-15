@@ -58,6 +58,13 @@
                             <select name="relationship" id="relationship" class="form-select text-uppercase" required>
                                 <option value="">Relationship</option>
                                 <option value="Mother">Mother</option>
+                                <option value="Father">Father</option>
+                                <option value="Brother">Brother</option>
+                                <option value="Sister">Sister</option>
+                                <option value="Grandmother">Grandmother</option>
+                                <option value="Grandfather">Grandfather</option>
+                                <option value="Auntie">Auntie</option>
+                                <option value="Uncle">Uncle</option>
                             </select>
                             <div class="invalid-feedback text-start">
                                 Please select relationship.
@@ -202,7 +209,7 @@
                     <h5 class="text-green">REGISTRATION NO.</h5>
                     <h4 id="reg_no"></h4>
                     <button class="btn btn-primary w-100 mb-3">PRINT</button>
-                    <div class="text-end">
+                    <div class="text-center">
                         <img src="<?= base_url('assets/img/jacks-loading.gif') ?>" alt="" width="200">
                     </div>
                 </div>
