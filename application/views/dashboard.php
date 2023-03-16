@@ -42,7 +42,7 @@
                 </div>
             </div>
             <form method="POST" id="registerGuest" enctype="multipart/form-data">
-                <input type="hidden" name="serial_no" value="<?= $serial?>">
+                <input type="hidden" id="serial_no" name="serial_no" value="<?= $serial?>">
                 <input type="hidden" name="guest_id" id="guest_id">
             <div class="row">
                 <div class="col-md-4 mb-5">
@@ -161,10 +161,10 @@
                             </select>
                         </div>
                         <div class="form-group mb-2">
-                            <select name="time" id="time" class="form-select text-uppercase">
+                            <select name="pricing_id" id="pricing_id" class="form-select text-uppercase">
                                 <option value="">Select Time</option>
                                 <?php foreach($pricing as $row) : ?>
-                                    <option value="<?= $row->time_admission?>"><?= $row->admission_type?></option>
+                                    <option value="<?= $row->pricing_id?>"><?= $row->admission_type?></option>
                                 <?php endforeach;?>
                             </select>
                         </div>
@@ -222,10 +222,10 @@
                         </div>
                         <div class="form-group mb-2">
                             <input type="text" name="quantity" id="quantity" class="form-control text-uppercase" placeholder="Quantity">
-                            <input type="text" name="price" id="price">
-                            <input type="text" name="stocks" id="stocks">
-                            <input type="text" name="total_amount" id="total_amount">
-                            <input type="text" name="type" id="type">
+                            <input type="hidden" name="price" id="price">
+                            <input type="hidden" name="stocks" id="stocks">
+                            <input type="hidden" name="total_amount" id="total_amount">
+                            <input type="hidden" name="type" id="type">
                         </div>
                         <div class="form-group mb-2">
                             <button type="button" class="btn btn-warning fw-bold w-100 add_inventory"><i class="bi bi-plus-square me-2"></i>ADD</button>
@@ -235,6 +235,7 @@
                             <table class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table_inventory">
                                 <thead>
                                     <tr>
+                                        <th style="display:none;"></th>
                                         <th>Type</th>
                                         <th>Price</th>
                                         <th>Quantity</th>
@@ -564,12 +565,14 @@
             var price = $('#price').val();
             var amt = $('#total_amount').val();
             var type = $('#type').val();
+            var inv_id = $('#inventory').val();
 
             if (qty == '') {
                 Swal.fire('Warning!', 'Please input valid quantity.', 'warning');
             } else {
                 $('#table_inventory tbody').append(
                     '<tr class="row2">' +
+                        '<td style="display:none;">'+inv_id+'</td>' +
                         '<td>'+type+'</td>' +
                         '<td>'+price+'</td>' +
                         '<td>'+qty+'</td>' +
@@ -585,6 +588,9 @@
 
         $(document).on('submit', '#registerGuest', function(event){
             event.preventDefault();
+            var table_data = [];
+            var serial_no = $('#serial_no').val();
+            var guest_id = $('#guest_id').val();
 
             $.ajax({
                 url: "<?= base_url('main/register_guest')?>",
@@ -595,7 +601,29 @@
                 dataType: "json",
                 success: function(data) {
                     if (data.message == 'Success') {
+                        $('#table_inventory .row2').each(function(row,tr){
+                            var sub = {
+                                'type_id': $(tr).find('td:eq(0)').text(),
+                                'price': $(tr).find('td:eq(2)').text(),
+                                'qty': $(tr).find('td:eq(3)').text(),
+                                'total_amt': $(tr).find('td:eq(4)').text(),
+                            };
+                            table_data.push(sub);
+                        });
+                        var data = {'data_table': table_data, serial_no: serial_no, guest_id: guest_id};
+                        $.ajax({
+                            url: "<?= base_url('main/consumable_tocks')?>",
+                            method: "POST",
+                            data: data,
+                            dataType: "json",
+                            success: function(data) {
+                                if (data.message == 'Success') {
+                                    console.log(data);
+                                }
+                            }
+                        });
                         alert('Success');
+                        location.reload();
                         $('registerGuest').trigger('reset');
                     } else {
                         alert('Failed to save');

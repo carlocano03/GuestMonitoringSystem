@@ -197,6 +197,12 @@ class Main extends CI_Controller
 
     public function register_guest()
     {
+        $pricing_id = $this->input->post('pricing_id');
+        $this->db->where('pricing_id', $pricing_id);
+        $query = $this->db->get('pricing_promo')->row();
+
+        $time_in = date('H:i:s');
+        $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
         $guest_id = $this->input->post('guest_id');
         $message = '';
         $folderPath = 'capture_images/parents/';
@@ -212,9 +218,49 @@ class Main extends CI_Controller
             'slip_app_no' => $this->input->post('serial_no'),
             'picture' => $file
         );
-        $this->db->where('guest_id', $guest_id)->update('guest_details', $update);
-        $message = "Success";
+        $insert_time = array(
+           'package_promo' => $pricing_id,
+           'guest_id' => $guest_id,
+           'serial_no' => $this->input->post('serial_no'),
+           'time_in' => $time_in,
+           'time_out' => $time_out,
+           'box_number' => $this->input->post('shoe_box'),
+           'bag_number' => $this->input->post('bag_no'),
+           'status' => 'Ongoing',
+           'staff_in_charge' => $this->input->post('service_crew'),
+        );
+        if ($this->db->where('guest_id', $guest_id)->update('guest_details', $update)) {
+            $this->db->insert('time_management', $insert_time);
+            $message = "Success";
+        }
         $output['message'] = $message;
+        echo json_encode($output);
+    }
+
+    public function consumable_tocks()
+    {
+        $message = '';
+	    $insert_data_stocks = $this->input->post('data_table');
+        for ($i=0; $i < count($insert_data_stocks); $i++) {
+            $data[] = array(
+                'serial_no' => $this->input->post('serial_no'),
+                'guest_id' => $this->input->post('guest_id'),
+                'type_id' => $insert_data_stocks[$i]['type_id'],
+                'price' => $insert_data_stocks[$i]['price'],
+                'qty' => $insert_data_stocks[$i]['qty'],
+                'total_amt' => $insert_data_stocks[$i]['total_amt'],
+            );
+            $this->db->insert('consumable_stocks', $data[$i]);
+
+            // Subtract the quantity from inventory
+            $this->db->set('quantity', 'quantity - ' . $insert_data_stocks[$i]['qty'], FALSE);
+            $this->db->where('inv_id', $insert_data_stocks[$i]['type_id']);
+            $this->db->update('inventory_stocks');
+		    $success = 'Success';
+        }
+        $output = array(
+            'success' => $success,
+        );
         echo json_encode($output);
     }
     
