@@ -13,29 +13,23 @@
                 <div class="row">
                     <div class="col-md-7">
                         <div class="btn-div mt-3">
-                            <button style="width: 80%;" class="btn-register">PRE-REGISTER NOW! <img src="<?= base_url('assets/img/arrow.gif'); ?>" alt="" width="80"></button>
-                        </div>
-                        <div class="ms-5 mt-5">
-                            <img src="<?= base_url('assets/img/logo/jacks-adventure.png'); ?>" alt="" width="300">
-                        </div>
-                        <div class="register-details mt-2">
-                            <p class="text-white">
-                                Welcome Guest, Kids and Young Adults.<br>
-                                We devote ourselves to offer a healthy, warm, convenient and cheerful playground.
-                            </p>
+                        <p class="text-white">
 
-                            <p class="text-black fw-bold mt-5">
-                                For Customer Assistance & Care, please contact us:<br>
-                                (000) - 123-456<br>
-                                0901-1234-5678<br>
-                                support@tomsworld.com.ph<br>
-                                Address: 3rd Flr. Mall ABCD - Metro Manila
-                            </p>
-                            <p style="color:#7ebf06;">Software Provider. ITSD - Toms World Philippines</p>
+<h1 style="color:white"> 
+
+Welcome Guest, Kids and Young Adults.</h1>
+<h6 style="color:white"> We devote ourselves to offer a healthy, warm, convenient and cheerful playground.</h6>
+</p>
+                            <button style="width: 80%;" class="btn-register">PRE-REGISTER NOW! <img src="<?= base_url('assets/img/arrow.gif'); ?>" alt="" width="80"></button>
+                        
                         </div>
+                        
+                
                     </div>
+                    <!--<img src="<?= base_url('assets/img/jacks-loading.gif'); ?>" alt="" width="200">-->
 
                     <div class="col-md-5">
+
                         <div class="pricing-section">
                             <div class="menu-down">
                                 <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -395,6 +389,9 @@
                 </div>
             </div>
         </div>
+        <div class="register-details mt-2">
+        <p style="color:black;">Software Provider: Information Technology & Services Department</p>
+                     <br></div>
     </main>
 
     <script>

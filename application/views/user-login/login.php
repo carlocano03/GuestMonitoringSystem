@@ -37,9 +37,12 @@
                     <div class="login-footer text-start mt-3">
                         <p>
                             For software assistance, contact us<br>
-                            Integrated Technology & Services Department - Head Office<br>
+                            Information Technology & Services Department - Head Office<br>
                             Email: vhran.guanio@tomsworld.com.ph<br>
-                            (089) 6214
+                            (02) 6373-76200 loc.6214<br><br>
+
+                            For User Manual Guide, please click download<br>
+                            <a href="#" >Download User Manual Guide</a>
                         </p>
                         <div class="row g-0 d-flex align-items-center text-center">
                             <div class="col-md-6 col-lg-3 col-sm-6">

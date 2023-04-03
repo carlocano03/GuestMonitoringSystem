@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link href="<?= base_url('assets/img/AUSTIN_LAND.png')?>" rel="icon">
-    <title>GUEST MONITORING - AUSTIN LAND</title>
+    <link href="<?= base_url('assets/img/jalogo.png')?>" rel="icon">
+    <title>GUEST MONITORING SYSTEM</title>
     <link href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
     <link href="<?= base_url('assets/css/styles.css')?>" rel="stylesheet" />
     <link href="<?= base_url('assets/css/custom-style.css')?>" rel="stylesheet" />
