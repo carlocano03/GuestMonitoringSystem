@@ -50,7 +50,7 @@
                         <div class="box-header">
                             ENTRANCE APPLICATION
                         </div>
-                        <div class="fw-bold"><small>GURDIAN DETAILS</small></div>
+                        <div class="fw-bold"><small>PARENTS / GUARDIAN DETAILS</small></div>
                         <hr class="mt-0">
                         <div class="form-group mb-2">
                             <input type="text" name="f_name" id="f_name" class="form-control text-uppercase" placeholder="Enter First Name (Juan)">
@@ -112,7 +112,7 @@
                             <input type="text" name="contact" id="contact" class="form-control" placeholder="Contact Number / Details">
                         </div>
                         <div class="form-group mb-2">
-                            <input type="email" name="email_add" id="email_add" class="form-control" placeholder="Email Address">
+                            <input type="email" name="email_add" id="email_add" class="form-control" placeholder="Email Address" required>
                         </div>
 
                         <div class="form-group mb-2">

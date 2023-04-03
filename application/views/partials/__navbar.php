@@ -38,14 +38,14 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                             Guest Monitoring Board
                         </a>
-                        <a class="nav-link" href="#">
+                        <!--<a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-user-clock"></i></div>
-                            Time Monitoring Analytics
+                            Time Monitoring 
                         </a>
                         <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-user-cog"></i></div>
                             Customer Registration
-                        </a>
+                        </a>-->
                         <a class="nav-link <?= ($this->uri->segment(2) == 'sales_transaction' ? 'active' : '') ?>" href="<?= base_url('main/sales_transaction')?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-line"></i></div>
                             Sales & Transaction
@@ -58,6 +58,10 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
                             Inventory Module
                         </a>
+                        <a class="nav-link <?= ($this->uri->segment(2) == 'account' ? 'active' : '') ?>" href="<?= base_url('main/account')?>">
+                            <div class="sb-nav-link-icon"><i class="fas fa-user-alt"></i></div>
+                            Account Management
+                        </a>
                         <!-- <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-info-circle"></i></div>
                             Reservation & Inquiry
@@ -65,19 +69,15 @@
                         <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-book"></i></div>
                             Party Package
-                        </a> -->
-                        <a class="nav-link <?= ($this->uri->segment(2) == 'account' ? 'active' : '') ?>" href="<?= base_url('main/account')?>">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user-alt"></i></div>
-                            Account Management
-                        </a>
-                        <!-- <a class="nav-link" href="#">
+                        </a>                        
+                        <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-cogs"></i></div>
                             Configuration & Settings
-                        </a> -->
+                        </a> 
                         <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-bar"></i></div>
                             General Reports
-                        </a>
+                        </a>-->
                     </div>
                 </div>
             </nav>
