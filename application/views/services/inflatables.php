@@ -1,9 +1,9 @@
 <body onload="startTime()">
     <main>
         <div class="container">
+            <BR>
             <a href="<?= base_url('home/services') ?>">
-                <p class="mt-2 fw-bold">
-                    < Go Back</p>
+            <button class="btn btn-warning fw-bold">GO BACK</button>
             </a>
         </div>
         <div class="container">
@@ -11,7 +11,7 @@
             <div class="float">
                 <p class="float">
                     <img src="<?= base_url('assets/img/arrow-down.gif'); ?>" alt="" width="100"><br>
-                    SLIDE DOWN<br>
+                    SLIDE UP<br>
                     TO CONTINUE<br>
                 </p>
             </div>
@@ -21,19 +21,21 @@
                 <div class="text-header">
                     <div id="clock" class="mt-0"></div>
                     <div id="date"></div>
-                    <div>Store Abcd</div>
-                    <div>SM Megamall - Ground Floor</div>
+                    
                 </div>
             </div>
 
             <div class="reg-section">
                 <div class="header-section text-center">
                     <h5 class="mb-0">PRE-REGISTRATION FORM</h5>
-                    <p>Tired waiting in line, for your convenience fill up your</p>
+                    <p>Tired waiting in line, for your convenience fill up your details</p>
                 </div>
                 <div class="reg-form text-center">
                     <form id="registerInflatables" method="POST" class="needs-validation" novalidate>
-                        <div class="form-group mb-3">
+                    <div class="sub-header-section text-center">
+                            <h5 class="mb-0">PARENTS INFORMATION</h5>
+                        </div>    
+                    <div class="form-group mb-3">
                             <input type="text" class="form-control text-uppercase" name="fname" id="fname" placeholder="Enter First Name (Juan)" required autocomplete="off">
                             <div class="invalid-feedback text-start">
                                 Please input your firstname.
@@ -70,6 +72,7 @@
                                 Please select relationship.
                             </div>
                         </div>
+                        <hr>
                         <div class="alert alert-secondary p-1 text-start">Complete Address</div>
                         <div class="form-group mb-3">
                             <select name="province_code" id="province_code" class="form-select text-uppercase" required>
@@ -102,7 +105,7 @@
                             <input type="hidden" name="brgy" id="brgy">
                         </div>
                         <div class="form-group mb-3">
-                            <input type="text" class="form-control text-uppercase" name="street" id="street" placeholder="Enter House No. Street" required autocomplete="off">
+                            <input type="text" class="form-control text-uppercase" name="street" id="street" placeholder="Enter House No. Street"  autocomplete="off">
                             <div class="invalid-feedback text-start">
                                 Please input your street.
                             </div>
@@ -115,7 +118,7 @@
                             </div>
                         </div>
                         <div class="form-group mb-3">
-                            <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" required autocomplete="off">
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Email Address"  autocomplete="off">
                             <div class="invalid-feedback text-start">
                                 Please input your email address.
                             </div>
@@ -129,20 +132,17 @@
                         <div class="form-group mb-3">
                             <input type="text" class="form-control text-uppercase" name="age" id="age" placeholder="Enter Age" readonly required>
                         </div>
-
+                        <hr>
                         <div class="sub-header-section text-center">
                             <h5 class="mb-0">KIDS / CHILDREN INFORMATION</h5>
                         </div>
+                        <hr>
                         <!-- <div class="reg-form text-center"> -->
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group mb-3 text-start">
-                                    <button class="btn btn-primary btn-sm" id="add_children"><i class="bi bi-plus-circle me-2"></i>Add More</button>
-                                </div>
+                               
                             </div>
-                            <div class="col-md-6">
-                                <span><b>Total Children:</b> <span class="badge bg-danger" id="count">1</span></span>
-                            </div>
+                          
                         </div>
                         <div class="children-item">
                             <div class="children-data">
@@ -177,11 +177,14 @@
                                     <input type="text" class="form-control text-uppercase" name="kid_age[]" id="kid_age" placeholder="Enter Age" readonly>
                                 </div>
                                 <div class="form-group mb-3 text-start">
-                                    <button class="btn btn-danger btn-sm" id="remove"><i class="bi bi-x-circle me-2"></i>Remove</button>
+                                    <button class="btn btn-primary btn-sm" id="add_children"><i class="bi bi-plus-circle me-2"></i>Add More</button>
+                                    <button class="btn btn-danger btn-sm" id="remove"><i class="bi bi-x-circle me-2"></i>Remove</button><br>
+                                    <br><span><b>Total Kids Count:</b> <span class="badge bg-danger" id="count">1</span></span>
                                 </div>
+                                    
                             </div>
                         </div>
-
+                                    <hr>
                         <div class="form-check text-start mb-3">
                             <input class="form-check-input" type="checkbox" value="" id="waiver_check">
                             <label class="form-check-label" for="waiver_check">

@@ -1,9 +1,9 @@
 <body onload="startTime()">
     <main>
-        <div class="container">
+    <div class="container">
+            <BR>
             <a href="<?= base_url('home/services') ?>">
-                <p class="mt-2 fw-bold">
-                    < Go Back</p>
+            <button class="btn btn-warning fw-bold">GO BACK</button>
             </a>
         </div>
         <div class="container">
@@ -21,15 +21,15 @@
                 <div class="text-header">
                     <div id="clock" class="mt-0"></div>
                     <div id="date"></div>
-                    <div>Store Abcd</div>
-                    <div>SM Megamall - Ground Floor</div>
+                   
                 </div>
             </div>
 
             <div class="reg-section">
                 <div class="header-section text-center">
                     <h5 class="mb-0">PRE-REGISTRATION FORM</h5>
-                    <p>Tired waiting in line, for your convenience fill up your</p>
+                    <p>Tired waiting in line, for your convenience fill up your details.<br>
+                </p>
                 </div>
                 <div class="reg-form text-center">
                     <form id="registerPark" method="POST" class="needs-validation" novalidate>
@@ -95,7 +95,7 @@
                             <input type="hidden" name="brgy" id="brgy">
                         </div>
                         <div class="form-group mb-3">
-                            <input type="text" class="form-control text-uppercase" name="street" id="street" placeholder="Enter House No. Street" required autocomplete="off">
+                            <input type="text" class="form-control text-uppercase" name="street" id="street" placeholder="Enter House No. Street"  autocomplete="off">
                             <div class="invalid-feedback text-start">
                                 Please input your street.
                             </div>
@@ -108,15 +108,15 @@
                             </div>
                         </div>
                         <div class="form-group mb-3">
-                            <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" required autocomplete="off">
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Email Address"  autocomplete="off">
                             <div class="invalid-feedback text-start">
                                 Please input your email address.
                             </div>
                         </div>
                         <div class="form-check text-start mb-3">
-                            <input class="form-check-input" type="checkbox" id="waiver_check">
+                            <input class="form-check-input" type="checkbox" id="waiver_check" required>
                             <label class="form-check-label" for="waiver_check">
-                                I hereby acknowledge and accept the <a href="">"Waiver and Quitclaim"</a> and agree to <a href="">Data Privacy Act of 2012</a>
+                                I hereby acknowledge and accept the <a href="#">"Waiver and Quitclaim"</a> and agree to <a href="#">Data Privacy Act of 2012</a>
                             </label>
                         </div>
                         <button class="save_record" type="submit">SAVED RECORD</button>
@@ -133,16 +133,17 @@
             <div class="modal-content">
                 <div class="modal-body text-center">
                     <h2 class="text-green">REGISTRATION SUCCESSFULLY</h2>
-                    <p>Print / Capture your Registration No. Present this information to Jack's Adventure Staff Personnel.<br>
+                    <p>Print / Capture your Registration No. <br>
+                     Present this information to Jack's Adventure Staff Personnel.<br>
                         <b>Registration Date:</b> <span id="date_reg"></span>
                     </p>
                     <hr>
                     <h5 class="text-green">REGISTRATION NO.</h5>
                     <h4 id="reg_no"></h4>
                     <button class="btn btn-primary w-100 mb-3">PRINT</button>
-                    <div class="text-end">
+                    <!--<div class="text-end">
                         <img src="<?= base_url('assets/img/jacks-loading.gif');?>" alt="" width="200">
-                    </div>
+                    </div>-->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary close_modal">Close</button>
