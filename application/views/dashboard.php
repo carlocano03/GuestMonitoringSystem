@@ -19,12 +19,12 @@
                 <div class="col-md-8">
                     <h2 class="mt-2 text-white">Main Dashboard</h2>
                     <p class="text-yellow fw-bold mb-0">User Permission</p>
-                    <ol class="breadcrumb text-white">
+                    <!--<ol class="breadcrumb text-white">
                         <li class="breadcrumb-item">Dashboard Modules</li>
                         <li class="breadcrumb-item">GM Board</li>
                         <li class="breadcrumb-item">TM Analytics</li>
                         <li class="breadcrumb-item">Customer Registration</li>
-                    </ol>
+                    </ol>-->
                 </div>
                 <div class="col-md-4 text-end">
                     <h2 class="mt-2 text-yellow"><span id="clock" class="fw-bold"></h2>
@@ -37,7 +37,7 @@
             <div class="row g-1">
                 <div class="col-4">
                     <div class="form-group mb-2">
-                        <input type="text" class="form-control" name="search_value" id="search_value" placeholder="Search Pre-Registration No. / Name / Here...">
+                        <input type="text" class="form-control" name="search_value" id="search_value" placeholder="Search Pre-Registration No. or Name here...">
                     </div>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                 <div class="col-md-4 mb-5">
                     <div class="box-section mb-3">
                         <div class="box-header">
-                            ENTRANCE APPLICATION
+                            GUEST REGISTRATION MODULE
                         </div>
                         <div class="fw-bold"><small>PARENTS / GUARDIAN DETAILS</small></div>
                         <hr class="mt-0">
@@ -114,19 +114,19 @@
                         <div class="form-group mb-2">
                             <input type="email" name="email_add" id="email_add" class="form-control" placeholder="Email Address" required>
                         </div>
-
+                        <hr>
                         <div class="form-group mb-2">
-                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#cameraModal"><i class="bi bi-camera-fill me-2"></i>CAPTURE IMAGE</button>
+                            <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#cameraModal"><i class="bi bi-camera-fill me-2"></i>CAPTURE IMAGE</button>
+                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#signatureModal"><i class="bi bi-pen-fill me-2"></i>E-SIGNATURE</button>
                         </div>
+                        <hr>
                         <div class="form-group mb-2 camera">
                             <div id="results">
                                 <img style="width: 200px;" class="after_capture_frame" src="image_placeholder.jpg" />
                             </div>
                             <input type="hidden" name="captured_image_data" id="captured_image_data">
                         </div>
-                        <div class="form-group mb-2">
-                            <input type="text" name="service_crew" id="service_crew" class="form-control text-uppercase" value="<?= $_SESSION['loggedIn']['fullname'];?>" placeholder="GUEST / SERVICE CREW (Created By)" readonly>
-                        </div>
+                        
                         <div class="row g-1">
                             <div class="col-md-6">
                                 <div class="form-group mb-2">
@@ -135,7 +135,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-2">
-                                    <input type="text" name="shoe_box" id="shoe_box" class="form-control text-uppercase" placeholder="Shoe Box Number">
+                                 <input type="text" name="shoe_box" id="shoe_box" class="form-control text-uppercase" placeholder="Shoe Box Number">
                                 </div>
                             </div>
                         </div>
@@ -143,16 +143,26 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                                 <label class="form-check-label" for="flexCheckDefault">
-                                    I hereby acknowledge and accept the "Waiver and Quitclaim" and agree to <a href="">Data Privacy Act of 2012</a>
+                                    I hereby acknowledge and accept the <a href="#">"Waiver and Quitclaim"</a> and agree to <a href="#">Data Privacy Act of 2012</a>
                                 </label>
                             </div>
+                            <hr>
+
+                            <div class="fw-bold"><small>Prepared by</small></div>
+
+                        <div class="form-group mb-2">
+                            <input type="text" name="service_crew" id="service_crew" class="form-control text-uppercase" value="<?= $_SESSION['loggedIn']['fullname'];?>" placeholder="GUEST / SERVICE CREW (Created By)" readonly>
+                        </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-4">
+               
                     <div class="box-section mb-3">
-                        <div class="fw-bold"><small>PACKAGE DETAILS</small></div>
+                    <div class="box-header">
+                         PRICING AND PACKAGE DETAILS
+                        </div>
                         <div class="form-group mb-2">
                             <select name="package" id="package" class="form-select text-uppercase">
                                 <option value="">Select Package</option>
@@ -174,8 +184,9 @@
                             </select>
                         </div> -->
                         <div class="child-info">
-                        <div class="fw-bold"><small>KIDS / CHILD INFORMATION</small></div>
-                        <div class="form-group mb-2">
+                        <div class="box-header">
+                        CHILD / KIDS INFORMATION
+                        </div>                        <div class="form-group mb-2">
                             <input type="text" name="child_fname" id="child_fname" class="form-control text-uppercase" placeholder="Enter First Name (Juan)">
                         </div>
                         <div class="form-group mb-2">
@@ -192,14 +203,19 @@
                         </div>
                         
                         <div class="form-group mb-2">
-                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#cameraModalChild"><i class="bi bi-camera-fill me-2"></i>CAPTURE IMAGE</button>
+                            <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#cameraModalChild"><i class="bi bi-camera-fill me-2"></i>CAPTURE IMAGE</button>
                         </div>
                         <div class="form-group mb-2 camera_child">
                             <div id="results_child">
                                 <img style="width: 200px;" class="after_capture_frame_child" src="image_placeholder.jpg" />
                             </div>
                             <input type="hidden" name="captured_image_data_child" id="captured_image_data_child">
+                            
                         </div>
+                        <button class="btn btn-primary btn-sm" id="add_children"><i class="bi bi-plus-circle me-2"></i>Add More</button>
+                        <button class="btn btn-danger btn-sm" id="remove"><i class="bi bi-x-circle me-2"></i>Remove</button><br>
+
+                                        <hr>
 
                         <div class="fw-bold"><small>OTHERS</small></div>
                         <div class="form-group mb-2">
@@ -211,7 +227,9 @@
 
                 <div class="col-md-4">
                     <div class="box-section">
-                        <div class="fw-bold"><small>INVENTORY</small></div>
+                    <div class="box-header">
+                         (+) ADD INVENTORY DETAILS
+                        </div>
                         <div class="form-group mb-2">
                             <select name="inventory" id="inventory" class="form-select text-uppercase">
                                 <option value="">Socks Type</option>
@@ -228,9 +246,10 @@
                             <input type="hidden" name="type" id="type">
                         </div>
                         <div class="form-group mb-2">
-                            <button type="button" class="btn btn-warning fw-bold w-100 add_inventory"><i class="bi bi-plus-square me-2"></i>ADD</button>
+                            <button type="button" class="btn btn-success fw-bold w-100 add_inventory"><i class="bi bi-plus-square me-2"></i>(+) Add to Cart</button>
                         </div>
-                        <div class="fw-bold mt-3"><small>INVENTORY DETAILS</small></div>
+                        <hr>
+                        <div class="fw-bold mt-3"><small>INVENTORY CART</small></div>
                         <div class="table-responsive mt-0">
                             <table class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table_inventory">
                                 <thead>
@@ -254,8 +273,45 @@
                                 </tbody>
                             </table>
                         </div>
+                        <hr>
+                        <div class="fw-bold mt-3"><small>SALES INVOICE</small></div>
+                        <p>
+                        Date: Tue, 4 April 2023<br>
+                        Jack's Adventure - SM Grand Central<br>
+                        <hr>   </p>
+
+                        <table class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="sales_invoice">
+                                <thead>
+                                    <tr>
+                                        <th style="display:none;"></th>
+                                        <th>Items</th>
+                                        <th>Amount</th>
+                                        <th>Quantity</th>
+                                         <th>Total Amount</th>
+                                         <th>Remarks</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="display:none;" id="row1">
+                                        <td>PP One Hour</td>
+                                        <td>150</td>
+                                        <td>3</td>
+                                        <td>Amount + Qty</td>
+                                        <td>Discounted / Free </td>
+                                        <td>Remove / Edit</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <hr>
+                            Discount
+                            <h3><b>Total Amount: PHP 0,000.00</b></h3>
+                                              <hr>
                         <div class="form-group mb-2">
-                            <button type="submit" class="btn btn-primary btn-lg w-100">NEXT</button>
+                            <button type="reset" class="btn btn-secondary btn-lg w-100">CLEAR</button>
+                                </div>
+                            <div class="form-group mb-2">
+                            <button type="submit" class="btn btn-success btn-lg w-100">PROCESS PAYMENT</button>
                         </div>
                         </form>
                     </div>
@@ -278,7 +334,7 @@
                 <div id="my_camera" class="pre_capture_frame mx-auto" ></div>
 		            <!-- <input type="hidden" name="captured_image_data" id="captured_image_data"> -->
 		            <br>
-		            <input type="button" class="btn btn-primary btn-rounded" value="Take Picture" onClick="take_snapshot()">	
+		            <input type="button" class="btn btn-success btn-lg w-100" value="CAPTURE" onClick="take_snapshot()">	
                 </div>
                 <hr>
             </div>
@@ -297,7 +353,7 @@
                 <div id="my_camera_child" class="pre_capture_frame_child mx-auto" ></div>
 		            <!-- <input type="hidden" name="captured_image_data_child" id="captured_image_data_child"> -->
 		            <br>
-		            <input type="button" class="btn btn-primary btn-rounded" value="Take Picture" onClick="take_snapshot_child()">	
+		            <input type="button" class="btn btn-success btn-lg w-100" value="CAPTURE" onClick="take_snapshot_child()">	
                 </div>
                 <hr>
             </div>
