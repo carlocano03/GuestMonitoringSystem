@@ -14,11 +14,10 @@
                     <div class="col-md-7">
                         <div class="btn-div mt-3">
                         <p class="text-white">
-
-<h1 style="color:white"> 
-
-Welcome Guest, Kids and Young Adults.</h1>
-<h6 style="color:white"> We devote ourselves to offer a healthy, warm, convenient and cheerful playground.</h6>
+                            
+<img src="assets/img/jacks.png" width="500"></img>
+<!--<h1 style="color:white">Jack's Adventure</h1>-->
+<h3 style="color:white; text-align:center;"> an exiciting day for sure.</h3>
 </p>
                             <button style="width: 80%;" class="btn-register">PRE-REGISTER NOW! <img src="<?= base_url('assets/img/arrow.gif'); ?>" alt="" width="80"></button>
                         
@@ -391,7 +390,7 @@ Welcome Guest, Kids and Young Adults.</h1>
         </div>
         <div class="register-details mt-2">
         <p style="color:black;">Software Provider: Information Technology & Services Department</p>
-                     <br></div>
+        </div>
     </main>
 
     <script>
