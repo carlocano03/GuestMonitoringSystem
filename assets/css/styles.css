@@ -12,7 +12,7 @@
  */
 :root {
   --bs-lightgreen: #7ebf06;
-  --bs-exodus: #474787;
+  --bs-exodus: #8F3F96;
   --bs-side-bar: #fbc531;
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -11361,7 +11361,7 @@ body {
   } */
 }
 .sb-nav-fixed .sb-topnav {
-  background: #474787;
+  background: #8F3F96;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav {
   width: 255px;

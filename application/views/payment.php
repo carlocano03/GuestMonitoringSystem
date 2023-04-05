@@ -7,7 +7,7 @@
 </style>
 <div id="layoutSidenav_content">
     <main>
-        <div class="container-fluid px-4 pb-3 main-section">
+        <div class="container-fluid px-4 pb-3 main-section" style="background: #8F3F96;">
             <div class="row">
                 <div class="col-md-8">
                     <h2 class="mt-2 text-white">Customer & Guest Registration</h2>
@@ -17,7 +17,7 @@
                     </ol>
                 </div>
                 <div class="col-md-4 text-end">
-                    <h2 class="mt-2 text-yellow"><span id="clock" class="fw-bold"></h2>
+                    <h2 class="mt-2 text-white"><span id="clock" class="fw-bold"></h2>
                     <h5 class="text-white"><span id="date" class="fw-bold"></span></h5>
                     <a href="<?= base_url('main/logout') ?>" class="btn-signout">SIGN OUT <i class="bi bi-box-arrow-right ms-1"></i></a>
                 </div>
@@ -201,7 +201,7 @@
             <!-- Main div -->
 
     </main>
-    <footer class="py-3 text-white mt-auto" style="background: #474787;">
+    <footer class="py-3 text-white mt-auto" style="background: #8F3F96;">
         <div class="container-fluid px-4">
             <div class="d-flex align-items-center justify-content-between small">
             <div class="text-white">Copyright &copy; Jacks Adventure  2023</div>

@@ -16,11 +16,11 @@
 </style>
 <div id="layoutSidenav_content">
     <main>
-        <div class="container-fluid px-4 pb-3 main-section">
+        <div class="container-fluid px-4 pb-3 main-section" style="background: #8F3F96;">
             <div class="row">
                 <div class="col-md-8">
                     <h2 class="mt-2 text-white">Guest Monitoring Board</h2>
-                    <p class="text-yellow fw-bold mb-0">User Permission</p>
+                    <p class="text-green fw-bold mb-0">User Permission</p>
                     <ol class="breadcrumb text-white">
                         <li class="breadcrumb-item">Dashboard Modules</li>
                         <li class="breadcrumb-item">GM Board</li>
@@ -29,7 +29,7 @@
                     </ol>
                 </div>
                 <div class="col-md-4 text-end">
-                    <h2 class="mt-2 text-yellow"><span id="clock" class="fw-bold"></h2>
+                    <h2 class="mt-2 text-white"><span id="clock" class="fw-bold"></h2>
                     <h5 class="text-white"><span id="date" class="fw-bold"></span></h5>
                     <a href="<?= base_url('main/logout') ?>" class="btn-signout">SIGN OUT <i class="bi bi-box-arrow-right ms-1"></i></a>
                 </div>
@@ -42,10 +42,21 @@
                 </div>
                 <div class="col-sm-3">
                     <select name="sort_by" id="sort_by" class="form-select form-select-sm">
+                        <option value="">Sort By Package All</option>
+                        <option value="">Inflatables</option>
+                        <option value="">Play</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <select name="sort_by" id="sort_by" class="form-select form-select-sm">
                         <option value="">Sort by Remaining Minutes</option>
                     </select>
                 </div>
-            </div>
+            </div><br>
+            <div class="col-sm-4">
+            <button class="btn btn-dark btn-sm"><i class="bi bi-printer-fill me-2"></i>PRINT RECORDS</button>
+            <button class="btn btn-info btn-sm"><i class="bi bi-download me-2"></i>EXPORT THIS FILE</button>
+                        </div>
             <div class="box-section mt-2">
                 <div class="table-responsive">
                     <table class="table table-bordered text-uppercase" width="100%" id="tbl_monitoring">
@@ -75,7 +86,7 @@
                                 <td>PARENT 101</td>
                                 <td>0933-123-5678</td>
                                 <td>
-                                    <button class="btn btn-primary btn-sm checkout" title="Check Out"><i class="bi bi-box-arrow-right"></i></button>
+                                    <button class="btn btn-info btn-sm checkout" title="Check Out"><i class="bi bi-box-arrow-right"></i></button>
                                     <button class="btn btn-success btn-sm extend" title="Extend"><i class="bi bi-check2-square"></i></button>
                                     <button class="btn btn-secondary btn-sm view" title="View"><i class="bi bi-eye-fill"></i></button>
                                 </td>
@@ -84,40 +95,37 @@
                     </table>
                 </div>
                 <hr>
-                <div class="footer">
-                    <small>
-                    Legends Markings:
+                <ol class="breadcrumb text-black">
+                <li class="breadcrumb-item">Red - 5 Minutes or Less</li>
+                <li class="breadcrumb-item">Yellow - Less than 15 Minutes</li>
+                <li class="breadcrumb-item">Orange - Less than 30 Minutes</li>
+                <li class="breadcrumb-item">Green - Unlimited Time</li>
+</ol>
+                  
                     <div>
-                        Red - 5 Minutes or Less<br>
-                        Yellow - Less than 15 Minutes<br>
-                        Green - More than 15 Minutes<br>
-                        White - Unlimited Time
-                    </small>
-                    </div>
+                    
+                    
                 </div>
             </div>
         </div>
         <!-- Main div -->
     </main>
-
     <!-- Modal -->
     <div class="modal fade" id="boardModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header" style="background-color: #474787; color:#fff;">
-                    <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-file-earmark-text-fill me-2"></i>VIEW RECORDS FORMS</h5>
+                <div class="modal-header" style="background-color: #8E3C95; color:#fff;">
+                    <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-file-earmark-text-fill me-2"></i>PACKAGE INFORMATION</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="text-end">
-                        <small>February 15, 2023 11:38AM</small>
-                    </div>
+                   
                     <div class="d-flex align-items-center">
                         <img class="box-img" src="<?= base_url('assets/img/avatar.png');?>" alt="Profile-Pic">
                         <div class="ms-3">
                             <h5 class="mb-0">Serial Number:</h5>
-                            <h4 class="mb-0"><b>5 012345 6789000</b></h4>
-                            <h5 class="mb-0">Guest / Kids Name</h5>
+                            <h4 class="mb-0"><b style="color:#8E3C95;">5 012345 6789000</b></h4>
+                           
                             <h4 class="mb-0 text-muted">Juan Dela Cruz Gomez</h4>
                             <b class="mb-0 text-muted">12 years old</b>
                         </div>
@@ -125,7 +133,7 @@
                     <hr>
                     <div class="form-group mb-3">
                         <label>Package:</label>
-                        <h5 style="color:#8e44ad;">1 Hour - Inflatables</h5>
+                        <h5>1 Hour - Inflatables</h5>
                     </div>
                     <div class="form-group">
                         <label>Remaining Time (HH:MM:SS):</label>
@@ -135,16 +143,31 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Time In:</label>
-                                <h5 style="color:#8e44ad;">10:40 AM</h5>
+                                <h5>10:40 AM</h5>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Time Out:</label>
-                                <h5 style="color:#8e44ad;">11:40 AM</h5>
+                                <h5>11:40 AM</h5>
                             </div>
                         </div>
                     </div>
+                    <hr>
+                    <div class="form-group mb-3">
+                      <h5>Extend Time Remaining</h5>
+                      <h5 style="color:#d63031;">0:2:30</h5>
+                    </div>
+                
+                    <div class="form-group">
+                        <label><b>Time Extension Policy:</b></label>
+                        <p style="text-align: justify; color:#666363;">
+                            <small>Guest are given at least 5 minutes alloted time to extend respective package / Promo.
+                            After the given time system will no longer allowed to use extension time priviledges.
+                            </small>
+                        </p>
+                    </div>
+                    <hr>
                     <div class="form-group mb-2">
                         <select name="package" id="package" class="form-select">
                             <option value="">Select Package</option>
@@ -157,18 +180,11 @@
                         <h4>P 350.<small>00</small></h4>
                     </div>
                     <div class="mx-auto">
-                        <button class="btn btn-primary w-100 mb-3 btn-rounded">EXTEND TIME</button>
+                        <button class="btn btn-success w-100 mb-3 btn-rounded">EXTEND TIME</button>
                         <button class="btn btn-danger w-100 btn-rounded">CHECK OUT</button>
                     </div>
                     <hr>
-                    <div class="form-group">
-                        <label><b>Time Extension Policy:</b></label>
-                        <p style="text-align: justify; color:#8e44ad;">
-                            <small>Guest are give at least 5 minutes alloted time to extend respective package / Promo.
-                            After the given time system will no longer allowed to use extension time priviledges.
-                            </small>
-                        </p>
-                    </div>
+                   
                 </div>
             </div>
         </div>
@@ -211,7 +227,7 @@
         </div>
     </div>
 
-    <footer class="py-3 text-white mt-auto" style="background: #474787;">
+    <footer class="py-3 text-white mt-auto" style="background: #8F3F96;">
         <div class="container-fluid px-4">
             <div class="d-flex align-items-center justify-content-between small">
             <div class="text-white">Copyright &copy; Jacks Adventure  2023</div>

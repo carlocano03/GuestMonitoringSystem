@@ -23,11 +23,11 @@
 </style>
 <div id="layoutSidenav_content">
     <main>
-        <div class="container-fluid px-4 pb-3 main-section">
+        <div class="container-fluid px-4 pb-3 main-section" style="background: #8F3F96;">
             <div class="row">
                 <div class="col-md-8">
                     <h2 class="mt-2 text-white">Sales & Transaction</h2>
-                    <p class="text-yellow fw-bold mb-0">User Permission</p>
+                    <p class="text-green fw-bold mb-0">User Permission</p>
                     <ol class="breadcrumb text-white">
                         <li class="breadcrumb-item">Dashboard Modules</li>
                         <li class="breadcrumb-item">GM Board</li>
@@ -70,10 +70,10 @@
                 <div class="col-md-5">
                     <div class="row g-0">
                         <div class="col-sm-3 mb-2">
-                            <button class="btn btn-primary btn-sm">PRINT RECORDS</button>
+                            <button class="btn btn-dark btn-sm">PRINT RECORDS</button>
                         </div>
                         <div class="col-sm-4">
-                            <button class="btn btn-primary btn-sm">EXPORT THIS FILE</button>
+                            <button class="btn btn-info btn-sm">EXPORT THIS FILE</button>
                         </div>
                     </div>
                 </div>
@@ -147,8 +147,8 @@
     <div class="modal fade" id="transactionModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header" style="background-color: #474787; color:#fff;">
-                    <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-file-earmark-text-fill me-2"></i>TRANSACTION 123456</h5>
+                <div class="modal-header" style="background-color: #8E3C95; color:#fff;">
+                    <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-file-earmark-text-fill me-2"></i>TRANSACTION FORMS</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -168,7 +168,7 @@
                     <hr>
                     <div class="form-group mb-3">
                         <label>Package:</label>
-                        <h5 style="color:#8e44ad;">1 Hour - Inflatables</h5>
+                        <h5 style="color:#8E3C95;">1 Hour - Inflatables</h5>
                     </div>
                     <div class="form-group">
                         <label>Remaining Time (HH:MM:SS):</label>
@@ -178,13 +178,13 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Time In:</label>
-                                <h5 style="color:#8e44ad;">10:40 AM</h5>
+                                <h5 style="color:#8E3C95;">10:40 AM</h5>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>Time Out:</label>
-                                <h5 style="color:#8e44ad;">11:40 AM</h5>
+                                <h5 style="color:#8E3C95;">11:40 AM</h5>
                             </div>
                         </div>
                     </div>
@@ -247,7 +247,7 @@
         </div>
     </div>
 
-    <footer class="py-3 text-white mt-auto" style="background: #474787;">
+    <footer class="py-3 text-white mt-auto" style="background: #8F3F96;">
         <div class="container-fluid px-4">
             <div class="d-flex align-items-center justify-content-between small">
             <div class="text-white">Copyright &copy; Jacks Adventure  2023</div>

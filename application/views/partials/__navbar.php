@@ -16,9 +16,9 @@
 
     </div> -->
 
-    <div id="layoutSidenav">
+    <div id="layoutSidenav" >
         <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion" style="background: #93C106;">
                 <!-- Sidebar Toggle-->
                 <button id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
                 <div class="sb-sidenav-menu">
@@ -29,7 +29,7 @@
                             <div class="avatar-text"><i><?= $_SESSION['loggedIn']['username']; ?></i></div>
                             <div class="avatar-text"><?= $_SESSION['loggedIn']['access']; ?></div>
                         </div>
-                        <hr class="mt-0" style="background: #474787;">
+                        <hr class="mt-0" style="background: #8F3F96;">
                         <a class="nav-link <?= ($this->uri->segment(2) == '' || $this->uri->segment(2) == 'main' ? 'active' : '') ?>" href="<?= base_url('main')?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Main Dashboard
