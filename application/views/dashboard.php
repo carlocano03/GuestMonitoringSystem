@@ -219,10 +219,13 @@
                         <button class="btn btn-danger btn-sm" id="remove"><i class="bi bi-x-circle me-2"></i>Remove</button><br>
 
                                         <hr>
-
+                        
                         <div class="fw-bold"><small>OTHERS</small></div>
                         <div class="form-group mb-2">
                             <input type="text" name="child_guardian" id="child_guardian" class="form-control text-uppercase" placeholder="Name of Additional Guardian">
+                        </div>
+                        <div class="form-group mb-2">
+                            <button type="button" class="btn btn-success fw-bold w-100 add_inventory"><i class="bi bi-plus-square me-2"></i>ADD TO CART</button>
                         </div>
                         </div>
                     </div>
@@ -249,7 +252,7 @@
                             <input type="hidden" name="type" id="type">
                         </div>
                         <div class="form-group mb-2">
-                            <button type="button" class="btn btn-success fw-bold w-100 add_inventory"><i class="bi bi-plus-square me-2"></i>(+) Add to Cart</button>
+                            <button type="button" class="btn btn-success fw-bold w-100 add_inventory"><i class="bi bi-plus-square me-2"></i>ADD CART</button>
                         </div>
                         <hr>
                         <div class="fw-bold mt-3"><small>INVENTORY CART</small></div>
