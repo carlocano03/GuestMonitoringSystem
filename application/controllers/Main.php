@@ -263,6 +263,54 @@ class Main extends CI_Controller
         );
         echo json_encode($output);
     }
+
+    public function getGuestChildren()
+    {
+        $output = '';
+        $parent_id = $this->input->post('parent_id');
+        $slip_no = $this->input->post('slip_no');
+
+        $query = $this->db->query("
+            SELECT *
+            FROM guest_children WHERE parent_id='".$parent_id."'
+            ORDER BY child_id DESC
+        ");
+
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row) {
+                $output .= '
+                    <div class="form-group mb-2">
+                        <input type="text" value="'.$row->child_fname.'" name="child_fname" id="child_fname" class="form-control text-uppercase" placeholder="Enter First Name (Juan)">
+                    </div>
+                    <div class="form-group mb-2">
+                        <input type="text" value="'.$row->child_lname.'" name="child_lname" id="child_lname" class="form-control text-uppercase" placeholder="Enter Last Name (Bonifacio)">
+                    </div>
+                    <div class="form-group mb-2">
+                        <input type="text" value="'.$row->child_mname.'" name="child_mname" id="child_mname" class="form-control text-uppercase" placeholder="Enter Middle Name (Cruz)">
+                    </div>
+                    <div class="form-group mb-2">
+                        <input type="text" value="'.$row->child_bday.'" name="child_bday" id="child_bday" class="form-control text-uppercase" placeholder="Birthday (dd/mm/yyyy)" onfocus="(this.type="date")" onfocusout="(this.type="text")">
+                    </div>
+                    <div class="form-group mb-2">
+                        <input type="text" value="'.$row->child_age.'" name="child_age" id="child_age" class="form-control text-uppercase" placeholder="Age">
+                    </div>
+                    <div class="form-group mb-2">
+                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#cameraModalChild"><i class="bi bi-camera-fill me-2"></i>CAPTURE IMAGE</button>
+                    </div>
+                    <div class="form-group mb-2 camera_child" style="display:none;">
+                        <div id="results_child">
+                            <img style="width: 200px;" class="after_capture_frame_child" src="image_placeholder.jpg" />
+                        </div>
+                        <input type="hidden" name="captured_image_data_child" id="captured_image_data_child">     
+                    </div>
+                ';
+            }
+        }
+        $data = array(
+            'childrenData' => $output,
+        );
+        echo json_encode($data);
+    }
     
 }
 //End CI_Controller

@@ -187,43 +187,17 @@
                             </select>
                         </div> -->
                         <div class="child-info">
-                        <div class="box-header">
-                        CHILD / KIDS INFORMATION
-                        </div>                        <div class="form-group mb-2">
-                            <input type="text" name="child_fname" id="child_fname" class="form-control text-uppercase" placeholder="Enter First Name (Juan)">
-                        </div>
-                        <div class="form-group mb-2">
-                            <input type="text" name="child_lname" id="child_lname" class="form-control text-uppercase" placeholder="Enter Last Name (Bonifacio)">
-                        </div>
-                        <div class="form-group mb-2">
-                            <input type="text" name="child_mname" id="child_mname" class="form-control text-uppercase" placeholder="Enter Middle Name (Cruz)">
-                        </div>
-                        <div class="form-group mb-2">
-                            <input type="text" name="child_bday" id="child_bday" class="form-control text-uppercase" placeholder="Birthday (dd/mm/yyyy)" onfocus="(this.type='date')" onfocusout="(this.type='text')">
-                        </div>
-                        <div class="form-group mb-2">
-                            <input type="text" name="child_age" id="child_age" class="form-control text-uppercase" placeholder="Age">
-                        </div>
-                        
-                        <div class="form-group mb-2">
-                            <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#cameraModalChild"><i class="bi bi-camera-fill me-2"></i>CAPTURE IMAGE</button>
-                        </div>
-                        <div class="form-group mb-2 camera_child">
-                            <div id="results_child">
-                                <img style="width: 200px;" class="after_capture_frame_child" src="image_placeholder.jpg" />
+                            <div class="box-header">
+                                CHILD / KIDS INFORMATION
                             </div>
-                            <input type="hidden" name="captured_image_data_child" id="captured_image_data_child">
-                            
-                        </div>
-                        <button class="btn btn-primary btn-sm" id="add_children"><i class="bi bi-plus-circle me-2"></i>Add More</button>
-                        <button class="btn btn-danger btn-sm" id="remove"><i class="bi bi-x-circle me-2"></i>Remove</button><br>
 
-                                        <hr>
+                            <div id="kids_info">
 
-                        <div class="fw-bold"><small>OTHERS</small></div>
-                        <div class="form-group mb-2">
-                            <input type="text" name="child_guardian" id="child_guardian" class="form-control text-uppercase" placeholder="Name of Additional Guardian">
-                        </div>
+                            </div>
+                            <div class="form-group mb-2">
+                                <button type="button" class="btn btn-success fw-bold w-100 add_inventory"><i class="bi bi-plus-square me-2"></i>ADD TO CART</button>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -249,11 +223,11 @@
                             <input type="hidden" name="type" id="type">
                         </div>
                         <div class="form-group mb-2">
-                            <button type="button" class="btn btn-success fw-bold w-100 add_inventory"><i class="bi bi-plus-square me-2"></i>(+) Add to Cart</button>
+                            <button type="button" class="btn btn-success fw-bold w-100 add_inventory"><i class="bi bi-plus-square me-2"></i>ADD TO CART</button>
                         </div>
-                        <hr>
-                        <div class="fw-bold mt-3"><small>INVENTORY CART</small></div>
-                        <div class="table-responsive mt-0">
+                        <!-- <hr>
+                        <div class="fw-bold mt-3"><small>INVENTORY CART</small></div> -->
+                        <!-- <div class="table-responsive mt-0">
                             <table class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table_inventory">
                                 <thead>
                                     <tr>
@@ -275,7 +249,7 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
+                        </div> -->
                         <hr>
                         <div class="fw-bold mt-3"><small>SALES INVOICE</small></div>
                         <p>
@@ -283,7 +257,7 @@
                         Jack's Adventure - SM Grand Central<br>
                         <hr>   </p>
 
-                        <table class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="sales_invoice">
+                        <table class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table_inventory">
                                 <thead>
                                     <tr>
                                         <th style="display:none;"></th>
@@ -297,19 +271,20 @@
                                 </thead>
                                 <tbody>
                                     <tr style="display:none;" id="row1">
-                                        <td>PP One Hour</td>
-                                        <td>150</td>
-                                        <td>3</td>
-                                        <td>Amount + Qty</td>
-                                        <td>Discounted / Free </td>
-                                        <td>Remove / Edit</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                     </tr>
                                 </tbody>
                             </table>
                             <hr>
                             Discount
                             <h3><b>Total Amount: PHP 0,000.00</b></h3>
-                                              <hr>
+                        <hr>
                         <div class="form-group mb-2">
                             <button type="reset" class="btn btn-secondary btn-lg w-100">CLEAR</button>
                                 </div>
@@ -568,6 +543,21 @@
 
                             //Package Details
                             $("#package").val(data.service == null ? '' : data.service).trigger('change');
+
+                            $.ajax({
+                                url: "<?= base_url() . 'main/getGuestChildren' ?>",
+                                method: "POST",
+                                data: {
+                                    slip_no: slip_no, 
+                                    parent_id: parent_id
+                                },
+                                dataType: "json",
+                                success: function(data) {
+                                    $('#kids_info').html(data.childrenData);
+                                }
+                            });
+
+
                         }
                     }
                 });
@@ -636,6 +626,7 @@
                         '<td>'+price+'</td>' +
                         '<td>'+qty+'</td>' +
                         '<td>'+amt+'</td>' +
+                        '<td></td>' +
                         '<td><span class="remove_row">Remove</span></td>' +
                     '</tr>'
                 );
