@@ -17,7 +17,7 @@
             </div>
 
             <div class="img-holder text-center">
-                <img class="img-icon" src="<?= base_url('assets/img/logo/inflatables.png'); ?>" alt="Park" style="margin-bottom: -10px;">
+                <img class="img-icon" src="<?= base_url('assets/img/logo/infla.png'); ?>" alt="Park" style="margin-bottom: -10px;">
                 <div class="text-header">
                     <div id="clock" class="mt-0"></div>
                     <div id="date"></div>

@@ -47,7 +47,7 @@
             <div class="row">
                 <div class="col-md-4 mb-5">
                     <div class="box-section mb-3">
-                        <div class="box-header">
+                        <div class="box-header" style="background-color:#ffcc00;">
                             GUEST REGISTRATION MODULE
                         </div>
                         <div class="fw-bold"><small>PARENTS / GUARDIAN DETAILS</small></div>

@@ -16,7 +16,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="inflatables">
-                            <img class="img-icon" src="<?= base_url('assets/img/logo/inflatables.png'); ?>" alt="Inflatables">
+                            <img class="img-icon" src="<?= base_url('assets/img/logo/infla.png'); ?>" alt="Inflatables">
                             <ul>
                                 <li>The inflatables are only suitable for children <span class="text-white fw-bold">12 y/o and below only.</span></li>
                                 <li>All children within the premises <span class="text-white fw-bold">must be accompanied by a parent/guardian</span>
@@ -46,7 +46,7 @@
 
                     <div class="col-md-6">
                         <div class="park">
-                            <img class="img-icon" src="<?= base_url('assets/img/logo/park.png'); ?>" alt="Park">
+                            <img class="img-icon" src="<?= base_url('assets/img/logo/par.png'); ?>" alt="Park">
                             <ul>
                                 <li>All Jack's Adventure play parks are for age's <span class="text-white fw-bold">13 y/o and up only.</span></li>
                                 <li>Customers must observe all <span class="text-white fw-bold">safety rules of the modules at all times to avoid injuries.</span></li>
@@ -60,7 +60,7 @@
                                 <li>Jack's Adventure may require <span class="text-white fw-bold">medical clearance</span> in the exercise of prudence and due diligence.</li>
                                 <li>All customers are required to observe <span class="text-white"><u>Jack's Adventures General Guidelines</u></span> at all times.</li>
                             </ul>
-                            <br><br>
+                            <br><br><br>
                             <div class="btn-div mt-3">
                                 <a href="<?= base_url('home/park')?>"><button class="btn-register">CLICK HERE TO REGISTER <img src="<?= base_url('assets/img/arrow.gif'); ?>" alt="" width="80"></button></a>
                             </div>
