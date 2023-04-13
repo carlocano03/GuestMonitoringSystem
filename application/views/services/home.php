@@ -1,6 +1,6 @@
 <style>
     body {
-        background-image: url("<?= base_url('assets/img/bg-img.png') ?>");
+        background-image: url("<?= base_url('assets/img/bgbg.jpg') ?>");
         background-size: cover;
         background-attachment: fixed;
     }
@@ -14,39 +14,36 @@
                     <div class="carousel-indicators">
                         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        <!--<button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>-->
                     </div>
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img src="<?= base_url('assets/img/carousel/1.jpg')?>" class="d-block w-100" alt="...">
-                            <div class="carousel-caption d-none d-md-block">
-                                <h5>First slide label</h5>
-                                <div class="mb-2">
-                                    <img src="<?= base_url('assets/img/jacks.png')?>" alt="" width="200">
+                        <div class="mb-1">
+                                    <img src="<?= base_url('assets/img/jacks.png')?>" alt="" width="170" >
                                 </div>
-                                <button style="width: 80%;" class="btn-register">PRE-REGISTER NOW! <img src="<?= base_url('assets/img/arrow.gif'); ?>" alt="" width="80"></button>
+                            <img src="<?= base_url('assets/img/carousel/1.jpg')?>" class="d-block w-100" alt="..." style="border-radius:50px;">
+                            <div class="carousel-caption d-none d-md-block">
+                               
+                               
+                                <button style="width: 70%; background-color:#8f3f97; border-radius:100px; color:#ffcc00; font-size:30px;" class="btn-register">START YOUR ADVENTURE</button>
+                               
                             </div>
                         </div>
                         <div class="carousel-item">
-                            <img src="<?= base_url('assets/img/carousel/1.jpg')?>" class="d-block w-100" alt="...">
-                            <div class="carousel-caption d-none d-md-block">
-                                <h5>Second slide label</h5>
-                                <div class="mb-2">
-                                    <img src="<?= base_url('assets/img/jacks.png')?>" alt="" width="200">
+                        <div class="mb-1">
+                                    <img src="<?= base_url('assets/img/jacks.png')?>" alt="" width="170" >
                                 </div>
-                                <button style="width: 80%;" class="btn-register">PRE-REGISTER NOW! <img src="<?= base_url('assets/img/arrow.gif'); ?>" alt="" width="80"></button>
+                            <img src="<?= base_url('assets/img/carousel/b.jpg')?>" class="d-block w-100" alt="..." style="border-radius:50px;">
+                            <div class="carousel-caption d-none d-md-block">
+                                
+                               
+                                <button style="width: 70%; background-color:#8f3f97; border-radius:100px; color:#ffcc00; font-size:30px;" class="btn-register">START YOUR ADVENTURE</button>
+                                <div class="mb-2">
+                               
                             </div>
                         </div>
-                        <div class="carousel-item">
-                            <img src="<?= base_url('assets/img/carousel/1.jpg')?>" class="d-block w-100" alt="...">
-                            <div class="carousel-caption d-none d-md-block">
-                                <h5>Third slide label</h5>
-                                <div class="mb-2">
-                                    <img src="<?= base_url('assets/img/jacks.png')?>" alt="" width="200">
-                                </div>
-                                <button style="width: 80%;" class="btn-register">PRE-REGISTER NOW! <img src="<?= base_url('assets/img/arrow.gif'); ?>" alt="" width="80"></button>
-                            </div>
-                        </div>
+                        
+                        
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>

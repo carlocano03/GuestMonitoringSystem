@@ -415,7 +415,7 @@
 
 .btn-register {
     width: 100%;
-    background: var(--bs-purple);
+    background: var(--bs-red);
     border: 3px solid #fff;
     color: #fff;
     font-size: 25px;
