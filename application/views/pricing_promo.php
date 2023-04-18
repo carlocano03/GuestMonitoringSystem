@@ -53,8 +53,8 @@
                             <th>ID</th>
                             <th>Type of Admission</th>
                             <th>Time</th>
-                            <th>Weekdays (Monday - Thursday)</th>
-                            <th>Weekends & Holidays (Friday - Sunday)</th>
+                            <th>Pricing</th>
+                            <!-- <th>Weekends & Holidays (Friday - Sunday)</th> -->
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -95,11 +95,11 @@
                                 <input type="number" class="form-control" name="time" placeholder="TIME" required>
                             </div>
                             <div class="form-group mb-3">
-                                <input type="text" class="form-control" name="weekdays_price" placeholder="WEEKDAYS PRICE" required>
+                                <input type="text" class="form-control" name="weekdays_price" placeholder="PRICE" required>
                             </div>
-                            <div class="form-group mb-3">
+                            <!-- <div class="form-group mb-3">
                                 <input type="text" class="form-control" name="weekends_price" placeholder="WEEKENDS & HOLIDAY PRICE" required>
-                            </div>
+                            </div> -->
                             <div class="form-group mb-3">
                                 <button type="button" class="btn btn-secondary w-100 btn-rounded">CLEAR</button>
                             </div>
@@ -121,7 +121,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                     <div class="modal-body">
-                        <h4 class="fw-bold">ADDING NEW RECORD</h4>
+                        <h4 class="fw-bold">UPDATE PRICING & PROMO</h4>
                         <hr class="mt-0">
                         <form id="updatePricing" method="POST">
                             <input type="hidden" name="pricing_id" id="pricing_id">
@@ -132,11 +132,11 @@
                                 <input type="number" class="form-control" name="time" id="time" placeholder="TIME" required>
                             </div>
                             <div class="form-group mb-3">
-                                <input type="text" class="form-control" name="weekdays_price" id="weekdays_price" placeholder="WEEKDAYS PRICE" required>
+                                <input type="text" class="form-control" name="weekdays_price" id="weekdays_price" placeholder="PRICE" required>
                             </div>
-                            <div class="form-group mb-3">
+                            <!-- <div class="form-group mb-3">
                                 <input type="text" class="form-control" name="weekends_price" id="weekends_price" placeholder="WEEKENDS & HOLIDAY PRICE" required>
-                            </div>
+                            </div> -->
                             <div class="form-group mb-3">
                                 <button type="button" class="btn btn-secondary w-100 btn-rounded clear">CLEAR</button>
                             </div>

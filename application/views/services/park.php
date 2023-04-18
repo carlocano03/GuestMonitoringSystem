@@ -1,3 +1,13 @@
+<style>
+    .select2-selection__rendered {
+      line-height: 36px !important;
+    }
+
+    .select2-selection {
+      height: 38px !important;
+      text-align: left !important;
+    }
+</style>
 <body onload="startTime()">
     <main>
     <div class="container">
@@ -152,6 +162,8 @@
         </div>
     </div>
 
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         // Example starter JavaScript for disabling form submissions if there are invalid fields
         (function() {
@@ -174,6 +186,10 @@
                 })
         })()
         $(document).ready(function() {
+            $('#province_code').select2();
+            $('#municipal_code').select2();
+            $('#barangay_code').select2();
+
             $(document).on('submit', '#registerPark', function(event) {
                 event.preventDefault();
                 event.stopImmediatePropagation();

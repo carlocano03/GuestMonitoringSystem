@@ -8,10 +8,18 @@
         background: var(--bs-purple);
         color: #fff;
     }
-    #tbl_monitoring th:nth-child(5),
-    #tbl_monitoring th:nth-child(6) {
+    #tbl_monitoring th:nth-child(5){
+        background: var(--bs-purple);
+        color: #fff;
+    }
+    #tbl_monitoring th:nth-child(6){
         background: var(--bs-red);
         color: #fff;
+    }
+
+    #tbl_monitoring td:nth-child(11),
+    #tbl_monitoring th:nth-child(11) {
+        display: none;
     }
 </style>
 <div id="layoutSidenav_content">
@@ -72,6 +80,7 @@
                                 <th>PARENT / GUARDIAN</th>
                                 <th>CONTACT #</th>
                                 <th>ACTION</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -274,6 +283,15 @@
             $('#loading').hide();
         }, 2000);
         var tbl_monitoring = $('#tbl_monitoring').DataTable({
+            "fnRowCallback": function(nRow, aData, iDisplayIndex, asd) {
+                if (aData[10] == 'Red') { // less than 5 minutes
+                    $('td', nRow).css('background-color', 'rgba(249, 187, 191, 0.8)');
+                } else if (aData[10] == 'Yellow') { // less than 15 minutes
+                    $('td', nRow).css('background-color', 'rgba(252, 241, 136, 0.8)');
+                } else if (aData[10] == 'Orange') { // less than 30 minutes
+                    $('td', nRow).css('background-color', 'rgba(252, 203, 136, 0.8)');
+                } 
+            },
             language: {
                 search: '',
                 searchPlaceholder: "Search Here...",

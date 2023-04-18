@@ -606,6 +606,10 @@ input[type=number] {
 
 }
 
+.text-orange {
+   color: #d35400;
+}
+
 .text-green {
     color: var(--bs-lightgreen);
 }

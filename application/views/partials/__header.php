@@ -14,6 +14,7 @@
     <link href="<?= base_url('assets/css/custom-style.css')?>" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    
 </head>
 
 <div id="loading" class="mx-auto" style="display:none;">

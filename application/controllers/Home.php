@@ -53,16 +53,22 @@ class Home extends CI_Controller
     //Back End Process
     public function get_municipal($prov = NULL, $value = NULL)
     {
-        $code = $prov ? $prov : $this->input->post('code', TRUE);
-        $res = $this->db->like('code', substr($code, 0, 4), 'after')->order_by('name', 'ASC')->get('psgc_municipal')->result();
-        $option = '<option value="">Select Municipality</option>';
-        foreach ($res as $val) {
-            $option .= '<option value="' . $val->code . '" ' . ($value && $value == $val->code ? 'selected' : '') . '>' . strtoupper($val->name) . '</option>';
+        $code = $prov ? $prov:$this->input->post('code',TRUE);
+        $prov_code = substr($code,0,4);
+        if ($prov_code == 1339) {
+            $this->db->like('code', '1339', 'after')->or_like('code', '1374', 'after')->or_like('code', '1375', 'after')->or_like('code', '1376', 'after');
+        } else {
+            $this->db->like('code', $prov_code, 'after');
         }
-        if ($prov)
-            return $option;
-        else
-            echo json_encode($option);
+        $res = $this->db->select('*')->from('psgc_municipal')->order_by('name', 'ASC')->get()->result();
+		$option = '<option value="">Select Municipality</option>';
+		foreach($res as $val){
+			$option .= '<option value="'.$val->code.'" '.($value && $value == $val->code ? 'selected':'').'>'.ucwords($val->name).'</option>';
+		}
+		if($prov)
+			return $option;
+		else
+			echo json_encode($option);
     }
 
     public function get_barangay($muni = NULL, $value = NULL)
