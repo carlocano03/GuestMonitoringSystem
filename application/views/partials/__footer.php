@@ -80,7 +80,7 @@
         }).on('change', function() {
             var age = getAge(this);
             var newAge = age + " years old";
-            if (age < 10) {
+            if (age < 18) {
                 Swal.fire({
                     title: 'Warning!',
                     text: 'You are underage.',

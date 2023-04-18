@@ -11,6 +11,15 @@
         background: var(--bs-yellow);
         color: #2d3436;
     }
+
+    .select2-selection__rendered {
+      line-height: 36px !important;
+    }
+
+    .select2-selection {
+      height: 38px !important;
+    }
+
 </style>
 <div id="layoutSidenav_content">
     <main>
@@ -53,7 +62,7 @@
                         <div class="fw-bold"><small>PARENTS / GUARDIAN DETAILS</small></div>
                         <hr class="mt-0">
                         <div class="form-group mb-2">
-                            <input type="text" name="serialno" id="f_name" class="form-control text-uppercase" placeholder="Enter Serial No.">
+                            <input type="text" name="serialno" id="serialno" class="form-control text-uppercase" placeholder="Enter Serial No.">
                         </div>
                         <div class="form-group mb-2">
                             <input type="text" name="f_name" id="f_name" class="form-control text-uppercase" placeholder="Enter First Name (Juan)">
@@ -195,23 +204,15 @@
 
                             </div>
                             <div class="form-group mb-2">
-                                <button type="button" class="btn btn-success fw-bold w-100 add_inventory"><i class="bi bi-plus-square me-2"></i>ADD TO CART</button>
+                                <input type="hidden" id="child_count">
+                                <input type="hidden" id="package_price_amt">
+                                <input type="hidden" id="package_total_amt">
+                                <input type="hidden" id="package_type">
                             </div>
-                            <input type="hidden" name="captured_image_data_child" id="captured_image_data_child">
-                            
-                        </div>
-                        <button class="btn btn-primary btn-sm" id="add_children"><i class="bi bi-plus-circle me-2"></i>Add More</button>
-                        <button class="btn btn-danger btn-sm" id="remove"><i class="bi bi-x-circle me-2"></i>Remove</button><br>
+                            <div class="form-group mb-2">
+                                <button type="button" class="btn btn-success fw-bold w-100 add_guest"><i class="bi bi-plus-square me-2"></i>ADD TO CART</button>
+                            </div>
 
-                                        <hr>
-                        
-                        <div class="fw-bold"><small>OTHERS</small></div>
-                        <div class="form-group mb-2">
-                            <input type="text" name="child_guardian" id="child_guardian" class="form-control text-uppercase" placeholder="Name of Additional Guardian">
-                        </div>
-                        <div class="form-group mb-2">
-                            <button type="button" class="btn btn-success fw-bold w-100 add_inventory"><i class="bi bi-plus-square me-2"></i>ADD TO CART</button>
-                        </div>
                         </div>
                     </div>
                 </div>
@@ -237,54 +238,31 @@
                             <input type="hidden" name="type" id="type">
                         </div>
                         <div class="form-group mb-2">
-                            <button type="button" class="btn btn-success fw-bold w-100 add_inventory"><i class="bi bi-plus-square me-2"></i>ADD CART</button>
+                            <button type="button" class="btn btn-success fw-bold w-100 add_inventory"><i class="bi bi-plus-square me-2"></i>ADD TO CART</button>
                         </div>
-                        <!-- <hr>
-                        <div class="fw-bold mt-3"><small>INVENTORY CART</small></div> -->
-                        <!-- <div class="table-responsive mt-0">
-                            <table class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table_inventory">
-                                <thead>
-                                    <tr>
-                                        <th style="display:none;"></th>
-                                        <th>Type</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                        <th>Total Amount</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr style="display:none;" id="row1">
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div> -->
                         <hr>
                         <div class="fw-bold mt-3"><small>SALES INVOICE</small></div>
                         <p>
-                        Date: Tue, 4 April 2023<br>
-                        Jack's Adventure - SM Grand Central<br>
+                        Date: <?= date('D, d F Y')?><br>
+                        Jack's Adventure - SM Grand Central<br> 
                         <hr>   </p>
 
                         <table class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table_inventory">
                                 <thead>
                                     <tr>
                                         <th style="display:none;"></th>
+                                        <th style="display:none;"></th>
                                         <th>Items</th>
                                         <th>Amount</th>
                                         <th>Quantity</th>
-                                         <th>Total Amount</th>
-                                         <th>Remarks</th>
+                                        <th>Total Amount</th>
+                                        <th>Remarks</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr style="display:none;" id="row1">
+                                        <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
@@ -297,7 +275,7 @@
                             </table>
                             <hr>
                             Discount
-                            <h3><b>Total Amount: PHP 0,000.00</b></h3>
+                            <h3><b>Total Amount: PHP <span id="amount"></span></b></h3>
                         <hr>
                         <div class="form-group mb-2">
                             <button type="reset" class="btn btn-secondary btn-lg w-100">CLEAR</button>
@@ -333,25 +311,6 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="cameraModalChild" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-camera-fill me-2"></i>Live Camera</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center">
-                <div id="my_camera_child" class="pre_capture_frame_child mx-auto" ></div>
-		            <!-- <input type="hidden" name="captured_image_data_child" id="captured_image_data_child"> -->
-		            <br>
-		            <input type="button" class="btn btn-success btn-lg w-100" value="CAPTURE" onClick="take_snapshot_child()">	
-                </div>
-                <hr>
-            </div>
-        </div>
-    </div>
-
     <footer class="py-3 text-white mt-auto" style="background: #8F3F96;">
         <div class="container-fluid px-4">
             <div class="d-flex align-items-center justify-content-between small">
@@ -364,6 +323,10 @@
 </div>
 <!-- End of layoutSidenav -->
 
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<?php $this->load->view('webcam/camera_modal');?>
 <script>
     // Camera for Guardian/Parent
     $('.camera').hide();
@@ -389,33 +352,14 @@
 	    });	 
 	}
 
-    //Camera for Children
-    Webcam.set({
-	    width: 360,
-	    height: 287,
-	    image_format: 'jpeg',
-	    jpeg_quality: 90
-	});	 
-	Webcam.attach('#my_camera_child');
-	
-	function take_snapshot_child() {
-	 // play sound effect
-	 //shutter.play();
-	 // take snapshot and get image data
-        $('.camera_child').show(200);
-	    Webcam.snap( function(data_uri) {
-	 // display results in page
-            document.getElementById('results_child').innerHTML = 
-            '<img class="after_capture_frame_child" src="'+data_uri+'"/>';
-            $("#captured_image_data_child").val(data_uri);
-	    });	 
-	}
-
-
     var present_provcode;
     var present_muncode;
     var present_brgycode;
     $(document).ready(function() {
+        $('#province').select2();
+        $('#municipality').select2();
+        $('#barangay').select2();
+
         $('#loading').show();
         setTimeout(function() {
             $('#loading').hide();
@@ -568,6 +512,7 @@
                                 dataType: "json",
                                 success: function(data) {
                                     $('#kids_info').html(data.childrenData);
+                                    $('#child_count').val(data.childCount + 1);
                                 }
                             });
 
@@ -610,6 +555,51 @@
             })
         });
 
+        $(document).on('change', '#pricing_id', function() {
+            var pricing_id = $(this).val();
+            $.ajax({
+                url: "<?= base_url('main/get_pricing')?>",
+                method: "POST",
+                data: {
+                    pricing_id: pricing_id
+                },
+                success: function(data) { 
+                    if (Object.keys(data).length > 0) {
+                        $('#package_price_amt').val(data.weekdays_price == null ? '' : data.weekdays_price);
+                        $('#package_type').val(data.admission_type == null ? '' : data.admission_type);
+                    }
+                }
+            })
+        });
+
+        $(document).on('click', '.add_guest', function() {
+            var input1 = parseFloat($('#child_count').val());
+            var input2 = parseFloat($('#package_price_amt').val());
+            var sum = input1 * input2;
+            var totalSum = 0;
+
+            var guestQty = $('#child_count').val();
+            var admission = $('#package_type').val();
+            $('#table_inventory tbody').append(
+                '<tr class="row2">' +
+                    '<td style="display:none;"></td>' +
+                    '<td style="display:none;"></td>' +
+                    '<td>'+admission+'</td>' +
+                    '<td>'+input2+'</td>' +
+                    '<td>'+guestQty+'</td>' +
+                    '<td>'+sum.toFixed(2)+'</td>' +
+                    '<td></td>' +
+                    '<td><span class="remove_row">Remove</span></td>' +
+                '</tr>'
+            );
+            $('#table_inventory tbody tr.row2').each(function() {
+                var sumCell = $(this).find('td:eq(5)');
+                var sumValue = parseFloat(sumCell.text());
+                totalSum += sumValue;
+            });
+            $('#amount').text(totalSum.toLocaleString('en-US', {maximumFractionDigits: 2}))
+        });
+
         $(document).on('keyup', '#quantity', function(){
             var input1 = parseFloat($('#quantity').val());
             var input2 = parseFloat($('#price').val());
@@ -629,13 +619,14 @@
             var amt = $('#total_amount').val();
             var type = $('#type').val();
             var inv_id = $('#inventory').val();
-
+            var totalSum = 0;
             if (qty == '') {
                 Swal.fire('Warning!', 'Please input valid quantity.', 'warning');
             } else {
                 $('#table_inventory tbody').append(
                     '<tr class="row2">' +
                         '<td style="display:none;">'+inv_id+'</td>' +
+                        '<td style="display:none;">INV</td>' +
                         '<td>'+type+'</td>' +
                         '<td>'+price+'</td>' +
                         '<td>'+qty+'</td>' +
@@ -645,6 +636,12 @@
                     '</tr>'
                 );
             }
+            $('#table_inventory tbody tr.row2').each(function() {
+                var sumCell = $(this).find('td:eq(5)');
+                var sumValue = parseFloat(sumCell.text());
+                totalSum += sumValue;
+            });
+            $('#amount').text(totalSum.toLocaleString('en-US', {maximumFractionDigits: 2}))
         });
         $('#table_inventory tbody').on('click', '.remove_row', function() {
             $(this).closest('tr').remove(); // Remove the parent row
@@ -668,9 +665,9 @@
                         $('#table_inventory .row2').each(function(row,tr){
                             var sub = {
                                 'type_id': $(tr).find('td:eq(0)').text(),
-                                'price': $(tr).find('td:eq(2)').text(),
-                                'qty': $(tr).find('td:eq(3)').text(),
-                                'total_amt': $(tr).find('td:eq(4)').text(),
+                                'price': $(tr).find('td:eq(3)').text(),
+                                'qty': $(tr).find('td:eq(4)').text(),
+                                'total_amt': $(tr).find('td:eq(5)').text(),
                             };
                             table_data.push(sub);
                         });

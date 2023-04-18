@@ -197,38 +197,76 @@ class Main extends CI_Controller
 
     public function register_guest()
     {
-        $pricing_id = $this->input->post('pricing_id');
-        $this->db->where('pricing_id', $pricing_id);
-        $query = $this->db->get('pricing_promo')->row();
+        $serial_no = $this->input->post('serialno');
+        if ($serial_no != '') {
+            $pricing_id = $this->input->post('pricing_id');
+            $this->db->where('pricing_id', $pricing_id);
+            $query = $this->db->get('pricing_promo')->row();
 
-        $time_in = date('H:i:s');
-        $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
-        $guest_id = $this->input->post('guest_id');
-        $message = '';
-        $folderPath = 'capture_images/parents/';
-        $image_parts = explode(";base64,", $this->input->post('captured_image_data'));
-        $image_type_aux = explode("image/", $image_parts[0]);
-        $image_type = $image_type_aux[1];
-        $image_base64 = base64_decode($image_parts[1]);
-        $file = $folderPath . uniqid() . '.png';
-        file_put_contents($file, $image_base64);
+            $time_in = date('H:i:s');
+            $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
+            $guest_id = $this->input->post('guest_id');
+            $message = '';
+            $folderPath = 'capture_images/parents/';
+            $image_parts = explode(";base64,", $this->input->post('captured_image_data'));
+            $image_type_aux = explode("image/", $image_parts[0]);
+            $image_type = $image_type_aux[1];
+            $image_base64 = base64_decode($image_parts[1]);
+            $file = $folderPath . uniqid() . '.png';
+            file_put_contents($file, $image_base64);
 
-        $update = array(
-            'status' => 'REGISTERED',
-            'slip_app_no' => $this->input->post('serial_no'),
-            'picture' => $file
-        );
-        $insert_time = array(
-           'package_promo' => $pricing_id,
-           'guest_id' => $guest_id,
-           'serial_no' => $this->input->post('serial_no'),
-           'time_in' => $time_in,
-           'time_out' => $time_out,
-           'box_number' => $this->input->post('shoe_box'),
-           'bag_number' => $this->input->post('bag_no'),
-           'status' => 'Ongoing',
-           'staff_in_charge' => $this->input->post('service_crew'),
-        );
+            $update = array(
+                'status' => 'REGISTERED',
+                'slip_app_no' => $serial_no,
+                'picture' => $file
+            );
+            $insert_time = array(
+                'package_promo' => $pricing_id,
+                'guest_id' => $guest_id,
+                'serial_no' => $serial_no,
+                'time_in' => $time_in,
+                'time_out' => $time_out,
+                'box_number' => $this->input->post('shoe_box'),
+                'bag_number' => $this->input->post('bag_no'),
+                'status' => 'Ongoing',
+                'staff_in_charge' => $this->input->post('service_crew'),
+            );
+        } else {
+            $pricing_id = $this->input->post('pricing_id');
+            $this->db->where('pricing_id', $pricing_id);
+            $query = $this->db->get('pricing_promo')->row();
+
+            $time_in = date('H:i:s');
+            $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
+            $guest_id = $this->input->post('guest_id');
+            $message = '';
+            $folderPath = 'capture_images/parents/';
+            $image_parts = explode(";base64,", $this->input->post('captured_image_data'));
+            $image_type_aux = explode("image/", $image_parts[0]);
+            $image_type = $image_type_aux[1];
+            $image_base64 = base64_decode($image_parts[1]);
+            $file = $folderPath . uniqid() . '.png';
+            file_put_contents($file, $image_base64);
+
+            $update = array(
+                'status' => 'REGISTERED',
+                'slip_app_no' => $this->input->post('serial_no'),
+                'picture' => $file
+            );
+            $insert_time = array(
+                'package_promo' => $pricing_id,
+                'guest_id' => $guest_id,
+                'serial_no' => $this->input->post('serial_no'),
+                'time_in' => $time_in,
+                'time_out' => $time_out,
+                'box_number' => $this->input->post('shoe_box'),
+                'bag_number' => $this->input->post('bag_no'),
+                'status' => 'Ongoing',
+                'staff_in_charge' => $this->input->post('service_crew'),
+            );
+        }
+
+        
         if ($this->db->where('guest_id', $guest_id)->update('guest_details', $update)) {
             $this->db->insert('time_management', $insert_time);
             $message = "Success";
@@ -245,6 +283,7 @@ class Main extends CI_Controller
             $data[] = array(
                 'serial_no' => $this->input->post('serial_no'),
                 'guest_id' => $this->input->post('guest_id'),
+                'transaction_no' => 'JCK-'.rand(10,1000),
                 'type_id' => $insert_data_stocks[$i]['type_id'],
                 'price' => $insert_data_stocks[$i]['price'],
                 'qty' => $insert_data_stocks[$i]['qty'],
@@ -269,15 +308,16 @@ class Main extends CI_Controller
         $output = '';
         $parent_id = $this->input->post('parent_id');
         $slip_no = $this->input->post('slip_no');
-
+        $no = 0;
         $query = $this->db->query("
             SELECT *
             FROM guest_children WHERE parent_id='".$parent_id."'
-            ORDER BY child_id DESC
+            ORDER BY child_id ASC
         ");
 
         if ($query->num_rows() > 0) {
             foreach ($query->result() as $row) {
+                $no++;
                 $output .= '
                     <div class="form-group mb-2">
                         <input type="text" value="'.$row->child_fname.'" name="child_fname" id="child_fname" class="form-control text-uppercase" placeholder="Enter First Name (Juan)">
@@ -294,23 +334,56 @@ class Main extends CI_Controller
                     <div class="form-group mb-2">
                         <input type="text" value="'.$row->child_age.'" name="child_age" id="child_age" class="form-control text-uppercase" placeholder="Age">
                     </div>
+                    <div class="form-group mb-2" id="image_child">
+                       
+                    </div>
                     <div class="form-group mb-2">
-                        <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#cameraModalChild"><i class="bi bi-camera-fill me-2"></i>CAPTURE IMAGE</button>
+                        <button class="btn btn-success" type="button" data-child="'.$row->child_id.'" data-id="'.$no.'" id="openCamera"><i class="bi bi-camera-fill me-2"></i>CAPTURE IMAGE</button>
                     </div>
-                    <div class="form-group mb-2 camera_child" style="display:none;">
-                        <div id="results_child">
-                            <img style="width: 200px;" class="after_capture_frame_child" src="image_placeholder.jpg" />
-                        </div>
-                        <input type="hidden" name="captured_image_data_child" id="captured_image_data_child">     
-                    </div>
+                    
                 ';
             }
         }
         $data = array(
             'childrenData' => $output,
+            'childCount' => $query->num_rows(),
         );
         echo json_encode($data);
     }
     
+    public function saveSnap()
+    {
+        $childID = $this->input->post('childID');
+        $message = '';
+
+        $folderPath = 'capture_images/children/';
+        $image_parts = explode(";base64,", $this->input->post('image'));
+        $image_type_aux = explode("image/", $image_parts[0]);
+        $image_type = $image_type_aux[1];
+        $image_base64 = base64_decode($image_parts[1]);
+        $file = $folderPath . uniqid() . '.png';
+        file_put_contents($file, $image_base64);
+
+        if ($this->db->where('child_id', $childID)->update('guest_children', array('child_img' => $file))) {
+            $message = "Success";
+        } else {
+            $message = "Error";
+        }
+        $output['message'] = $message;
+        echo json_encode($output);
+    }
+
+    public function get_pricing()
+    {
+        $pricing_id = $this->input->post('pricing_id');
+        $results = $this->db
+            ->from('pricing_promo')
+            ->where('pricing_id', $pricing_id)
+            ->get()
+            ->row();
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode($results));
+    }
 }
 //End CI_Controller

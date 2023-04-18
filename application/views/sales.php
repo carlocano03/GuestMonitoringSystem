@@ -45,7 +45,7 @@
         <div class="container-fluid px-4 mt-4">
             <div class="row g-3">
                 <div class="col-md-3">
-                    <input type="text" class="form-control form-control-sm" placeholder="Search Here(Serial, Name, Parent)">
+                    <input type="text" id="search_value" class="form-control form-control-sm" placeholder="Search Here(Serial, Name, Parent)">
                 </div>
                 <div class="col-md-4">
                     <div class="row g-1">
@@ -98,7 +98,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <!-- <tr>
                             <td>
                                 <button class="btn btn-secondary btn-sm view" title="View"><i class="bi bi-eye-fill"></i></button>
                                 <button class="btn btn-primary btn-sm print" title="Print"><i class="bi bi-printer-fill"></i></button>
@@ -115,25 +115,31 @@
                             <td>Ibarra</td>
                             <td>1</td>
                             <td>150.00</td>
-                        </tr>
+                        </tr> -->
                     </tbody>
                 </table>
                 <hr>
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="fw-bold text-center">
                         Total Number of Transaction
-                        <h1><b>3</b></h1>
+                        <h1><b id="no_transaction"></b></h1>
                     </div>
                     <div class="d-flex justify-content-between">
                         <div>
+                           
+                            <div class="text-end">
                             Sales:
-                            <span class="ms-5 ps-4"><b>P 600.00</b></span>
-                            <br>
+                                <b id="total_amount"></b>
+                            </div>
+  
+                            <div class="text-end">
                             Inventory Sales:
-                            <span><b>P 200.00</b></span>
+                                <b id="total_inv"></b>
+                            </div>
+
                             <hr class="mt-0 mb-2">
                             <b>Total Sales:</b>
-                            <span class="ms-3 ps-3"><b>P 600.00</b></span>
+                            <span class="ms-3 ps-3"><b id="total_sales"></b></span>
                         </div>
                     </div>
                     
@@ -265,7 +271,7 @@
         setTimeout(function() {
             $('#loading').hide();
         }, 2000);
-        $('#tbl_sales').DataTable({
+        var tbl_sales = $('#tbl_sales').DataTable({
             language: {
                 search: '',
                 searchPlaceholder: "Search Here...",
@@ -275,10 +281,35 @@
                     previous: '<i class="fas fa-chevron-left"></i>'
                 }
             },
+            "info": false,
             "searching": false,
             "ordering": false,
             "bLengthChange": false,
+            "serverSide": true,
+            "processing": true,
+            "pageLength": 25,
+            "deferRender": true,
+            "ajax": {
+                "url": "<?= base_url('transaction/get_sales') ?>",
+                "type": "POST",
+                "data": function(data) {
+                    data.search_value = $('#search_value').val();
+                },
+                "dataSrc": function(json) {
+                    $('#total_amount').text('₱ ' + json.totalAmount);
+                    $('#total_inv').text('₱ ' + json.totalInv);
+                    $('#total_sales').text('₱ ' + json.totalSales);
+                    $('#no_transaction').text(json.no_transaction);
+                return json.data;
+                }
+            },
         });
+
+        // var total = 0;
+        // tbl_sales.column(11).data().each(function(amount) {
+        //     total += parseFloat(amount);
+        // });
+        // console.log(total);
 
         $(document).on('click', '.void', function(){
             $('#transactionModal').modal('show');
