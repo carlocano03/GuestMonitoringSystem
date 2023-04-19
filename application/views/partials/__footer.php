@@ -60,8 +60,8 @@
             var newAge = age + " years old";
             if (age < 13) {
                 Swal.fire({
-                    title: 'Warning!',
-                    text: 'You are underage.',
+                    title: 'Opps!',
+                    text: 'Sorry, we require 13 years old above on this adventure ',
                     icon: 'warning'
                 });
                 $(this).val('');
@@ -82,8 +82,8 @@
             var newAge = age + " years old";
             if (age < 18) {
                 Swal.fire({
-                    title: 'Warning!',
-                    text: 'You are underage.',
+                    title: 'Opps!',
+                    text: 'Sorry, We require 18 years old above as parent/guardian.',
                     icon: 'warning'
                 });
                 $(this).val('');

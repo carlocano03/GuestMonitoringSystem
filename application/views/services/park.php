@@ -195,8 +195,8 @@
                 event.stopImmediatePropagation();
                 if ($('#waiver_check').prop('checked')) {
                     Swal.fire({
-                        title: 'Are you sure?',
-                        text: "You want to continue this registration",
+                        title: 'Hey Adventurer!',
+                        text: "Do you want to continue this registration",
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -220,8 +220,8 @@
                                         $('#date_reg').html(data.date_reg);
                                         $('#reg_no').html(data.reg_no);
                                         // Swal.fire({
-                                        //     title: 'Thank You!',
-                                        //     text: 'Successfully submitted',
+                                        //     title: 'Thank you! Adventurer!',
+                                        //     text: 'You have successfully submitted your registration.',
                                         //     icon: 'success'
                                         // });
                                         // setTimeout(function() {
@@ -237,7 +237,7 @@
                                     $('#loading').hide();
                                     Swal.fire({
                                         title: 'Error!',
-                                        text: 'Something went wrong. Please contact the system administrator.',
+                                        text: 'Something went wrong. Please contact your system administrator.',
                                         icon: 'error'
                                     });
                                 }
@@ -246,7 +246,7 @@
                     })
                 } else {
                     Swal.fire({
-                        title: 'Terms and Conditions!',
+                        title: 'Opps!',
                         text: 'Please check the terms and conditions before you proceed.',
                         icon: 'warning'
                     });

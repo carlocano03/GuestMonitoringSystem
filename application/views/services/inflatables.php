@@ -310,8 +310,8 @@
                     $('#count').text(clicks);
                 } else {
                     Swal.fire({
-                        title: 'Warning!',
-                        text: 'You reach the limit of children.',
+                        title: 'We are Sorry!',
+                        text: 'We only allow maximum of three (3) kids per parent.',
                         icon: 'warning'
                     });
                     $('#add_children').attr("disabled", true);
@@ -362,8 +362,8 @@
                                         $('#date_reg').html(data.date_reg);
                                         $('#reg_no').html(data.reg_no);
                                         // Swal.fire({
-                                        //     title: 'Thank You!',
-                                        //     text: 'Successfully submitted',
+                                        //     title: 'Thank you! Adventurer!',
+                                        //     text: 'You have successfully submitted your registration.',
                                         //     icon: 'success'
                                         // });
                                         // setTimeout(function() {
@@ -388,7 +388,7 @@
                     })
                 } else {
                     Swal.fire({
-                        title: 'Terms and Conditions!',
+                        title: 'Opps!',
                         text: 'Please check the terms and conditions before you proceed.',
                         icon: 'warning'
                     });

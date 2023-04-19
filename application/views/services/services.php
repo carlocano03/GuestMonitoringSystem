@@ -13,6 +13,7 @@
                 <div class="text-end mb-5">
                     <a href="<?= base_url('home');?>"><button style="border-radius:100px;" class="btn btn-warning fw-bold">GO BACK</button></a>
                 </div>
+                <br>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="inflatables">
