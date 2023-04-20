@@ -62,7 +62,7 @@
                         <div class="fw-bold"><small>PARENTS / GUARDIAN DETAILS</small></div>
                         <hr class="mt-0">
                         <div class="form-group mb-2">
-                            <input type="text" name="serialno" id="serialno" class="form-control text-uppercase" placeholder="Enter Serial No.">
+                            <input type="text" name="serialno" id="serialno" class="form-control text-uppercase" placeholder="Enter Serial No." required>
                         </div>
                         <div class="form-group mb-2">
                             <input type="text" name="f_name" id="f_name" class="form-control text-uppercase" placeholder="Enter First Name (Juan)">
@@ -153,7 +153,7 @@
                         </div>
                         <div class="form-group mb-2">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <input class="form-check-input" type="checkbox" value="" id="agreement">
                                 <label class="form-check-label" for="flexCheckDefault">
                                     I hereby acknowledge and accept the <a href="#">"Waiver and Quitclaim"</a> and agree to <a href="#">Data Privacy Act of 2012</a>
                                 </label>
@@ -170,7 +170,6 @@
                 </div>
 
                 <div class="col-md-4">
-               
                     <div class="box-section mb-3">
                     <div class="box-header">
                          PRICING AND PACKAGE DETAILS
@@ -183,11 +182,11 @@
                             </select>
                         </div>
                         <div class="form-group mb-2">
-                            <select name="pricing_id" id="pricing_id" class="form-select text-uppercase">
+                            <select name="pricing_id" id="pricing_id" class="form-select text-uppercase" required>
                                 <option value="">Select Time</option>
-                                <?php foreach($pricing as $row) : ?>
+                                <!-- <?php foreach($pricing as $row) : ?>
                                     <option value="<?= $row->pricing_id?>"><?= $row->admission_type?></option>
-                                <?php endforeach;?>
+                                <?php endforeach;?> -->
                             </select>
                         </div>
                         <!-- <div class="form-group mb-2">
@@ -203,16 +202,15 @@
                             <div id="kids_info">
 
                             </div>
-                            <div class="form-group mb-2">
-                                <input type="hidden" id="child_count">
-                                <input type="hidden" id="package_price_amt">
-                                <input type="hidden" id="package_total_amt">
-                                <input type="hidden" id="package_type">
-                            </div>
-                            <div class="form-group mb-2">
-                                <button type="button" class="btn btn-success fw-bold w-100 add_guest"><i class="bi bi-plus-square me-2"></i>ADD TO CART</button>
-                            </div>
-
+                        </div>
+                        <div class="form-group mb-2">
+                            <input type="hidden" id="child_count">
+                            <input type="hidden" id="package_price_amt">
+                            <input type="hidden" id="package_total_amt">
+                            <input type="hidden" id="package_type">
+                        </div>
+                        <div class="form-group mb-2">
+                            <button type="button" class="btn btn-success fw-bold w-100 add_guest"><i class="bi bi-plus-square me-2"></i>ADD TO CART</button>
                         </div>
                     </div>
                 </div>
@@ -256,7 +254,7 @@
                                         <th>Amount</th>
                                         <th>Quantity</th>
                                         <th>Total Amount</th>
-                                        <th>Remarks</th>
+                                        <!-- <th>Remarks</th> -->
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -268,20 +266,35 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
+                                        <!-- <td></td> -->
                                         <td></td>
                                     </tr>
                                 </tbody>
                             </table>
                             <hr>
-                            Discount
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="1" id="add_discount">
+                                <label class="form-check-label text-danger" for="add_discount" style="margin-top: 1px; font-weight: bold;">
+                                    Add Discount
+                                </label>
+                            </div>
+                            <div class="form-group discount_added">
+                                <label class="text-muted">Total Discount:</label><span class="ms-2 fw-bold" id="discount"></span>
+                            </div>
+                            <div class="form-group discount_added">
+                                <label class="text-muted">Remarks:</label><span class="ms-2 fw-bold" id="discount_remarks"></span>
+                            </div>
+                            <hr>
                             <h3><b>Total Amount: PHP <span id="amount"></span></b></h3>
+                            <input type="hidden" id="amt_total">
+                            <input type="hidden" id="discount_checked" value="0">
+                            <input type="hidden" id="remarks_discount">
                         <hr>
                         <div class="form-group mb-2">
                             <button type="reset" class="btn btn-secondary btn-lg w-100">CLEAR</button>
                                 </div>
                             <div class="form-group mb-2">
-                            <button type="submit" class="btn btn-success btn-lg w-100">PROCESS PAYMENT</button>
+                            <button type="submit" class="btn btn-success btn-lg w-100" id="process_payment">PROCESS PAYMENT</button>
                         </div>
                         </form>
                     </div>
@@ -291,25 +304,6 @@
         </div>
         <!-- Main div -->
     </main>
-
-    <!-- Modal -->
-    <div class="modal fade" id="cameraModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-camera-fill me-2"></i>Live Camera</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center">
-                <div id="my_camera" class="pre_capture_frame mx-auto" ></div>
-		            <!-- <input type="hidden" name="captured_image_data" id="captured_image_data"> -->
-		            <br>
-		            <input type="button" class="btn btn-success btn-lg w-100" value="CAPTURE" onClick="take_snapshot()">	
-                </div>
-                <hr>
-            </div>
-        </div>
-    </div>
 
     <footer class="py-3 text-white mt-auto" style="background: #8F3F96;">
         <div class="container-fluid px-4">
@@ -322,11 +316,12 @@
 
 </div>
 <!-- End of layoutSidenav -->
+<?php $this->load->view('webcam/camera_modal');?>
+<?php $this->load->view('modal/dashboard_modal.php');?>
 
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-<?php $this->load->view('webcam/camera_modal');?>
 <script>
     // Camera for Guardian/Parent
     $('.camera').hide();
@@ -356,6 +351,9 @@
     var present_muncode;
     var present_brgycode;
     $(document).ready(function() {
+        $('.discount_added').hide();
+        $('#process_payment').attr('disabled', true);
+        $('#add_discount').attr('disabled', true);
         $('#province').select2();
         $('#municipality').select2();
         $('#barangay').select2();
@@ -501,7 +499,6 @@
 
                             //Package Details
                             $("#package").val(data.service == null ? '' : data.service).trigger('change');
-
                             $.ajax({
                                 url: "<?= base_url() . 'main/getGuestChildren' ?>",
                                 method: "POST",
@@ -573,6 +570,7 @@
         });
 
         $(document).on('click', '.add_guest', function() {
+            var package_amt = $('#package_price_amt').val();
             var input1 = parseFloat($('#child_count').val());
             var input2 = parseFloat($('#package_price_amt').val());
             var sum = input1 * input2;
@@ -580,24 +578,31 @@
 
             var guestQty = $('#child_count').val();
             var admission = $('#package_type').val();
-            $('#table_inventory tbody').append(
-                '<tr class="row2">' +
-                    '<td style="display:none;"></td>' +
-                    '<td style="display:none;"></td>' +
-                    '<td>'+admission+'</td>' +
-                    '<td>'+input2+'</td>' +
-                    '<td>'+guestQty+'</td>' +
-                    '<td>'+sum.toFixed(2)+'</td>' +
-                    '<td></td>' +
-                    '<td><span class="remove_row">Remove</span></td>' +
-                '</tr>'
-            );
-            $('#table_inventory tbody tr.row2').each(function() {
-                var sumCell = $(this).find('td:eq(5)');
-                var sumValue = parseFloat(sumCell.text());
-                totalSum += sumValue;
-            });
-            $('#amount').text(totalSum.toLocaleString('en-US', {maximumFractionDigits: 2}))
+
+            if (package_amt == '') {
+                Swal.fire('Warning!', 'No time selected.', 'warning');
+            } else {
+                $('#table_inventory tbody').append(
+                    '<tr class="row2">' +
+                        '<td style="display:none;"></td>' +
+                        '<td style="display:none;"></td>' +
+                        '<td>'+admission+'</td>' +
+                        '<td>'+input2+'</td>' +
+                        '<td>'+guestQty+'</td>' +
+                        '<td>'+sum.toFixed(2)+'</td>' +
+                        // '<td></td>' +
+                        '<td><span class="remove_row">Remove</span></td>' +
+                    '</tr>'
+                );
+                $('#table_inventory tbody tr.row2').each(function() {
+                    var sumCell = $(this).find('td:eq(5)');
+                    var sumValue = parseFloat(sumCell.text());
+                    totalSum += sumValue;
+                });
+                $('#amount').text(totalSum.toLocaleString('en-US', {maximumFractionDigits: 2}))
+                $('#process_payment').attr('disabled', false);
+                $('#add_discount').attr('disabled', false);
+            }
         });
 
         $(document).on('keyup', '#quantity', function(){
@@ -631,7 +636,7 @@
                         '<td>'+price+'</td>' +
                         '<td>'+qty+'</td>' +
                         '<td>'+amt+'</td>' +
-                        '<td></td>' +
+                        // '<td></td>' +
                         '<td><span class="remove_row">Remove</span></td>' +
                     '</tr>'
                 );
@@ -644,56 +649,116 @@
             $('#amount').text(totalSum.toLocaleString('en-US', {maximumFractionDigits: 2}))
         });
         $('#table_inventory tbody').on('click', '.remove_row', function() {
+            var totalSum = 0;
             $(this).closest('tr').remove(); // Remove the parent row
+            $('#table_inventory tbody tr.row2').each(function() {
+                var sumCell = $(this).find('td:eq(5)');
+                var sumValue = parseFloat(sumCell.text());
+                totalSum += sumValue;
+            });
+            $('#amount').text(totalSum.toLocaleString('en-US', {maximumFractionDigits: 2}))
         });
 
         $(document).on('submit', '#registerGuest', function(event){
             event.preventDefault();
             var table_data = [];
-            var serial_no = $('#serial_no').val();
+            var serial_no = $('#serialno').val();
             var guest_id = $('#guest_id').val();
+            var amt_total = $('#amt_total').val();
+            var discount_check = $('#discount_checked').val();
+            var discount_remarks = $('#remarks_discount').val();
+            if ($('#agreement').is(':checked')) {
+                $.ajax({
+                    url: "<?= base_url('main/register_guest')?>",
+                    method: "POST",
+                    data: new FormData(this),
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+                    success: function(data) {
+                        if (data.message == 'Success') {
+                            $('#table_inventory .row2').each(function(row,tr){
+                                var sub = {
+                                    'type_id': $(tr).find('td:eq(0)').text(),
+                                    'details': $(tr).find('td:eq(2)').text(),
+                                    'price': $(tr).find('td:eq(3)').text(),
+                                    'qty': $(tr).find('td:eq(4)').text(),
+                                    'total_amt': $(tr).find('td:eq(5)').text(),
+                                };
+                                table_data.push(sub);
+                            });
+                            var data = {
+                                'data_table': table_data, 
+                                serial_no: serial_no, 
+                                guest_id: guest_id,
+                                amt_total: amt_total, 
+                                discount_check: discount_check, 
+                                discount_remarks: discount_remarks
+                            };
+                            $.ajax({
+                                url: "<?= base_url('main/consumable_tocks')?>",
+                                method: "POST",
+                                data: data,
+                                dataType: "json",
+                                success: function(data) {
+                                    if (data.message == 'Success') {
+                                        console.log(data);
+                                    }
+                                }
+                            });
+                            // alert('Success');
+                            var url = "<?= base_url('sales_invoice?transaction=')?>" + serial_no;
+                            window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');
+                            location.reload();
+                            $('registerGuest').trigger('reset');
+                        } else {
+                            alert('Failed to save');
+                        }
+                    },
+                    error: function() {
+                        alert('Failed');
+                    }
+                });
+            } else {
+                Swal.fire('Warning!', 'Please accept the agreement.', 'warning');
+            }
+        });
+
+        $(document).on('click', '#add_discount', function() {
+            if ($(this).is(':checked')) {
+                $('#discountModal').modal('show');
+                $('#discount_checked').val(1);
+            } else {
+                $('#discountModal').modal('hide');
+                $('#discount').text('');
+                $('#discount_remarks').text('');
+                $('.discount_added').hide(200);
+                $('#discount_checked').val(0);
+                var totalSum = 0;
+                $('#table_inventory tbody tr.row2').each(function() {
+                    var sumCell = $(this).find('td:eq(5)');
+                    var sumValue = parseFloat(sumCell.text());
+                    totalSum += sumValue;
+                });
+                $('#amount').text(totalSum.toLocaleString('en-US', {maximumFractionDigits: 2}))
+                $('#amt_total').val(totalSum);
+            } 
+        });
+
+        $(document).on('change', '#package', function() {
+            var package = $(this).val();
 
             $.ajax({
-                url: "<?= base_url('main/register_guest')?>",
+                url: "<?php echo base_url(); ?>main/get_package_details",
                 method: "POST",
-                data: new FormData(this),
-                contentType: false,
-                processData: false,
-                dataType: "json",
-                success: function(data) {
-                    if (data.message == 'Success') {
-                        $('#table_inventory .row2').each(function(row,tr){
-                            var sub = {
-                                'type_id': $(tr).find('td:eq(0)').text(),
-                                'price': $(tr).find('td:eq(3)').text(),
-                                'qty': $(tr).find('td:eq(4)').text(),
-                                'total_amt': $(tr).find('td:eq(5)').text(),
-                            };
-                            table_data.push(sub);
-                        });
-                        var data = {'data_table': table_data, serial_no: serial_no, guest_id: guest_id};
-                        $.ajax({
-                            url: "<?= base_url('main/consumable_tocks')?>",
-                            method: "POST",
-                            data: data,
-                            dataType: "json",
-                            success: function(data) {
-                                if (data.message == 'Success') {
-                                    console.log(data);
-                                }
-                            }
-                        });
-                        alert('Success');
-                        location.reload();
-                        $('registerGuest').trigger('reset');
-                    } else {
-                        alert('Failed to save');
-                    }
+                data: {
+                    package: package
                 },
-                error: function() {
-                    alert('Failed');
+                success: function(data) {
+                    $('#pricing_id').html(data);
                 }
             });
         });
+        
     });
 </script>

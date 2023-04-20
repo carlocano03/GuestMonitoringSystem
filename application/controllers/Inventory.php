@@ -58,6 +58,7 @@ class Inventory extends CI_Controller
             $row[] = $list->weekdays_price;
             // $row[] = $list->weekends_price;
             $row[] = '<button class="btn btn-primary btn-sm edit_inv" id="'.$list->inv_id.'" title="Edit"><i class="bi bi-pencil-square"></i></button>
+                      <button class="btn btn-warning btn-sm add_qty" id="'.$list->inv_id.'" data-qty="'.$list->quantity.'" title="Add Quantity"><i class="bi bi-plus-square"></i></button>
                       <button class="btn btn-danger btn-sm remove_inv" id="'.$list->inv_id.'" title="Remove"><i class="bi bi-trash-fill"></i></button>';
             $data[] = $row;
         }
@@ -88,11 +89,23 @@ class Inventory extends CI_Controller
         $message = '';
         $update_inv = array(
             'descriptions' => $this->input->post('descriptions'),
-            'quantity' => $this->input->post('qty'),
+            // 'quantity' => $this->input->post('qty'),
             'weekdays_price' => $this->input->post('weekdays_price'),
             // 'weekends_price' => $this->input->post('weekends_price'),
         );
         if ($this->db->where('inv_id', $this->input->post('inv_id'))->update('inventory_stocks', $update_inv)) {
+            $message = 'Success';
+        } else {
+            $message = 'Error';
+        }
+        $output['success'] = $message;
+        echo json_encode($output);
+    }
+
+    public function update_stocks()
+    {
+        $message = '';
+        if ($this->db->where('inv_id', $this->input->post('invId'))->update('inventory_stocks', array('quantity' => $this->input->post('additional_qty')))) {
             $message = 'Success';
         } else {
             $message = 'Error';
