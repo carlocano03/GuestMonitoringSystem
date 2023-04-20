@@ -142,12 +142,15 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body text-center">
-                    <h2 class="text-green">REGISTRATION SUCCESSFULLY</h2>
-                    <p>Print / Capture your Registration No. <br>
-                     Present this information to Jack's Adventure Staff Personnel.<br>
-                        <b>Registration Date:</b> <span id="date_reg"></span>
+                    <h2 class="text-green">REGISTRATION SUCCESSFULLY!</h2>
+                    <hr>
+                    <p>Direction:<br>
+                    Print / Capture your Registration No.<br>
+                    Present this information to Jack's Adventure Staff Personnel.<br>
+                       
                     </p>
                     <hr>
+                    <b>Registration Date:</b> <span id="date_reg"></span>
                     <h5 class="text-green">REGISTRATION NO.</h5>
                     <h4 id="reg_no"></h4>
                     <button class="btn btn-primary w-100 mb-3">PRINT</button>
@@ -195,7 +198,7 @@
                 event.stopImmediatePropagation();
                 if ($('#waiver_check').prop('checked')) {
                     Swal.fire({
-                        title: 'Hey Adventurer!',
+                        title: 'Hi, Adventurer!',
                         text: "Do you want to continue this registration",
                         icon: 'warning',
                         showCancelButton: true,
