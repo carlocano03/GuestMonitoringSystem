@@ -54,7 +54,7 @@
                             <th>Type of Admission</th>
                             <th>Time</th>
                             <th>Pricing</th>
-                            <!-- <th>Weekends & Holidays (Friday - Sunday)</th> -->
+                            <th>Package</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -97,9 +97,25 @@
                             <div class="form-group mb-3">
                                 <input type="text" class="form-control" name="weekdays_price" placeholder="PRICE" required>
                             </div>
-                            <!-- <div class="form-group mb-3">
-                                <input type="text" class="form-control" name="weekends_price" placeholder="WEEKENDS & HOLIDAY PRICE" required>
-                            </div> -->
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="package" value="INFLATABLES" id="inflatables">
+                                        <label class="form-check-label" for="inflatables">
+                                            Inflatables
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="package" value="PARK" id="park">
+                                        <label class="form-check-label" for="park">
+                                            Play Park
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
                             <div class="form-group mb-3">
                                 <button type="button" class="btn btn-secondary w-100 btn-rounded">CLEAR</button>
                             </div>
@@ -134,9 +150,25 @@
                             <div class="form-group mb-3">
                                 <input type="text" class="form-control" name="weekdays_price" id="weekdays_price" placeholder="PRICE" required>
                             </div>
-                            <!-- <div class="form-group mb-3">
-                                <input type="text" class="form-control" name="weekends_price" id="weekends_price" placeholder="WEEKENDS & HOLIDAY PRICE" required>
-                            </div> -->
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="package" value="INFLATABLES" id="inflatables_edit">
+                                        <label class="form-check-label" for="inflatables_edit">
+                                            Inflatables
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="package" value="PARK" id="park_edit">
+                                        <label class="form-check-label" for="park_edit">
+                                            Play Park
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
                             <div class="form-group mb-3">
                                 <button type="button" class="btn btn-secondary w-100 btn-rounded clear">CLEAR</button>
                             </div>
@@ -244,6 +276,13 @@
                             $('#time').val(data.time_admission == null ? '' : data.time_admission);
                             $('#weekdays_price').val(data.weekdays_price == null ? '' : data.weekdays_price);
                             $('#weekends_price').val(data.weekends_price == null ? '' : data.weekends_price);
+                            if (data.package == 'INFLATABLES') {
+                                $('#inflatables_edit').prop("checked", true);
+                                $('#park_edit').prop("checked", false);
+                            } else {
+                                $('#inflatables_edit').prop("checked", false);
+                                $('#park_edit').prop("checked", true);
+                            }
                         }
                     }
             });

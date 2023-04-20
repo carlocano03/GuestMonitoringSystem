@@ -21,8 +21,14 @@ class Pricing extends CI_Controller
     {
         $message = '';
         $pricing = $this->input->post('admission_type');
+        $package = $this->input->post('package');
+        $price = $this->input->post('weekdays_price');
+        $time = $this->input->post('time');
         $query = $this->db
                       ->where('admission_type', $pricing)
+                      ->where('package', $package)
+                      ->where('weekdays_price', $price)
+                      ->where('time_admission', $time)
                       ->get('pricing_promo');
         if ($query->num_rows() > 0) {
             $message = 'Exist';
@@ -31,7 +37,7 @@ class Pricing extends CI_Controller
                 'admission_type' => $pricing,
                 'time_admission' => $this->input->post('time'),
                 'weekdays_price' => $this->input->post('weekdays_price'),
-                // 'weekends_price' => $this->input->post('weekends_price'),
+                'package' => $this->input->post('package'),
             );
             if ($this->db->insert('pricing_promo', $add_pricing)) {
                 $message = 'Success';
@@ -56,7 +62,7 @@ class Pricing extends CI_Controller
             $row[] = $list->admission_type;
             $row[] = $list->time_admission;
             $row[] = $list->weekdays_price;
-            // $row[] = $list->weekends_price;
+            $row[] = $list->package;
             $row[] = '<button class="btn btn-primary btn-sm edit_pricing" id="'.$list->pricing_id.'" title="Edit"><i class="bi bi-pencil-square"></i></button>
                       <button class="btn btn-danger btn-sm remove_pricing" id="'.$list->pricing_id.'" title="Remove"><i class="bi bi-trash-fill"></i></button>';
             $data[] = $row;
@@ -90,7 +96,7 @@ class Pricing extends CI_Controller
             'admission_type' => $this->input->post('admission_type'),
             'time_admission' => $this->input->post('time'),
             'weekdays_price' => $this->input->post('weekdays_price'),
-            // 'weekends_price' => $this->input->post('weekends_price'),
+            'package' => $this->input->post('package'),
         );
         if ($this->db->where('pricing_id', $this->input->post('pricing_id'))->update('pricing_promo', $update_pricing)) {
             $message = 'Success';
