@@ -155,7 +155,7 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="agreement">
                                 <label class="form-check-label" for="flexCheckDefault">
-                                    I hereby acknowledge and accept the <a href="#">"Waiver and Quitclaim"</a> and agree to <a href="#">Data Privacy Act of 2012</a>
+                                    I hereby acknowledge and accept the <a href="#quitClaimModal" data-bs-toggle="modal">"Waiver and Quitclaim"</a> and agree to <a href="#dataPrivacyModal" data-bs-toggle="modal">Data Privacy Act of 2012</a>
                                 </label>
                             </div>
                             <hr>
@@ -305,6 +305,9 @@
         <!-- Main div -->
     </main>
 
+    <?php $this->load->view('popup/quitclaim.php');?>
+    <?php $this->load->view('popup/data_privacy.php');?>
+    
     <footer class="py-3 text-white mt-auto" style="background: #8F3F96;">
         <div class="container-fluid px-4">
             <div class="d-flex align-items-center justify-content-between small">
@@ -318,6 +321,7 @@
 <!-- End of layoutSidenav -->
 <?php $this->load->view('webcam/camera_modal');?>
 <?php $this->load->view('modal/dashboard_modal.php');?>
+
 
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
