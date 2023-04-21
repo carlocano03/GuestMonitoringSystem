@@ -65,7 +65,6 @@ class Time_monitoring_model extends CI_Model
             $this->db->or_like('G.slip_app_no', $searchValue);
             $this->db->group_end();
         }
-        
         $this->db->select('G.*');
         $this->db->select('TM.*');
         $this->db->select('P.admission_type');
@@ -74,6 +73,11 @@ class Time_monitoring_model extends CI_Model
         $this->db->join('pricing_promo P', 'P.pricing_id = TM.package_promo', 'LEFT');
         $this->db->where('G.status', 'REGISTERED');
         $this->db->where('TM.guest_id IS NOT NULL');
+
+        if ($this->input->post('package')) {
+            $this->db->where('G.service', $this->input->post('package'));
+        }
+
         $i = 0;
         foreach ($this->guest_search as $item) // loop column 
         {
@@ -100,5 +104,35 @@ class Time_monitoring_model extends CI_Model
             $this->db->order_by(key($order), $order[key($order)]);
         }
     }
+
+    function get_time_report()
+    {
+        $query = $this->db
+            ->select('G.*')
+            ->select('TM.*')
+            ->select('P.admission_type')
+            ->from($this->guest.' G')
+            ->join('time_management TM', 'TM.guest_id = G.guest_id', 'LEFT' )
+            ->join('pricing_promo P', 'P.pricing_id = TM.package_promo', 'LEFT')
+            ->where('G.status', 'REGISTERED')
+            ->where('TM.guest_id IS NOT NULL')
+            ->get();
+        return $query->result();
+    }
+
+    public function export_time_report()
+	{
+		$query = $this->db
+            ->select('G.*')
+            ->select('TM.*')
+            ->select('P.admission_type')
+            ->from($this->guest.' G')
+            ->join('time_management TM', 'TM.guest_id = G.guest_id', 'LEFT' )
+            ->join('pricing_promo P', 'P.pricing_id = TM.package_promo', 'LEFT')
+            ->where('G.status', 'REGISTERED')
+            ->where('TM.guest_id IS NOT NULL')
+            ->get();
+		return $query->result_array();
+	}
 
 }

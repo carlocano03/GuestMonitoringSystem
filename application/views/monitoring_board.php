@@ -49,10 +49,10 @@
                     <input type="text" name="search_value" id="search_value" class="form-control form-control-sm" placeholder="Search Here...">
                 </div>
                 <div class="col-sm-3">
-                    <select name="sort_by" id="sort_by" class="form-select form-select-sm">
+                    <select name="sort_by_package" id="sort_by_package" class="form-select form-select-sm">
                         <option value="">Sort By Package All</option>
-                        <option value="">Inflatables</option>
-                        <option value="">Play</option>
+                        <option value="INFLATABLES">Inflatables</option>
+                        <option value="PARK">Play Park</option>
                     </select>
                 </div>
                 <div class="col-sm-3">
@@ -62,54 +62,39 @@
                 </div>
             </div><br>
             <div class="col-sm-4">
-            <button class="btn btn-dark btn-sm"><i class="bi bi-printer-fill me-2"></i>PRINT RECORDS</button>
-            <button class="btn btn-info btn-sm"><i class="bi bi-download me-2"></i>EXPORT THIS FILE</button>
+            <button class="btn btn-dark btn-sm" id="print_records"><i class="bi bi-printer-fill me-2"></i>PRINT RECORDS</button>
+            <button class="btn btn-info btn-sm" id="export_file"><i class="bi bi-download me-2"></i>EXPORT THIS FILE</button>
                         </div>
             <div class="box-section mt-2">
                 <div class="table-responsive">
                     <table class="table table-bordered text-uppercase" width="100%" id="tbl_monitoring">
                         <thead>
                             <tr>
+                                <th>ACTION</th>
                                 <th>SERIAL #</th>
                                 <th>DATE</th>
                                 <th>PACKAGE</th>
                                 <th>TIME IN</th>
                                 <th>TIME OUT</th>
-                                <th>REM. TIME (HH:MM:SS)</th>
+                                <th>REMAINING TIME</th>
                                 <th>GUEST / KIDS NAME</th>
                                 <th>PARENT / GUARDIAN</th>
                                 <th>CONTACT #</th>
-                                <th>ACTION</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- <tr>
-                                <td>1234</td>
-                                <td>Feburary 15, 2023</td>
-                                <td>1 Hour</td>
-                                <td>10:30 AM</td>
-                                <td>11:30 AM</td>
-                                <td>0:2:30</td>
-                                <td>JUAN DELA CRUZ</td>
-                                <td>PARENT 101</td>
-                                <td>0933-123-5678</td>
-                                <td>
-                                    <button class="btn btn-info btn-sm checkout" title="Check Out"><i class="bi bi-box-arrow-right"></i></button>
-                                    <button class="btn btn-success btn-sm extend" title="Extend"><i class="bi bi-check2-square"></i></button>
-                                    <button class="btn btn-secondary btn-sm view" title="View"><i class="bi bi-eye-fill"></i></button>
-                                </td>
-                            </tr> -->
+
                         </tbody>
                     </table>
                 </div>
                 <hr>
                 <ol class="breadcrumb text-black">
-                <li class="breadcrumb-item">Red - 5 Minutes or Less</li>
-                <li class="breadcrumb-item">Yellow - Less than 15 Minutes</li>
-                <li class="breadcrumb-item">Orange - Less than 30 Minutes</li>
-                <li class="breadcrumb-item">Green - Unlimited Time</li>
-</ol>
+                    <li class="breadcrumb-item">Red - 5 Minutes or Less</li>
+                    <li class="breadcrumb-item">Yellow - Less than 15 Minutes</li>
+                    <li class="breadcrumb-item">Orange - Less than 30 Minutes</li>
+                    <li class="breadcrumb-item">Green - Unlimited Time</li>
+                </ol>
                   
                     <div>
                     
@@ -313,10 +298,14 @@
                 "type": "POST",
                 "data": function(data) {
                     data.search_value = $('#search_value').val();
+                    data.package = $('#sort_by_package').val();
                 }
             },
         });
         $('#search_value').on('input', function() {
+            tbl_monitoring.draw();
+        });
+        $('#sort_by_package').on('change', function() {
             tbl_monitoring.draw();
         });
 
@@ -330,6 +319,16 @@
 
         $(document).on('click', '.checkout', function(){
             $('#checkoutModal').modal('show');
+        });
+
+        $(document).on('click', '#print_records', function() {
+            var url = "<?= base_url('time_monitoring/print_records');?>";
+            window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');
+        });
+
+        $(document).on('click', '#export_file', function() {
+            var url = "<?= base_url('time_monitoring/export_time_monitoring');?>";
+            window.location.href = url;
         });
     });
 </script>
