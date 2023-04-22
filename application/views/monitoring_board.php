@@ -114,71 +114,19 @@
                 </div>
                 <div class="modal-body">
                    
-                    <div class="d-flex align-items-center">
-                        <img class="box-img" src="<?= base_url('assets/img/avatar.png');?>" alt="Profile-Pic">
-                        <div class="ms-3">
-                            <h5 class="mb-0">Serial Number:</h5>
-                            <h4 class="mb-0"><b style="color:#8E3C95;">5 012345 6789000</b></h4>
-                           
-                            <h4 class="mb-0 text-muted">Juan Dela Cruz Gomez</h4>
-                            <b class="mb-0 text-muted">12 years old</b>
-                        </div>
+                    <div class="box-header text-white parent_info" style="background: #8F3F96;">
+                        PARENT / GUARDIAN INFORMATION
                     </div>
-                    <hr>
-                    <div class="form-group mb-3">
-                        <label>Package:</label>
-                        <h5>1 Hour - Inflatables</h5>
+                    <div id="parent_info"></div>
+                    
+                    <div class="box-header children_info">
+                        CHILD / KIDS INFORMATION
                     </div>
-                    <div class="form-group">
-                        <label>Remaining Time (HH:MM:SS):</label>
-                        <h5 style="color:#d63031;">0:2:30</h5>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Time In:</label>
-                                <h5>10:40 AM</h5>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Time Out:</label>
-                                <h5>11:40 AM</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="form-group mb-3">
-                      <h5>Extend Time Remaining</h5>
-                      <h5 style="color:#d63031;">0:2:30</h5>
-                    </div>
+                    <div id="children_info"></div>
+                    
+
+                    <div id="time_info"></div>
                 
-                    <div class="form-group">
-                        <label><b>Time Extension Policy:</b></label>
-                        <p style="text-align: justify; color:#666363;">
-                            <small>Guest are given at least 5 minutes alloted time to extend respective package / Promo.
-                            After the given time system will no longer allowed to use extension time priviledges.
-                            </small>
-                        </p>
-                    </div>
-                    <hr>
-                    <div class="form-group mb-2">
-                        <select name="package" id="package" class="form-select">
-                            <option value="">Select Package</option>
-                            <option value="PARK">PARK</option>
-                            <option value="INFLATABLES">INFLATABLES</option>
-                        </select>
-                    </div>
-                    <div class="text-center">
-                        <label>Total Amount</label>
-                        <h4>P 350.<small>00</small></h4>
-                    </div>
-                    <div class="mx-auto">
-                        <button class="btn btn-success w-100 mb-3 btn-rounded">EXTEND TIME</button>
-                        <button class="btn btn-danger w-100 btn-rounded">CHECK OUT</button>
-                    </div>
-                    <hr>
-                   
                 </div>
             </div>
         </div>
@@ -198,24 +146,16 @@
                         <h3 class="ms-2" style="color: #d63031"><b>TIMES IS UP</b></h3>
                     </div>
                     <hr>
-                    <div class="row">
-                        <div class="col-3">
-                            <img class="box-img" src="<?= base_url('assets/img/avatar.png');?>" alt="Profile-Pic">
+                        <div class="box-header text-white" id="parent_box" style="background: #8F3F96;">
+                            PARENT / GUARDIAN INFORMATION
                         </div>
-                        <div class="col-5">
-                            <div class="mb-0">Serial Number:</div>
-                            <div class="mb-0"><b>5 012345 6789000 / INFLATABLES</b></div>
-                            <div class="mb-0">Guest / Kids Name</div>
-                            <div class="mb-0 text-muted">Juan Dela Cruz Gomez</div>
-                            <b class="mb-0 text-muted">12 years old</b>
+                        <div id="parent_guardian_data"></div>
+                        <div class="box-header" id="children_box">
+                            CHILD / KIDS INFORMATION
                         </div>
-                        <div class="col-4">
-                            <button class="btn btn-primary btn-rounded mt-3 mb-3 w-100">EXTEND TIME</button>
-                            <button class="btn btn-danger btn-rounded w-100">CHECK OUT</button>
-                        </div>
-
-                        <hr>
-                    </div>
+                        <div id="checkout_data"></div>
+                        <!-- <hr> -->
+                    
                 </div>
             </div>
         </div>
@@ -310,15 +250,95 @@
         });
 
         $(document).on('click', '.extend', function(){
-            $('#boardModal').modal('show');
+            var serial_no = $(this).attr('id');
+            var service = $(this).data('service');
+            switch (service) {
+                case 'INFLATABLES':
+                     $('.children_info').show(200);
+                     $('.parent_info').text('PARENT / GUARDIAN INFORMATION');
+                    break;
+            
+                case 'PARK':
+                    $('.children_info').hide(200);
+                    $('.parent_info').text('GUEST INFORMATION');
+                    break;
+            }
+            $.ajax({
+                url: "<?= base_url('time_monitoring/get_guest_data')?>",
+                method: "POST",
+                data: {
+                    serial_no: serial_no,
+                    service: service
+                },
+                dataType: "json",
+                success: function(data) {
+                    $('#children_info').html(data.children_info);
+                    $('#parent_info').html(data.parent_guardian);
+                    $('#time_info').html(data.time_info);
+                    $('#boardModal').modal('show');
+                }
+            });
         });
 
         $(document).on('click', '.view', function(){
-            $('#boardModal').modal('show');
+            var serial_no = $(this).attr('id');
+            var service = $(this).data('service');
+            switch (service) {
+                case 'INFLATABLES':
+                     $('.children_info').show(200);
+                     $('.parent_info').text('PARENT / GUARDIAN INFORMATION');
+                    break;
+            
+                case 'PARK':
+                    $('.children_info').hide(200);
+                    $('.parent_info').text('GUEST INFORMATION');
+                    break;
+            }
+            $.ajax({
+                url: "<?= base_url('time_monitoring/get_guest_data')?>",
+                method: "POST",
+                data: {
+                    serial_no: serial_no,
+                    service: service
+                },
+                dataType: "json",
+                success: function(data) {
+                    $('#children_info').html(data.children_info);
+                    $('#parent_info').html(data.parent_guardian);
+                    $('#time_info').html(data.time_info);
+                    $('#boardModal').modal('show');
+                }
+            });
         });
 
         $(document).on('click', '.checkout', function(){
-            $('#checkoutModal').modal('show');
+            var serial_no = $(this).attr('id');
+            var service = $(this).data('service');
+            switch (service) {
+                case 'INFLATABLES':
+                     $('#children_box').show(200);
+                     $('#parent_box').text('PARENT / GUARDIAN INFORMATION');
+                    break;
+            
+                case 'PARK':
+                    $('#children_box').hide(200);
+                    $('#parent_box').text('GUEST INFORMATION');
+                    break;
+            }
+            $.ajax({
+                url: "<?= base_url('time_monitoring/get_checkout')?>",
+                method: "POST",
+                data: {
+                    serial_no: serial_no,
+                    service: service
+                },
+                dataType: "json",
+                success: function(data) {
+                    $('#checkout_data').html(data.checkout);
+                    $('#parent_guardian_data').html(data.parent_guardian);
+                    $('#checkoutModal').modal('show');
+                }
+            });
         });
 
         $(document).on('click', '#print_records', function() {
