@@ -41,6 +41,5 @@ class Sales_invoice extends CI_Controller
         $html = $this->load->view('pdf/sales_invoice', $data, true );
         $mpdf->WriteHTML( $html );
         $mpdf->Output();
-
     }
 }
