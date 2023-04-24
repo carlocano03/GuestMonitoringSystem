@@ -114,4 +114,15 @@ class Main_model extends CI_Model
         }
     }
 
+    function get_package_details($package)
+    {
+        $this->db->where('package', $package);
+        $query = $this->db->get('pricing_promo');
+        $output = '<option value="">Select Time</option>';
+        foreach ($query->result() as $row) {
+            $output .= '<option value="'.$row->pricing_id.'">'. $row->admission_type .'</option>';
+        }
+        return $output;
+    }
+
 }

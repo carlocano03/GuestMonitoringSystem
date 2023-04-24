@@ -70,10 +70,10 @@
                 <div class="col-md-5">
                     <div class="row g-0">
                         <div class="col-sm-3 mb-2">
-                            <button class="btn btn-dark btn-sm">PRINT RECORDS</button>
+                            <button class="btn btn-dark btn-sm" id="print_reports">PRINT RECORDS</button>
                         </div>
                         <div class="col-sm-4">
-                            <button class="btn btn-info btn-sm">EXPORT THIS FILE</button>
+                            <button class="btn btn-info btn-sm" id="export_files">EXPORT THIS FILE</button>
                         </div>
                     </div>
                 </div>
@@ -98,24 +98,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- <tr>
-                            <td>
-                                <button class="btn btn-secondary btn-sm view" title="View"><i class="bi bi-eye-fill"></i></button>
-                                <button class="btn btn-primary btn-sm print" title="Print"><i class="bi bi-printer-fill"></i></button>
-                                <button class="btn btn-danger btn-sm void" title="Void"><i class="bi bi-x-square-fill"></i></button>
-                            </td>
-                            <td>J23-001</td>
-                            <td>1234</td>
-                            <td>01-23-23</td>
-                            <td>Inflatables</td>
-                            <td>05:10</td>
-                            <td>01:18PM</td>
-                            <td>2:18PM</td>
-                            <td>Juan Dela Cruz</td>
-                            <td>Ibarra</td>
-                            <td>1</td>
-                            <td>150.00</td>
-                        </tr> -->
+
                     </tbody>
                 </table>
                 <hr>
@@ -159,95 +142,52 @@
                 </div>
                 <div class="modal-body">
                     <div class="text-end">
-                        <small>February 15, 2023 11:38AM</small>
+                        <small id="date_added"></small>
                     </div>
-                    <div class="d-flex align-items-center">
-                        <img class="box-img" src="<?= base_url('assets/img/avatar.png');?>" alt="Profile-Pic">
-                        <div class="ms-3">
-                            <h5 class="mb-0">Serial Number:</h5>
-                            <h4 class="mb-0"><b>5 012345 6789000</b></h4>
-                            <h5 class="mb-0">Guest / Kids Name</h5>
-                            <h4 class="mb-0 text-muted">Juan Dela Cruz Gomez</h4>
-                            <b class="mb-0 text-muted">12 years old</b>
-                        </div>
+                    <div class="box-header text-white parent_info" style="background: #8F3F96;">
+                        PARENT / GUARDIAN INFORMATION
                     </div>
-                    <hr>
-                    <div class="form-group mb-3">
-                        <label>Package:</label>
-                        <h5 style="color:#8E3C95;">1 Hour - Inflatables</h5>
-                    </div>
-                    <div class="form-group">
-                        <label>Remaining Time (HH:MM:SS):</label>
-                        <h5 style="color:#d63031;">0:2:30</h5>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Time In:</label>
-                                <h5 style="color:#8E3C95;">10:40 AM</h5>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Time Out:</label>
-                                <h5 style="color:#8E3C95;">11:40 AM</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Inventory Socks:</label>
-                        <h5><b>2 Grip Socks</b></h5>
-                    </div>
-                    <div class="form-group">
-                        <label>Extension (if any):</label>
-                        <h5><b>1 Hour - Inflatables</b></h5>
-                    </div>
+                    <div id="parent_info"></div>
                     
-                    <div class="text-center">
-                        <label>Total Amount</label>
-                        <h4>P 350.<small>00</small></h4>
+                    <div class="box-header children_info">
+                        CHILD / KIDS INFORMATION
                     </div>
-                    <div class="mx-auto">
-                        <button class="btn btn-danger w-100 btn-rounded">VOID THIS TRANSACTION</button>
-                    </div>
+                    <div id="children_info"></div>
+                    
+
+                    <div id="time_info"></div>
+                    
                     <hr>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="checkoutModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <!-- Modal -->
+        <div class="modal fade" id="viewModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header" style="background-color: #d63031; color:#fff;">
-                    <h5 class="modal-title" id="exampleModalLabel">WARNING NOTICE</h5>
+                <div class="modal-header" style="background-color: #8E3C95; color:#fff;">
+                    <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-file-earmark-text-fill me-2"></i>VIEW TRANSACTION</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="d-flex align-items-center">
-                        <img src="<?= base_url('assets/img/warning.gif')?>" alt="Warning-Img" width="60">
-                        <h3 class="ms-2" style="color: #d63031"><b>TIMES IS UP</b></h3>
+                    <div class="text-end">
+                        <small id="date_data"></small>
                     </div>
+                    <div class="box-header text-white parent_data" style="background: #8F3F96;">
+                        PARENT / GUARDIAN INFORMATION
+                    </div>
+                    <div id="parent_data"></div>
+                    
+                    <div class="box-header children_data">
+                        CHILD / KIDS INFORMATION
+                    </div>
+                    <div id="children_data"></div>
+                    
+                    <div id="time_data"></div>
+                    
                     <hr>
-                    <div class="row">
-                        <div class="col-3">
-                            <img class="box-img" src="<?= base_url('assets/img/avatar.png');?>" alt="Profile-Pic">
-                        </div>
-                        <div class="col-5">
-                            <div class="mb-0">Serial Number:</div>
-                            <div class="mb-0"><b>5 012345 6789000 / INFLATABLES</b></div>
-                            <div class="mb-0">Guest / Kids Name</div>
-                            <div class="mb-0 text-muted">Juan Dela Cruz Gomez</div>
-                            <b class="mb-0 text-muted">12 years old</b>
-                        </div>
-                        <div class="col-4">
-                            <button class="btn btn-primary btn-rounded mt-3 mb-3 w-100">EXTEND TIME</button>
-                            <button class="btn btn-danger btn-rounded w-100">CHECK OUT</button>
-                        </div>
-
-                        <hr>
-                    </div>
                 </div>
             </div>
         </div>
@@ -304,6 +244,9 @@
                 }
             },
         });
+        $('#search_value').on('input', function() {
+            tbl_sales.draw();
+        });
 
         // var total = 0;
         // tbl_sales.column(11).data().each(function(amount) {
@@ -312,15 +255,83 @@
         // console.log(total);
 
         $(document).on('click', '.void', function(){
-            $('#transactionModal').modal('show');
+            var serial_no = $(this).attr('id');
+            var service = $(this).data('service');
+            switch (service) {
+                case 'INFLATABLES':
+                     $('.children_info').show(200);
+                     $('.parent_info').text('PARENT / GUARDIAN INFORMATION');
+                    break;
+            
+                case 'PARK':
+                    $('.children_info').hide(200);
+                    $('.parent_info').text('GUEST INFORMATION');
+                    break;
+            }
+            $.ajax({
+                url: "<?= base_url('transaction/get_guest_data')?>",
+                method: "POST",
+                data: {
+                    serial_no: serial_no,
+                    service: service
+                },
+                dataType: "json",
+                success: function(data) {
+                    $('#children_info').html(data.children_info);
+                    $('#parent_info').html(data.parent_guardian);
+                    $('#time_info').html(data.time_info);
+                    $('#date_added').html(data.date_added);
+                    $('#transactionModal').modal('show');
+                }
+            });
         });
 
         $(document).on('click', '.view', function(){
-            $('#boardModal').modal('show');
+            var serial_no = $(this).attr('id');
+            var service = $(this).data('service');
+            switch (service) {
+                case 'INFLATABLES':
+                     $('.children_info').show(200);
+                     $('.parent_info').text('PARENT / GUARDIAN INFORMATION');
+                    break;
+            
+                case 'PARK':
+                    $('.children_info').hide(200);
+                    $('.parent_info').text('GUEST INFORMATION');
+                    break;
+            }
+            $.ajax({
+                url: "<?= base_url('transaction/get_guest_info')?>",
+                method: "POST",
+                data: {
+                    serial_no: serial_no,
+                    service: service
+                },
+                dataType: "json",
+                success: function(data) {
+                    $('#children_data').html(data.children_info);
+                    $('#parent_data').html(data.parent_guardian);
+                    $('#time_data').html(data.time_info);
+                    $('#date_data').html(data.date_added);
+                    $('#viewModal').modal('show');
+                }
+            });
         });
 
-        $(document).on('click', '.checkout', function(){
-            $('#checkoutModal').modal('show');
+        $(document).on('click', '.print', function(){
+            var serial_no = $(this).attr('id');
+            var url = "<?= base_url('sales_invoice?transaction=')?>" + serial_no;
+            window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');
+        });
+
+        $(document).on('click', '#print_reports', function() {
+            var url = "<?= base_url('transaction/sales_report');?>";
+            window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');
+        });
+
+        $(document).on('click', '#export_files', function() {
+            var url = "<?= base_url('time_monitoring/export_time_monitoring');?>";
+            window.location.href = url;
         });
     });
 </script>

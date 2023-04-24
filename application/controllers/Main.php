@@ -207,13 +207,24 @@ class Main extends CI_Controller
             $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
             $guest_id = $this->input->post('guest_id');
             $message = '';
+            // $folderPath = 'capture_images/parents/';
+            // $image_parts = explode(";base64,", $this->input->post('captured_image_data'));
+            // $image_type_aux = explode("image/", $image_parts[0]);
+            // $image_type = $image_type_aux[1];
+            // $image_base64 = base64_decode($image_parts[1]);
+            // $file = $folderPath . uniqid() . '.png';
+            // file_put_contents($file, $image_base64);
             $folderPath = 'capture_images/parents/';
-            $image_parts = explode(";base64,", $this->input->post('captured_image_data'));
-            $image_type_aux = explode("image/", $image_parts[0]);
-            $image_type = $image_type_aux[1];
-            $image_base64 = base64_decode($image_parts[1]);
-            $file = $folderPath . uniqid() . '.png';
-            file_put_contents($file, $image_base64);
+            if(!empty($this->input->post('captured_image_data'))) {
+                $image_parts = explode(";base64,", $this->input->post('captured_image_data'));
+                $image_type_aux = explode("image/", $image_parts[0]);
+                $image_type = $image_type_aux[1];
+                $image_base64 = base64_decode($image_parts[1]);
+                $file = $folderPath . uniqid() . '.png';
+                file_put_contents($file, $image_base64);
+            } else {
+                $file = NULL;
+            }
 
             $update = array(
                 'status' => 'REGISTERED',
@@ -241,12 +252,16 @@ class Main extends CI_Controller
             $guest_id = $this->input->post('guest_id');
             $message = '';
             $folderPath = 'capture_images/parents/';
-            $image_parts = explode(";base64,", $this->input->post('captured_image_data'));
-            $image_type_aux = explode("image/", $image_parts[0]);
-            $image_type = $image_type_aux[1];
-            $image_base64 = base64_decode($image_parts[1]);
-            $file = $folderPath . uniqid() . '.png';
-            file_put_contents($file, $image_base64);
+            if(!empty($this->input->post('captured_image_data'))) {
+                $image_parts = explode(";base64,", $this->input->post('captured_image_data'));
+                $image_type_aux = explode("image/", $image_parts[0]);
+                $image_type = $image_type_aux[1];
+                $image_base64 = base64_decode($image_parts[1]);
+                $file = $folderPath . uniqid() . '.png';
+                file_put_contents($file, $image_base64);
+            } else {
+                $file = NULL;
+            }
 
             $update = array(
                 'status' => 'REGISTERED',
@@ -265,8 +280,6 @@ class Main extends CI_Controller
                 'staff_in_charge' => $this->input->post('service_crew'),
             );
         }
-
-        
         if ($this->db->where('guest_id', $guest_id)->update('guest_details', $update)) {
             $this->db->insert('time_management', $insert_time);
             $message = "Success";
@@ -278,16 +291,27 @@ class Main extends CI_Controller
     public function consumable_tocks()
     {
         $message = '';
+        $checked = $this->input->post('discount_check');
+        if ($checked == 1) {
+           $discount_amt =  $this->input->post('amt_total');
+        } else {
+            $discount_amt = 0;
+        }
+        $transaction_no = 'JCK-'.rand(10,1000);
 	    $insert_data_stocks = $this->input->post('data_table');
         for ($i=0; $i < count($insert_data_stocks); $i++) {
             $data[] = array(
                 'serial_no' => $this->input->post('serial_no'),
                 'guest_id' => $this->input->post('guest_id'),
-                'transaction_no' => 'JCK-'.rand(10,1000),
+                'transaction_no' => $transaction_no,
                 'type_id' => $insert_data_stocks[$i]['type_id'],
                 'price' => $insert_data_stocks[$i]['price'],
                 'qty' => $insert_data_stocks[$i]['qty'],
                 'total_amt' => $insert_data_stocks[$i]['total_amt'],
+                'details' => $insert_data_stocks[$i]['details'],
+                'discount' => $this->input->post('discount_check'),
+                'discount_amt' => $discount_amt,
+                'discount_remarks' => $this->input->post('discount_remarks'),
             );
             $this->db->insert('consumable_stocks', $data[$i]);
 
@@ -384,6 +408,13 @@ class Main extends CI_Controller
         return $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode($results));
+    }
+
+    public function get_package_details()
+    {
+        if ($this->input->post('package')) {
+            echo $this->main->get_package_details($this->input->post('package'));
+        }
     }
 }
 //End CI_Controller

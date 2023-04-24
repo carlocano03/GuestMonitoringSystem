@@ -124,15 +124,48 @@
                             <div class="form-group mb-3">
                                 <input type="text" class="form-control" name="descriptions" id="descriptions" placeholder="DESCRIPTIONS" required>
                             </div>
-                            <div class="form-group mb-3">
+                            <!-- <div class="form-group mb-3">
                                 <input type="number" class="form-control" name="qty" id="qty" placeholder="QUANTITY" required>
-                            </div>
+                            </div> -->
                             <div class="form-group mb-3">
                                 <input type="number" class="form-control" name="weekdays_price" id="weekdays_price" placeholder="PRICE" required>
                             </div>
                             <!-- <div class="form-group mb-3">
                                 <input type="number" class="form-control" name="weekends_price" id="weekends_price" placeholder="WEEKENDS & HOLIDAY PRICE" required>
                             </div> -->
+                            <div class="form-group mb-3">
+                                <button type="button" class="btn btn-secondary w-100 btn-rounded clear">CLEAR</button>
+                            </div>
+                            <div class="form-group mb-3">
+                                <button type="submit" class="btn btn-primary w-100 btn-rounded">SUBMIT</button>
+                            </div>
+                        </form>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="inventoryQtyModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #6f42c1; color:#fff;">
+                    <h5 class="modal-title" id="exampleModalLabel">UPDATE STOCKS</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                    <div class="modal-body">
+                        <h4 class="fw-bold">INVENTORY MODULE</h4>
+                        <hr class="mt-0">
+                        <form id="updateStocks" method="POST">
+                            <input type="hidden" name="invId" id="invId">
+                            <div class="form-group mb-3">
+                                <label>Existing Quantity</label>
+                                <input type="number" class="form-control" name="existing_qty" id="existing_qty" readonly>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label>Additional Quantity</label>
+                                <input type="number" class="form-control" name="additional_qty" id="additional_qty" required>
+                            </div>
                             <div class="form-group mb-3">
                                 <button type="button" class="btn btn-secondary w-100 btn-rounded clear">CLEAR</button>
                             </div>
@@ -237,9 +270,9 @@
                         if (Object.keys(data).length > 0) {
                             $('#inv_id').val(data.inv_id == null ? '' : data.inv_id);
                             $('#descriptions').val(data.descriptions == null ? '' : data.descriptions);
-                            $('#qty').val(data.quantity == null ? '' : data.quantity);
+                            // $('#qty').val(data.quantity == null ? '' : data.quantity);
                             $('#weekdays_price').val(data.weekdays_price == null ? '' : data.weekdays_price);
-                            $('#weekends_price').val(data.weekends_price == null ? '' : data.weekends_price);
+                            // $('#weekends_price').val(data.weekends_price == null ? '' : data.weekends_price);
                         }
                     }
             });
@@ -304,6 +337,41 @@
                     });
                 }
             })
+        });
+
+        $(document).on('click', '.add_qty', function() {
+            var inv_id = $(this).attr('id');
+            var exist_qty = $(this).data('qty');
+
+            $('#invId').val(inv_id);
+            $('#existing_qty').val(exist_qty);
+            $('#inventoryQtyModal').modal('show');
+        });
+
+        $(document).on('submit', '#updateStocks', function(event){
+            event.preventDefault();
+
+            $.ajax({
+                url: "<?= base_url('inventory/update_stocks')?>",
+                method: "POST",
+                data: new FormData(this),
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success: function(data) {
+                    if (data.success == 'Success') {
+                        Swal.fire('Thank you!', 'Stocks successfully updated.', 'success');
+                        table_inventory.draw();
+                        $('#inventoryQtyModal').modal('hide');
+                        $('#updateStocks').trigger('reset');
+                    } else {
+                        Swal.fire("Failed to add.", "Clicked button to  close!", "error");
+                    }
+                },
+                error: function() {
+                    Swal.fire('Error!', 'Something went wrong. Please try again later!', 'error');
+                }
+            });
         });
 
     });
