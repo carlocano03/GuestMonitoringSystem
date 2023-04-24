@@ -103,4 +103,19 @@ class Transaction_model extends CI_Model
         }
     }
 
+    function get_transaction()
+    {
+        $query = $this->db
+            ->select('G.*')
+            ->select('TM.*')
+            ->select('P.admission_type')
+            ->from($this->guest.' G')
+            ->join('time_management TM', 'TM.guest_id = G.guest_id', 'LEFT' )
+            ->join('pricing_promo P', 'P.pricing_id = TM.package_promo', 'LEFT')
+            ->where('G.status', 'REGISTERED')
+            ->where('TM.guest_id IS NOT NULL')
+            ->get();
+        return $query->result();
+    }
+
 }

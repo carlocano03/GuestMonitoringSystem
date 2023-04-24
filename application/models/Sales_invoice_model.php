@@ -45,4 +45,12 @@ class Sales_invoice_model extends CI_Model
         return $result->total_sales;
     }
 
+    function get_transaction_date($slip_no)
+    {
+        $this->db->where('serial_no', $slip_no);
+        $this->db->group_by('serial_no');
+        $query = $this->db->get('time_management');
+        return $query->row();
+    }
+
 }

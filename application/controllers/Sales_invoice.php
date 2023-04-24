@@ -27,6 +27,7 @@ class Sales_invoice extends CI_Controller
         $data['sales'] = $this->sales->get_sales($slip_no);
         $data['discount'] = $this->sales->get_discount($slip_no);
         $data['total'] = $this->sales->get_total_sales($slip_no);
+        $data['transaction_date'] = $this->sales->get_transaction_date($slip_no);
         $mpdf = new \Mpdf\Mpdf( [ 
             'format' => [80, 150],
             'margin_top' => 5,
