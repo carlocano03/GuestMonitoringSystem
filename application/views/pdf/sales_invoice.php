@@ -40,7 +40,7 @@
     <div class="header">
         <img src="<?= base_url('assets/img/jacks.png')?>" alt="Img" width="70">
         <h5>SALES INVOICE</h5>
-        <small><?= date('D, F j, Y')?></small>
+        <small><?= date('D, F j, Y', strtotime($transaction_date->date_added))?></small>
         <hr>
         <h5>TRANSACTION NO.: <?= isset($discount->transaction_no) ? $discount->transaction_no : '';?></h5>
         <hr>
