@@ -39,6 +39,13 @@ class Main extends CI_Controller
         $this->load->view('monitoring_board');
     }
 
+    public function time_monitoring()
+    {
+        $this->load->view('partials/__header');
+        $this->load->view('partials/__footer');
+        $this->load->view('time_monitoring');
+    }
+
     public function sales_transaction()
     {
         $this->load->view('partials/__header');
@@ -415,6 +422,211 @@ class Main extends CI_Controller
         if ($this->input->post('package')) {
             echo $this->main->get_package_details($this->input->post('package'));
         }
+    }
+
+    public function get_countGuest()
+    {
+        // $inflatables = $this->db->query("
+        //     SELECT *
+        //     FROM guest_details WHERE status='REGISTERED' AND service='INFLATABLES'
+        // ");
+        $inflatables = $this->db
+            ->select('GC.*')
+            ->select('G.guest_id, G.status, G.service')
+            ->from('guest_children GC')
+            ->join('guest_details G', 'GC.parent_id = G.guest_id', 'LEFT')
+            ->where('G.status', 'REGISTERED')
+            ->where('G.service', 'INFLATABLES')
+            ->get();
+        $inflatables_count = $inflatables->num_rows();
+
+        $park = $this->db->query("
+            SELECT *
+            FROM guest_details WHERE status='REGISTERED' AND service='PARK'
+        ");
+        $park_count = $park->num_rows();
+
+        $data = array(
+            'count_inflatables' => $inflatables_count,
+            'count_park'  => $park_count
+        );
+        echo json_encode($data);
+    }
+
+    public function getGuest()
+    {
+        $board1 = '';
+        $board2 = '';
+        $board3 = '';
+
+        //less than 5 minutes
+        $query = $this->db
+            ->select('TM.*, TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) AS remaining_time')
+            ->select("CONCAT(GC.child_fname, ' ',LEFT(GC.child_lname, 1),'.') as children, GC.child_age, GC.child_img")
+            ->select("CONCAT(G.guest_fname, ' ',G.guest_lname) as guardian, G.status, G.service")
+            ->from('time_management TM')
+            ->join('guest_children GC', 'TM.guest_id = GC.parent_id', 'LEFT')
+            ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
+            ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) <', 5 * 60) // 15 minutes in seconds
+            ->get();
+
+        if ($query->num_rows() > 0) { 
+            foreach ($query->result() as $list) {
+                // Calculate remaining time in seconds
+                if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
+                    $remaining_time = strtotime($list->time_out) - time();
+                } else {
+                    $remaining_time = 0;
+                }
+
+                // Format remaining time as HH:MM:SS
+                $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+
+                if($list->service == 'INFLATABLES') {
+                    $color = 'background: #7ebf06;';
+                    $title = 'INFLATABLES';
+                } else {
+                    $color = 'background: #e84393;';
+                    $title = 'PARK';
+                }
+                $board1 .= '
+                    <div class="card mb-3">
+                        <div class="card-header" style="'.$color.'">
+                            <h5>'.$title.'</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <img class="box-img-monitor" src="'.base_url('assets/img/avatar.png').'" alt="Profile-Pic">
+                                <div class="ms-2">
+                                    <h5 class="mb-0">'.strtoupper($list->children).'</h5>
+                                    <b class="mb-0">1234567890</b>
+                                </div>
+                                <div class="ms-2 text-center">
+                                    <h5 style="color: #e84393; font-weight:700">TIME LEFT</h5>
+                                    <h4 style="color: #e84393; font-weight:700" class="remaining-time" data-remaining-time="' . $remaining_time . '">'.$remaining_time_formatted.'</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ';
+            }
+        }
+
+        //15 minutes
+        $query = $this->db
+            ->select('TM.*, TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) AS remaining_time')
+            ->select("CONCAT(GC.child_fname, ' ',LEFT(GC.child_lname, 1),'.') as children, GC.child_age, GC.child_img")
+            ->select("CONCAT(G.guest_fname, ' ',G.guest_lname) as guardian, G.status, G.service")
+            ->from('time_management TM')
+            ->join('guest_children GC', 'TM.guest_id = GC.parent_id', 'LEFT')
+            ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
+            ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) =', 15 * 60) // 15 minutes in seconds
+            ->get();
+
+        if ($query->num_rows() > 0) { 
+            foreach ($query->result() as $list) {
+                // Calculate remaining time in seconds
+                if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
+                    $remaining_time = strtotime($list->time_out) - time();
+                } else {
+                    $remaining_time = 0;
+                }
+
+                // Format remaining time as HH:MM:SS
+                $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+
+
+                if($list->service == 'INFLATABLES') {
+                    $color = 'background: #7ebf06;';
+                    $title = 'INFLATABLES';
+                } else {
+                    $color = 'background: #e84393;';
+                    $title = 'PARK';
+                }
+                $board2 .= '
+                    <div class="card mb-3">
+                        <div class="card-header" style="'.$color.'">
+                            <h5>'.$title.'</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <img class="box-img-monitor" src="'.base_url('assets/img/avatar.png').'" alt="Profile-Pic">
+                                <div class="ms-2">
+                                    <h5 class="mb-0">'.strtoupper($list->children).'</h5>
+                                    <b class="mb-0">'.$list->serial_no.'</b>
+                                </div>
+                                <div class="ms-2 text-center">
+                                    <h5 style="color: #e84393; font-weight:700">TIME LEFT</h5>
+                                    <h4 style="color: #e84393; font-weight:700" class="remaining-time" data-remaining-time="' . $remaining_time . '">'.$remaining_time_formatted.'</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ';
+            }
+        }
+
+        //more than 15 minutes
+        $query = $this->db
+            ->select('TM.*, TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) AS remaining_time')
+            ->select("CONCAT(GC.child_fname, ' ',LEFT(GC.child_lname, 1),'.') as children, GC.child_age, GC.child_img")
+            ->select("CONCAT(G.guest_fname, ' ',G.guest_lname) as guardian, G.status, G.service")
+            ->from('time_management TM')
+            ->join('guest_children GC', 'TM.guest_id = GC.parent_id', 'LEFT')
+            ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
+            ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) >', 15 * 60) // 15 minutes in seconds
+            ->get();
+
+        if ($query->num_rows() > 0) { 
+            foreach ($query->result() as $list) {
+                // Calculate remaining time in seconds
+                if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
+                    $remaining_time = strtotime($list->time_out) - time();
+                } else {
+                    $remaining_time = 0;
+                }
+
+                // Format remaining time as HH:MM:SS
+                $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+
+                if($list->service == 'INFLATABLES') {
+                    $color = 'background: #7ebf06;';
+                    $title = 'INFLATABLES';
+                } else {
+                    $color = 'background: #e84393;';
+                    $title = 'PARK';
+                }
+                $board3 .= '
+                    <div class="card mb-3">
+                        <div class="card-header" style="'.$color.'">
+                            <h5>'.$title.'</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <img class="box-img-monitor" src="'.base_url('assets/img/avatar.png').'" alt="Profile-Pic">
+                                <div class="ms-2">
+                                    <h5 class="mb-0">'.strtoupper($list->children).'</h5>
+                                    <b class="mb-0">1234567890</b>
+                                </div>
+                                <div class="ms-2 text-center">
+                                    <h5 style="color: #e84393; font-weight:700">TIME LEFT</h5>
+                                    <h4 style="color: #e84393; font-weight:700" class="remaining-time" data-remaining-time="' . $remaining_time . '">'.$remaining_time_formatted.'</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ';
+            }
+        }
+        
+        $data = array(
+            'playerBoard1' => $board1,
+            'playerBoard2' => $board2,
+            'playerBoard3' => $board3,
+        );
+        echo json_encode($data);
+
+
     }
 }
 //End CI_Controller
