@@ -38,10 +38,11 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                             Guest Monitoring Board
                         </a>
-                        <!--<a class="nav-link" href="#">
+                        <a class="nav-link" href="<?= base_url('main/time_monitoring')?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-user-clock"></i></div>
                             Time Monitoring 
                         </a>
+                        <!--
                         <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-user-cog"></i></div>
                             Customer Registration

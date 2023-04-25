@@ -175,4 +175,27 @@ class Home extends CI_Controller
         $output['date_reg'] = $dateReg;
         echo json_encode($output);
     }
+
+    public function slip()
+    {
+        require_once 'vendor/autoload.php';
+        $reg_no = $_GET['registration'];
+
+        $this->db->where('guest_slip_no', $reg_no);
+        $query = $this->db->get('guest_details');
+        $data['transaction'] = $query->row();
+        $mpdf = new \Mpdf\Mpdf( [ 
+            'format' => [80, 90],
+            'margin_top' => 5,
+            'margin_bottom' => 5,
+            // 'margin_left' => 2,
+            // 'margin_right' => 2,
+        ]);
+        // Enable auto-adjustment of top and bottom margins
+        $mpdf->showImageErrors = true;
+        $mpdf->showWatermarkImage = true;
+        $html = $this->load->view('pdf/ticket_slip', $data, true );
+        $mpdf->WriteHTML( $html );
+        $mpdf->Output();
+    }
 }

@@ -225,7 +225,7 @@
                     <b>Registration Date:</b> <span id="date_reg"></span>
                     <h5 class="text-green">REGISTRATION NO.</h5>
                     <h4 id="reg_no"></h4>
-                    <button class="btn btn-primary w-100 mb-3">PRINT</button>
+                    <button class="btn btn-primary w-100 mb-3" id="print_slip">PRINT</button>
                     <!--<div class="text-center">
                         <img src="<?= base_url('assets/img/jacks-loading.gif') ?>" alt="" width="200">
                     </div>-->
@@ -401,6 +401,12 @@
 
             $(document).on('click', '.close_modal', function() {
                 window.location.href = "<?= base_url('home') ?>";
+            });
+
+            $(document).on('click', '#print_slip', function() {
+                var reg_no = $('#reg_no').text();
+                var url = "<?= base_url('home/slip?registration=')?>" + reg_no;
+                window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');
             });
         });
     </script>
