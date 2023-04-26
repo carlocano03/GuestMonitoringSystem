@@ -30,23 +30,14 @@ class Transaction extends CI_Controller
             $no++;
             $row = array();
 
-            $row[] = '<button class="btn btn-secondary btn-sm view" id="'.$list->slip_app_no.'" data-service="'.$list->service.'" title="View"><i class="bi bi-eye-fill"></i></button>
-                      <button class="btn btn-primary btn-sm print" id="'.$list->slip_app_no.'" title="Print"><i class="bi bi-printer-fill"></i></button>
-                      <button class="btn btn-danger btn-sm void" id="'.$list->slip_app_no.'" data-service="'.$list->service.'" title="Void"><i class="bi bi-x-square-fill"></i></button>';
+            $row[] = '<button class="btn btn-secondary btn-sm view" id="'.$list->slip_app_no.'" data-child="'.$list->child_id.'" data-service="'.$list->service.'" title="View"><i class="bi bi-eye-fill"></i></button>
+                      <button class="btn btn-primary btn-sm print" id="'.$list->slip_app_no.'" data-child="'.$list->child_id.'" title="Print"><i class="bi bi-printer-fill"></i></button>
+                      <button class="btn btn-danger btn-sm void" id="'.$list->slip_app_no.'"  data-service="'.$list->service.'" title="Void"><i class="bi bi-x-square-fill"></i></button>';
             $row[] = $list->transaction_no;
             $row[] = $list->slip_app_no;
             $row[] = date('F j, Y', strtotime($list->date_added));
             $row[] = $list->service;
-
-            // Calculate remaining time in seconds
-            if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
-                $remaining_time = strtotime($list->time_out) - time();
-            } else {
-                $remaining_time = 0;
-            }
-            // Format remaining time as HH:MM:SS
-            $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
-            $row[] = '<span class="remaining-time" data-remaining-time="' . $remaining_time . '">' . $remaining_time_formatted . '</span>';;
+            
             $row[] = date('g:i a', strtotime($list->time_in));
             $row[] = date('g:i a', strtotime($list->time_out));
 
@@ -65,7 +56,7 @@ class Transaction extends CI_Controller
             } else {
                 $row[] = $list->guest_fname. ' ' .$list->guest_lname;
             }
-            
+
             $row[] = $list->guest_fname. ' ' .$list->guest_lname;
             $row[] = $list->qty;
 

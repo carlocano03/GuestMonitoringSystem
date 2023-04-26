@@ -8,7 +8,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class Transaction_model extends CI_Model
 {
-    var $guest = 'guest_details';
+    // var $guest = 'guest_details';
+    var $guest = 'time_management';
     var $guest_order = array('G.slip_app_no', 'G.guest_fname', 'G.guest_mname', 'G.guest_lname', 'G.service');
     var $guest_search = array('G.slip_app_no', 'G.guest_fname', 'G.guest_mname', 'G.guest_lname', 'G.service'); //set column field database for datatable searchable just article , description , serial_num, property_num, department are searchable
     var $order = array('G.guest_id' => 'desc'); // default order
@@ -43,14 +44,9 @@ class Transaction_model extends CI_Model
 
     public function count_all()
     {
-        $this->db->select('G.*');
-        $this->db->select('TM.*, TM.guest_id AS tm_guest_id');
-        $this->db->select('CS.transaction_no, CS.type_id, CS.qty, CS.total_amt, CS.guest_id AS cs_guest_id');
-        $this->db->from($this->guest.' G');
-        $this->db->join('time_management TM', 'TM.guest_id = G.guest_id', 'LEFT' );
-        $this->db->join('consumable_stocks CS', 'CS.guest_id = G.guest_id', 'LEFT');
-        $this->db->where('G.status', 'REGISTERED');
-        $this->db->where('TM.guest_id IS NOT NULL');
+        $this->db->select('TM.*');
+        $this->db->from($this->guest.' TM');
+
         // $this->db->group_by('CS.guest_id');
         return $this->db->count_all_results();
     }
@@ -66,16 +62,18 @@ class Transaction_model extends CI_Model
             $this->db->or_like('G.slip_app_no', $searchValue);
             $this->db->group_end();
         }
-        
-        $this->db->select('G.*');
-        $this->db->select('TM.*');
-        $this->db->select('CS.transaction_no, CS.type_id, CS.qty, CS.total_amt');
-        $this->db->from($this->guest.' G');
-        $this->db->join('time_management TM', 'TM.guest_id = G.guest_id', 'LEFT' );
-        $this->db->join('consumable_stocks CS', 'CS.guest_id = G.guest_id', 'LEFT');
-        $this->db->where('G.status', 'REGISTERED');
-        $this->db->where('TM.guest_id IS NOT NULL');
-        $this->db->group_by('CS.guest_id');
+
+        $this->db
+            ->select('TM.*')
+            ->select('G.slip_app_no, G.guest_fname, G.guest_mname, G.guest_lname, G.service, G.contact_no,G.status')
+            ->select('CS.transaction_no, CS.type_id, CS.qty, CS.total_amt')
+            ->select("CONCAT(GC.child_fname, ' ', GC.child_lname) as children, GC.child_id")
+            ->from($this->guest.' TM')
+            ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
+            ->join('consumable_stocks CS', 'CS.guest_id = G.guest_id', 'LEFT')
+            ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
+            ->where('G.status', 'REGISTERED')
+            ->group_by('CS.guest_id');
         $i = 0;
         foreach ($this->guest_search as $item) // loop column 
         {

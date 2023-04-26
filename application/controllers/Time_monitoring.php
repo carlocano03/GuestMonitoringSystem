@@ -46,10 +46,16 @@ class Time_monitoring extends CI_Controller
             $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
 
             $row[] = '<span class="remaining-time" data-remaining-time="' . $remaining_time . '">' . $remaining_time_formatted . '</span>';;
+
+            if ($list->service == 'INFLATABLES') {
+                $row[] = $list->children;
+                $row[] = $list->guest_fname. ' ' .$list->guest_lname;
+            } else {
+                $row[] = $list->guest_fname. ' ' .$list->guest_lname;
+                $row[] = '';
+            }
+
             
-            $row[] = $list->children;
-            
-            $row[] = $list->guest_fname. ' ' .$list->guest_lname;
             $row[] = $list->contact_no;
 
             $class = '';
@@ -245,7 +251,7 @@ class Time_monitoring extends CI_Controller
                                 <b class="mb-0 text-muted">'.$parent->guest_age.'</b>
                             </div>
                             <div class="col-4">
-                                <button class="btn btn-danger btn-rounded w-100">CHECK OUT</button>
+                                <button class="btn btn-danger btn-rounded w-100 checkout_guest_park" id="'.$parent->slip_app_no.'">CHECK OUT</button>
                             </div>
                         </div>
                         <hr>
@@ -443,7 +449,7 @@ class Time_monitoring extends CI_Controller
                             </div>
                             <div class="col-4">
                                 <button class="btn btn-primary btn-rounded mt-3 mb-3 w-100">EXTEND TIME</button>
-                                <button class="btn btn-danger btn-rounded w-100">CHECK OUT</button>
+                                <button class="btn btn-danger btn-rounded w-100 checkout_guest_park" id="'.$parent->slip_app_no.'">CHECK OUT</button>
                             </div>
                         </div>
                         <hr>
@@ -458,11 +464,22 @@ class Time_monitoring extends CI_Controller
                     ->where('TM.serial_no', $parent->slip_app_no)
                     ->get()
                     ->row();
-                // Calculate remaining time in seconds
-                if (date('Y-m-d', strtotime($time_info->date_added)) == date('Y-m-d')) {
-                    $remaining_time = strtotime($time_info->time_out) - time();
+                if ($time_info->extend_time == NULL) {
+                    $time_out = date('g:i A', strtotime($time_info->time_out));
+                    // Calculate remaining time in seconds
+                    if (date('Y-m-d', strtotime($time_info->date_added)) == date('Y-m-d')) {
+                        $remaining_time = strtotime($time_info->time_out) - time();
+                    } else {
+                        $remaining_time = 0;
+                    }
                 } else {
-                    $remaining_time = 0;
+                    $time_out = date('g:i A', strtotime($time_info->extend_time));
+                    // Calculate remaining time in seconds
+                    if (date('Y-m-d', strtotime($time_info->date_added)) == date('Y-m-d')) {
+                        $remaining_time = strtotime($time_info->extend_time) - time();
+                    } else {
+                        $remaining_time = 0;
+                    }
                 }
 
                 // Format remaining time as HH:MM:SS
@@ -514,10 +531,6 @@ class Time_monitoring extends CI_Controller
                     <div class="text-center hide_data">
                         <label>Total Amount</label>
                         <h4>P '.number_format($time_info->weekdays_price, 2).'</h4>
-                    </div>
-                    <div class="mx-auto hide_data">
-                        <button class="btn btn-success w-100 mb-3 btn-rounded" '.$disabled.'>EXTEND TIME</button>
-                        <button class="btn btn-danger w-100 btn-rounded">CHECK OUT</button>
                     </div>
                     <hr>
                 ';
@@ -698,16 +711,12 @@ class Time_monitoring extends CI_Controller
                             <div class="col-3">
                                 <img class="box-img" src="'.$profile_parent.'" alt="Profile-Pic">
                             </div>
-                            <div class="col-5">
+                            <div class="col-9">
                                 <div class="mb-0">Serial Number:</div>
                                 <div class="mb-0"><b>'.$parent->slip_app_no.' / '.$parent->service.'</b></div>
                                 <div class="mb-0">Guest / Kids Name</div>
                                 <div class="mb-0 text-muted">'.ucwords($parent->guest_fname).' '.ucwords($parent->guest_lname).'</div>
                                 <b class="mb-0 text-muted">'.$parent->guest_age.'</b>
-                            </div>
-                            <div class="col-4">
-                                <button class="btn btn-primary btn-rounded mt-3 mb-3 w-100">EXTEND TIME</button>
-                                <button class="btn btn-danger btn-rounded w-100">CHECK OUT</button>
                             </div>
                         </div>
                         <hr>
@@ -722,11 +731,23 @@ class Time_monitoring extends CI_Controller
                     ->where('TM.serial_no', $parent->slip_app_no)
                     ->get()
                     ->row();
-                // Calculate remaining time in seconds
-                if (date('Y-m-d', strtotime($time_info->date_added)) == date('Y-m-d')) {
-                    $remaining_time = strtotime($time_info->time_out) - time();
+
+                if ($time_info->extend_time == NULL) {
+                    $time_out = date('g:i A', strtotime($time_info->time_out));
+                    // Calculate remaining time in seconds
+                    if (date('Y-m-d', strtotime($time_info->date_added)) == date('Y-m-d')) {
+                        $remaining_time = strtotime($time_info->time_out) - time();
+                    } else {
+                        $remaining_time = 0;
+                    }
                 } else {
-                    $remaining_time = 0;
+                    $time_out = date('g:i A', strtotime($time_info->extend_time));
+                    // Calculate remaining time in seconds
+                    if (date('Y-m-d', strtotime($time_info->date_added)) == date('Y-m-d')) {
+                        $remaining_time = strtotime($time_info->extend_time) - time();
+                    } else {
+                        $remaining_time = 0;
+                    }
                 }
 
                 // Format remaining time as HH:MM:SS
@@ -779,10 +800,6 @@ class Time_monitoring extends CI_Controller
                         <label>Total Amount</label>
                         <h4>P '.number_format($time_info->weekdays_price, 2).'</h4>
                     </div>
-                    <div class="mx-auto hide_data">
-                        <button class="btn btn-success w-100 mb-3 btn-rounded" '.$disabled.'>EXTEND TIME</button>
-                        <button class="btn btn-danger w-100 btn-rounded">CHECK OUT</button>
-                    </div>
                     <hr>
                 ';
                 }
@@ -804,6 +821,21 @@ class Time_monitoring extends CI_Controller
         $child_id = $this->input->post('child_id');
 
         $result = $this->time->checkout_guest($slip_no, $child_id);
+        if ($result == TRUE) {
+            $message = 'Success';
+        } else {
+            $message = 'Error';
+        }
+        $output['message'] = $message;
+        echo json_encode($output);
+    }
+
+    public function checkout_guest_park()
+    {
+        $message = '';
+        $slip_no = $this->input->post('slip_no');
+
+        $result = $this->time->checkout_guest_park($slip_no);
         if ($result == TRUE) {
             $message = 'Success';
         } else {

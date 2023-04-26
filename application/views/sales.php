@@ -5,17 +5,17 @@
         text-transform: uppercase;
     }
 
-    #tbl_sales th:nth-child(7) {
+    #tbl_sales th:nth-child(6) {
         background: var(--bs-lightgreen);
         color: #fff;
     }
-    #tbl_sales th:nth-child(8) {
+    #tbl_sales th:nth-child(7) {
         background: var(--bs-red);
         color: #fff;
     }
 
-    #tbl_sales th:nth-child(12),
-    #tbl_sales td:nth-child(12) {
+    #tbl_sales th:nth-child(11),
+    #tbl_sales td:nth-child(11) {
         background: var(--bs-yellow);
         color: #2d3436;
     }
@@ -88,7 +88,6 @@
                             <th>Serial #</th>
                             <th>Date</th>
                             <th>Category</th>
-                            <th>Rem. Time</th>
                             <th>TIME IN</th>
                             <th>TIME OUT</th>
                             <th>Guest name</th>
