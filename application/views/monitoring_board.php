@@ -104,6 +104,35 @@
         </div>
         <!-- Main div -->
     </main>
+
+    <!-- Modal -->
+    <div class="modal fade" id="viewModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #8E3C95; color:#fff;">
+                    <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-file-earmark-text-fill me-2"></i>PACKAGE INFORMATION</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                   
+                    <div class="box-header text-white parent_info_view" style="background: #8F3F96;">
+                        PARENT / GUARDIAN INFORMATION
+                    </div>
+                    <div id="parent_info_view"></div>
+                    
+                    <div class="box-header children_info_view">
+                        CHILD / KIDS INFORMATION
+                    </div>
+                    <div id="children_info_view"></div>
+                    
+
+                    <div id="time_info_view"></div>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal -->
     <div class="modal fade" id="boardModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -251,6 +280,7 @@
 
         $(document).on('click', '.extend', function(){
             var serial_no = $(this).attr('id');
+            var child_id = $(this).data('child');
             var service = $(this).data('service');
             switch (service) {
                 case 'INFLATABLES':
@@ -268,7 +298,8 @@
                 method: "POST",
                 data: {
                     serial_no: serial_no,
-                    service: service
+                    service: service,
+                    child_id: child_id
                 },
                 dataType: "json",
                 success: function(data) {
@@ -282,6 +313,7 @@
 
         $(document).on('click', '.view', function(){
             var serial_no = $(this).attr('id');
+            var child_id = $(this).data('child');
             var service = $(this).data('service');
             switch (service) {
                 case 'INFLATABLES':
@@ -295,24 +327,26 @@
                     break;
             }
             $.ajax({
-                url: "<?= base_url('time_monitoring/get_guest_data')?>",
+                url: "<?= base_url('time_monitoring/get_guest_data_view')?>",
                 method: "POST",
                 data: {
                     serial_no: serial_no,
-                    service: service
+                    service: service,
+                    child_id: child_id
                 },
                 dataType: "json",
                 success: function(data) {
-                    $('#children_info').html(data.children_info);
-                    $('#parent_info').html(data.parent_guardian);
-                    $('#time_info').html(data.time_info);
-                    $('#boardModal').modal('show');
+                    $('#children_info_view').html(data.children_info);
+                    $('#parent_info_view').html(data.parent_guardian);
+                    $('#time_info_view').html(data.time_info);
+                    $('#viewModal').modal('show');
                 }
             });
         });
 
         $(document).on('click', '.checkout', function(){
             var serial_no = $(this).attr('id');
+            var child_id = $(this).data('child');
             var service = $(this).data('service');
             switch (service) {
                 case 'INFLATABLES':
@@ -330,7 +364,8 @@
                 method: "POST",
                 data: {
                     serial_no: serial_no,
-                    service: service
+                    service: service,
+                    child_id: child_id
                 },
                 dataType: "json",
                 success: function(data) {
@@ -349,6 +384,45 @@
         $(document).on('click', '#export_file', function() {
             var url = "<?= base_url('time_monitoring/export_time_monitoring');?>";
             window.location.href = url;
+        });
+
+        $(document).on('click', '.checkout_guest', function() {
+            var slip_no = $(this).attr('id');
+            var child_id = $(this).data('child');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to checkout this children",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "<?= base_url('time_monitoring/checkout_guest')?>",
+                        method: "POST",
+                        data: {
+                            slip_no: slip_no,
+                            child_id: child_id,
+                        },
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.message == 'Success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Thank you',
+                                    text: 'Checkout successfully',
+                                });
+                                $('#checkoutModal').modal('hide');
+                                tbl_monitoring.draw();
+                            } else {
+                                wal.fire('Warning!', 'Failed to checkout.', 'warning');
+                            }
+                        }
+                    });
+                }
+            })
         });
     });
 </script>
