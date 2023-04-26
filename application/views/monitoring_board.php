@@ -56,8 +56,11 @@
                     </select>
                 </div>
                 <div class="col-sm-3">
-                    <select name="sort_by" id="sort_by" class="form-select form-select-sm">
+                    <select name="sort_by_time" id="sort_by_time" class="form-select form-select-sm">
                         <option value="">Sort by Remaining Minutes</option>
+                        <option value="5">Less than 5 minutes</option>
+                        <option value="15">Less than 15 minutes</option>
+                        <option value="Open">More than 15 minutes</option>
                     </select>
                 </div>
             </div><br>
@@ -268,6 +271,7 @@
                 "data": function(data) {
                     data.search_value = $('#search_value').val();
                     data.package = $('#sort_by_package').val();
+                    data.sort = $('#sort_by_time').val();
                 }
             },
         });
@@ -275,6 +279,9 @@
             tbl_monitoring.draw();
         });
         $('#sort_by_package').on('change', function() {
+            tbl_monitoring.draw();
+        });
+        $('#sort_by_time').on('change', function() {
             tbl_monitoring.draw();
         });
 
@@ -386,6 +393,7 @@
             window.location.href = url;
         });
 
+        //INFLATABLES CHECKOUT
         $(document).on('click', '.checkout_guest', function() {
             var slip_no = $(this).attr('id');
             var child_id = $(this).data('child');
@@ -405,6 +413,44 @@
                         data: {
                             slip_no: slip_no,
                             child_id: child_id,
+                        },
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.message == 'Success') {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Thank you',
+                                    text: 'Checkout successfully',
+                                });
+                                $('#checkoutModal').modal('hide');
+                                tbl_monitoring.draw();
+                            } else {
+                                wal.fire('Warning!', 'Failed to checkout.', 'warning');
+                            }
+                        }
+                    });
+                }
+            })
+        });
+
+        //PARK
+        $(document).on('click', '.checkout_guest_park', function() {
+            var slip_no = $(this).attr('id');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to checkout this guest",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "<?= base_url('time_monitoring/checkout_guest_park')?>",
+                        method: "POST",
+                        data: {
+                            slip_no: slip_no,
                         },
                         dataType: "json",
                         success: function(data) {
