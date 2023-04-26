@@ -159,6 +159,7 @@ class Home extends CI_Controller
             if (trim($this->input->post("kid_fname")[$i]) != '') {
                 $data = array(
                     'parent_id' => $parentID,
+                    'registration_no' => $regNo,
                     'child_fname' => $this->db->escape_str($this->input->post('kid_fname')[$i]),
                     'child_lname' => $this->db->escape_str($this->input->post('kid_lname')[$i]),
                     'child_mname' => $this->db->escape_str($this->input->post('kid_mname')[$i]),

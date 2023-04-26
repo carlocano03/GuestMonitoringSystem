@@ -13,6 +13,10 @@ class Main_model extends CI_Model
     var $user_search = array('fullname', 'username', 'branch', 'status'); //set column field database for datatable searchable just article , description , serial_num, property_num, department are searchable
     var $order = array('user_id' => 'desc'); // default order
 
+    var $children = 'guest_children';
+    var $children_order = array('child_id', 'parent_id', 'registration_no');
+    var $children_search = array('child_id', 'parent_id', 'registration_no'); //set column field database for datatable searchable just article , description , serial_num, property_num, department are searchable
+    var $order_children = array('child_id' => 'asc'); // default order
     /**
      * __construct function.
      * 
@@ -123,6 +127,59 @@ class Main_model extends CI_Model
             $output .= '<option value="'.$row->pricing_id.'">'. $row->admission_type .'</option>';
         }
         return $output;
+    }
+
+    public function get_child($reg_no)
+    {
+        $this->_get_child($reg_no);
+        if ($_POST['length'] != -1)
+        $this->db->limit($_POST['length'], $_POST['start']);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function count_filtered_child($reg_no)
+    {
+        $this->_get_child($reg_no);
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    public function count_all_child($reg_no)
+    {
+        $this->db->from($this->children);
+        return $this->db->count_all_results();
+    }
+
+    private function _get_child($reg_no)
+    {
+        $this->db->where('registration_no', $reg_no);
+        $this->db->from($this->children);
+        $i = 0;
+        foreach ($this->children_search as $item) // loop column 
+        {
+            if ($_POST['search']['value']) // if datatable send POST for search
+            {
+                if ($i === 0) // first loop
+                {
+                    $this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+                    $this->db->like($item, $_POST['search']['value']);
+                } else {
+                    $this->db->or_like($item, $_POST['search']['value']);
+                }
+
+                if (count($this->children_search) - 1 == $i) //last loop
+                    $this->db->group_end(); //close bracket
+            }
+            $i++;
+        }
+        if (isset($_POST['order'])) // here order processing
+        {
+            $this->db->order_by($this->children_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
+        } else if (isset($this->order_children)) {
+            $order = $this->order_children;
+            $this->db->order_by(key($order), $order[key($order)]);
+        }
     }
 
 }

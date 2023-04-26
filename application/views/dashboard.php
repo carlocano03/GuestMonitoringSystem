@@ -272,6 +272,20 @@
                                 </tbody>
                             </table>
                             <hr>
+
+                            <table style="display:none;" class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table_children">
+                                <thead>
+                                    <tr>
+                                        <th>Children ID</th>
+                                        <th>Parent ID</th>
+                                        <th>Registration No</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="1" id="add_discount">
                                 <label class="form-check-label text-danger" for="add_discount" style="margin-top: 1px; font-weight: bold;">
@@ -350,6 +364,33 @@
             $("#captured_image_data").val(data_uri);
 	    });	 
 	}
+
+    function get_child(slip_no) 
+    {
+        var table_children = $('#table_children').DataTable({
+            language: {
+                search: '',
+                searchPlaceholder: "Search Here...",
+                processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><br>Loading... ',
+                // paginate: {
+                //     next: '<i class="fas fa-chevron-right"></i>',
+                //     previous: '<i class="fas fa-chevron-left"></i>'
+                // }
+            },
+            "ordering": false,
+            "info": false,
+            "searching": false,
+            "serverSide": true,
+            "processing": true,
+            "bDestroy": true,
+            "bPaginate": false,
+            "bLengthChange": false,
+            "ajax": {
+                "url": "<?= base_url('main/get_child/') ?>" + slip_no,
+                "type": "POST",
+            },
+        });
+    }
 
     var present_provcode;
     var present_muncode;
@@ -500,7 +541,7 @@
                             $('#municipality').val(data.municipal_code).trigger('change');
                             present_brgycode = data.brgy_code;
                             $('#municipality_name').val(data.municipal);
-
+                            get_child(slip_no);
                             //Package Details
                             $("#package").val(data.service == null ? '' : data.service).trigger('change');
                             $.ajax({
@@ -671,6 +712,8 @@
             var amt_total = $('#amt_total').val();
             var discount_check = $('#discount_checked').val();
             var discount_remarks = $('#remarks_discount').val();
+            var pricing_id = $('#pricing_id').val();
+
             if ($('#agreement').is(':checked')) {
                 $.ajax({
                     url: "<?= base_url('main/register_guest')?>",
@@ -710,6 +753,32 @@
                                     }
                                 }
                             });
+
+                            var data = $('#table_children').DataTable().rows().data().toArray(); 
+                            var pricing = $('#pricing_id').val();
+                            var box_no = $('#shoe_box').val();
+                            var bag_no = $('#bag_no').val();
+                            var service_crew = $('#service_crew').val();
+                            var serial = $('#serialno').val();
+                            $.ajax({
+                                url: '<?= base_url('main/save_time_management'); ?>',
+                                method: 'POST',
+                                data: {
+                                    data: data,
+                                    pricing_id: pricing,
+                                    box_no: box_no,
+                                    bag_no: bag_no,
+                                    service_crew: service_crew,
+                                    serial_no: serial,
+                                },
+                                dataType: 'json',
+                                success: function(response) {
+                                    if (response.success) {
+                                        console.log(response.success);
+                                    }
+                                }
+                            });
+
                             // alert('Success');
                             var url = "<?= base_url('sales_invoice?transaction=')?>" + serial_no;
                             window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');

@@ -206,21 +206,15 @@ class Main extends CI_Controller
     {
         $serial_no = $this->input->post('serialno');
         if ($serial_no != '') {
-            $pricing_id = $this->input->post('pricing_id');
-            $this->db->where('pricing_id', $pricing_id);
-            $query = $this->db->get('pricing_promo')->row();
+            // $pricing_id = $this->input->post('pricing_id');
+            // $this->db->where('pricing_id', $pricing_id);
+            // $query = $this->db->get('pricing_promo')->row();
 
-            $time_in = date('H:i:s');
-            $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
+            // $time_in = date('H:i:s');
+            // $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
             $guest_id = $this->input->post('guest_id');
+
             $message = '';
-            // $folderPath = 'capture_images/parents/';
-            // $image_parts = explode(";base64,", $this->input->post('captured_image_data'));
-            // $image_type_aux = explode("image/", $image_parts[0]);
-            // $image_type = $image_type_aux[1];
-            // $image_base64 = base64_decode($image_parts[1]);
-            // $file = $folderPath . uniqid() . '.png';
-            // file_put_contents($file, $image_base64);
             $folderPath = 'capture_images/parents/';
             if(!empty($this->input->post('captured_image_data'))) {
                 $image_parts = explode(";base64,", $this->input->post('captured_image_data'));
@@ -238,25 +232,26 @@ class Main extends CI_Controller
                 'slip_app_no' => $serial_no,
                 'picture' => $file
             );
-            $insert_time = array(
-                'package_promo' => $pricing_id,
-                'guest_id' => $guest_id,
-                'serial_no' => $serial_no,
-                'time_in' => $time_in,
-                'time_out' => $time_out,
-                'box_number' => $this->input->post('shoe_box'),
-                'bag_number' => $this->input->post('bag_no'),
-                'status' => 'Ongoing',
-                'staff_in_charge' => $this->input->post('service_crew'),
-            );
+
+            // $insert_time = array(
+            //     'package_promo' => $pricing_id,
+            //     'guest_id' => $guest_id,
+            //     'serial_no' => $serial_no,
+            //     'time_in' => $time_in,
+            //     'time_out' => $time_out,
+            //     'box_number' => $this->input->post('shoe_box'),
+            //     'bag_number' => $this->input->post('bag_no'),
+            //     'status' => 'Ongoing',
+            //     'staff_in_charge' => $this->input->post('service_crew'),
+            // );
         } else {
             $pricing_id = $this->input->post('pricing_id');
-            $this->db->where('pricing_id', $pricing_id);
-            $query = $this->db->get('pricing_promo')->row();
+            // $this->db->where('pricing_id', $pricing_id);
+            // $query = $this->db->get('pricing_promo')->row();
 
-            $time_in = date('H:i:s');
-            $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
-            $guest_id = $this->input->post('guest_id');
+            // $time_in = date('H:i:s');
+            // $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
+            // $guest_id = $this->input->post('guest_id');
             $message = '';
             $folderPath = 'capture_images/parents/';
             if(!empty($this->input->post('captured_image_data'))) {
@@ -275,24 +270,54 @@ class Main extends CI_Controller
                 'slip_app_no' => $this->input->post('serial_no'),
                 'picture' => $file
             );
-            $insert_time = array(
-                'package_promo' => $pricing_id,
-                'guest_id' => $guest_id,
-                'serial_no' => $this->input->post('serial_no'),
-                'time_in' => $time_in,
-                'time_out' => $time_out,
-                'box_number' => $this->input->post('shoe_box'),
-                'bag_number' => $this->input->post('bag_no'),
-                'status' => 'Ongoing',
-                'staff_in_charge' => $this->input->post('service_crew'),
-            );
+            // $insert_time = array(
+            //     'package_promo' => $pricing_id,
+            //     'guest_id' => $guest_id,
+            //     'serial_no' => $this->input->post('serial_no'),
+            //     'time_in' => $time_in,
+            //     'time_out' => $time_out,
+            //     'box_number' => $this->input->post('shoe_box'),
+            //     'bag_number' => $this->input->post('bag_no'),
+            //     'status' => 'Ongoing',
+            //     'staff_in_charge' => $this->input->post('service_crew'),
+            // );
         }
         if ($this->db->where('guest_id', $guest_id)->update('guest_details', $update)) {
-            $this->db->insert('time_management', $insert_time);
+            // $this->db->insert('time_management', $insert_time);
             $message = "Success";
         }
         $output['message'] = $message;
         echo json_encode($output);
+    }
+
+    public function save_time_management()
+    {
+        $pricing_id = $this->input->post('pricing_id');
+        $this->db->where('pricing_id', $pricing_id);
+        $query = $this->db->get('pricing_promo')->row();
+
+        $time_in = date('H:i:s');
+        $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
+
+        $data = $this->input->post('data');
+        // Insert data into the database
+        foreach ($data as $row) {
+            $this->db->insert('time_management', array(
+                'package_promo' => $this->input->post('pricing_id'),
+                'children_id' => $row[0],
+                'guest_id' => $row[1],
+                'serial_no' => $this->input->post('serial_no'),
+                'time_in' => $time_in,
+                'time_out' => $time_out,
+                'box_number' => $this->input->post('box_no'),
+                'bag_number' => $this->input->post('bag_no'),
+                'status' => 'Ongoing',
+                'staff_in_charge' => $this->input->post('service_crew'),
+            ));
+        }
+        // Return a response to the AJAX request
+        $response['success'] = true;
+        echo json_encode($response);
     }
 
     public function consumable_tocks()
@@ -625,8 +650,32 @@ class Main extends CI_Controller
             'playerBoard3' => $board3,
         );
         echo json_encode($data);
+    }
 
+    public function get_child()
+    {
+        $reg_no = $this->uri->segment(3);
 
+        $children = $this->main->get_child($reg_no);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($children as $list) {
+            $no++;
+            $row = array();
+
+            $row[] = $list->child_id;
+            $row[] = $list->parent_id;
+            $row[] = $list->registration_no;
+           
+            $data[] = $row;
+        }
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->main->count_all_child($reg_no),
+            "recordsFiltered" => $this->main->count_filtered_child($reg_no),
+            "data" => $data,
+        );
+        echo json_encode($output);
     }
 }
 //End CI_Controller
