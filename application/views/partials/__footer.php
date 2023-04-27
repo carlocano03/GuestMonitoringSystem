@@ -92,6 +92,28 @@
             }
         });
 
+        // $("#kid_birthday").datepicker({
+        //     maxDate: "-1d",
+        //     minDate: new Date(1900, 6, 12),
+        //     changeMonth: true,
+        //     changeYear: true,
+        //     yearRange: "1950:+nn",
+        // }).on('change', function() {
+        //     var age = getAge(this);
+        //     var newAge = age + " years old";
+        //     if (age > 12) {
+        //         Swal.fire({
+        //             title: 'Opps!',
+        //             text: 'Sorry, We require 12 years old below only.',
+        //             icon: 'warning'
+        //         });
+        //         $(this).val('');
+        //         $('#kid_age').val('');
+        //     } else {
+        //         $('#kid_age').val(newAge);
+        //     }
+        // });
+
         $(document).on('focus', '.kid_birthday', function() {
             $(this).datepicker({
                 maxDate: "-1d",
@@ -105,49 +127,49 @@
         $(document).on('change', '#kid_birthday', function() {
             var age = getAge(this);
             var newAge = age + " years old";
-            $('#kid_age').val(newAge);
-            // if (age < 10) {
-            //     Swal.fire({
-            //         title: 'Warning!',
-            //         text: 'You are underage.',
-            //         icon: 'warning'
-            //     });
-            //     $(this).val('');
-            // } else {
-            //     $('#age').val(newAge);
-            // }
+            if (age > 12) {
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'You are overage.',
+                    icon: 'warning'
+                });
+                $(this).val('');
+                $('#kid_age').val('');
+            } else {
+                $('#kid_age').val(newAge);
+            }
         });
 
         $(document).on('change', '#kid_birthday2', function() {
             var age = getAge(this);
             var newAge = age + " years old";
-            $('#kid_age2').val(newAge);
-            // if (age < 10) {
-            //     Swal.fire({
-            //         title: 'Warning!',
-            //         text: 'You are underage.',
-            //         icon: 'warning'
-            //     });
-            //     $(this).val('');
-            // } else {
-            //     $('#age').val(newAge);
-            // }
+            if (age > 12) {
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'You are overage.',
+                    icon: 'warning'
+                });
+                $(this).val('');
+                $('#kid_age2').val('');
+            } else {
+                $('#kid_age2').val(newAge);
+            }
         });
 
         $(document).on('change', '#kid_birthday3', function() {
             var age = getAge(this);
             var newAge = age + " years old";
-            $('#kid_age3').val(newAge);
-            // if (age < 10) {
-            //     Swal.fire({
-            //         title: 'Warning!',
-            //         text: 'You are underage.',
-            //         icon: 'warning'
-            //     });
-            //     $(this).val('');
-            // } else {
-            //     $('#age').val(newAge);
-            // }
+            if (age > 12) {
+                Swal.fire({
+                    title: 'Warning!',
+                    text: 'You are overage.',
+                    icon: 'warning'
+                });
+                $(this).val('');
+                $('#kid_age3').val('');
+            } else {
+                $('#kid_age3').val(newAge);
+            }
         });
 
     });

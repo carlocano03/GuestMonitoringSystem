@@ -92,7 +92,6 @@
                             $sales = $this->db
                                 ->select("SUM(total_amt) as total_sales")
                                 ->from('consumable_stocks')
-                                ->where('guest_id', $list->guest_id)
                                 ->where('type_id', 0)
                                 ->get()
                                 ->row();
@@ -100,7 +99,6 @@
                             $inv_sales = $this->db
                                 ->select("SUM(total_amt) as total_inv")
                                 ->from('consumable_stocks')
-                                ->where('guest_id', $list->guest_id)
                                 ->where('type_id !=', 0)
                                 ->get()
                                 ->row();

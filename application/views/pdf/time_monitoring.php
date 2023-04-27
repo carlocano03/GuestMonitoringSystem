@@ -47,6 +47,7 @@
                 <th>Parent/Guardian</th>
                 <th>Contact No.</th>
                 <th>Service</th>
+                <th>Status</th>
             </tr>
             <tbody>
                 <?php foreach($time_report as $list) : ?>
@@ -55,14 +56,25 @@
                         <td style="width: 100px;"><?= date('M j, Y', strtotime($list->date_added));?></td>
                         <td style="width: 150px;"><?= $list->admission_type;?></td>
                         <td><?= date('g:i a', strtotime($list->time_in));?></td>
-                        <td><?= date('g:i a', strtotime($list->time_out));?></td>
+                        <td style="width: 50px;"><?= date('g:i a', strtotime($list->time_out));?></td>
 
                         <?php
-                            // Calculate remaining time in seconds
-                            if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
-                                $remaining_time = strtotime($list->time_out) - time();
+                            if ($list->extend_time == NULL) {
+                                $time_out = date('g:i A', strtotime($list->time_out));
+                                // Calculate remaining time in seconds
+                                if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
+                                    $remaining_time = strtotime($list->time_out) - time();
+                                } else {
+                                    $remaining_time = 0;
+                                }
                             } else {
-                                $remaining_time = 0;
+                                $time_out = date('g:i A', strtotime($list->extend_time));
+                                // Calculate remaining time in seconds
+                                if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
+                                    $remaining_time = strtotime($list->extend_time) - time();
+                                } else {
+                                    $remaining_time = 0;
+                                }
                             }
                             // Format remaining time as HH:MM:SS
                             $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
@@ -71,27 +83,11 @@
                         <td>
                             <span class="remaining-time" data-remaining-time="<?= $remaining_time;?>"><?= $remaining_time_formatted;?></span>
                         </td>
-                        <?php
-                            if ($list->service == 'INFLATABLES') {
-                                $children = $this->db
-                                    ->select("CONCAT(child_fname, ' ', child_lname) AS children")
-                                    ->from('guest_children')
-                                    ->where('parent_id', $list->guest_id)
-                                    ->get()
-                                    ->result_array();
-                                $children_names = "";
-                                foreach ($children as $child) {
-                                    $children_names .= $child['children'] . "<br>";
-                                }
-                                $kids = ucwords($children_names);
-                            } else {
-                                $kids = $list->guest_fname. ' ' .$list->guest_lname;
-                            }
-                        ?>
-                        <td><?= ucwords($kids)?></td>
+                        <td><?= ucwords($list->children)?></td>
                         <td><?= ucwords($list->guest_fname);?> <?= ucwords($list->guest_lname);?></td>
                         <td><?= $list->contact_no;?></td>
                         <td><?= $list->service;?></td>
+                        <td><?= $list->status;?></td>
                     </tr>
                 <?php endforeach;?>
             </tbody>

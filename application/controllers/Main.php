@@ -205,94 +205,177 @@ class Main extends CI_Controller
     public function register_guest()
     {
         $serial_no = $this->input->post('serialno');
+        $package = $this->input->post('package');
+        
         if ($serial_no != '') {
-            $pricing_id = $this->input->post('pricing_id');
-            $this->db->where('pricing_id', $pricing_id);
-            $query = $this->db->get('pricing_promo')->row();
+            switch ($package) {
+                case 'INFLATABLES':
+                    $guest_id = $this->input->post('guest_id');
+                    $message = '';
+                    $folderPath = 'capture_images/parents/';
+                    if(!empty($this->input->post('captured_image_data'))) {
+                        $image_parts = explode(";base64,", $this->input->post('captured_image_data'));
+                        $image_type_aux = explode("image/", $image_parts[0]);
+                        $image_type = $image_type_aux[1];
+                        $image_base64 = base64_decode($image_parts[1]);
+                        $file = $folderPath . uniqid() . '.png';
+                        file_put_contents($file, $image_base64);
+                    } else {
+                        $file = NULL;
+                    }
 
-            $time_in = date('H:i:s');
-            $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
-            $guest_id = $this->input->post('guest_id');
-            $message = '';
-            // $folderPath = 'capture_images/parents/';
-            // $image_parts = explode(";base64,", $this->input->post('captured_image_data'));
-            // $image_type_aux = explode("image/", $image_parts[0]);
-            // $image_type = $image_type_aux[1];
-            // $image_base64 = base64_decode($image_parts[1]);
-            // $file = $folderPath . uniqid() . '.png';
-            // file_put_contents($file, $image_base64);
-            $folderPath = 'capture_images/parents/';
-            if(!empty($this->input->post('captured_image_data'))) {
-                $image_parts = explode(";base64,", $this->input->post('captured_image_data'));
-                $image_type_aux = explode("image/", $image_parts[0]);
-                $image_type = $image_type_aux[1];
-                $image_base64 = base64_decode($image_parts[1]);
-                $file = $folderPath . uniqid() . '.png';
-                file_put_contents($file, $image_base64);
-            } else {
-                $file = NULL;
+                    $update = array(
+                        'status' => 'REGISTERED',
+                        'slip_app_no' => $serial_no,
+                        'picture' => $file
+                    );
+                    break;
+                
+                case 'PARK':
+                    $pricing_id = $this->input->post('pricing_id');
+                    $this->db->where('pricing_id', $pricing_id);
+                    $query = $this->db->get('pricing_promo')->row();
+
+                    $time_in = date('H:i:s');
+                    $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
+
+                    $guest_id = $this->input->post('guest_id');
+                    $message = '';
+                    $folderPath = 'capture_images/parents/';
+                    if(!empty($this->input->post('captured_image_data'))) {
+                        $image_parts = explode(";base64,", $this->input->post('captured_image_data'));
+                        $image_type_aux = explode("image/", $image_parts[0]);
+                        $image_type = $image_type_aux[1];
+                        $image_base64 = base64_decode($image_parts[1]);
+                        $file = $folderPath . uniqid() . '.png';
+                        file_put_contents($file, $image_base64);
+                    } else {
+                        $file = NULL;
+                    }
+
+                    $update = array(
+                        'status' => 'REGISTERED',
+                        'slip_app_no' => $serial_no,
+                        'picture' => $file
+                    );
+
+                    $insert_time = array(
+                        'package_promo' => $pricing_id,
+                        'guest_id' => $guest_id,
+                        'serial_no' => $serial_no,
+                        'time_in' => $time_in,
+                        'time_out' => $time_out,
+                        'box_number' => $this->input->post('shoe_box'),
+                        'bag_number' => $this->input->post('bag_no'),
+                        'status' => 'Ongoing',
+                        'staff_in_charge' => $this->input->post('service_crew'),
+                    );
+                    $this->db->insert('time_management', $insert_time);
+                break;
             }
 
-            $update = array(
-                'status' => 'REGISTERED',
-                'slip_app_no' => $serial_no,
-                'picture' => $file
-            );
-            $insert_time = array(
-                'package_promo' => $pricing_id,
-                'guest_id' => $guest_id,
-                'serial_no' => $serial_no,
-                'time_in' => $time_in,
-                'time_out' => $time_out,
-                'box_number' => $this->input->post('shoe_box'),
-                'bag_number' => $this->input->post('bag_no'),
-                'status' => 'Ongoing',
-                'staff_in_charge' => $this->input->post('service_crew'),
-            );
         } else {
-            $pricing_id = $this->input->post('pricing_id');
-            $this->db->where('pricing_id', $pricing_id);
-            $query = $this->db->get('pricing_promo')->row();
+            switch ($package) {
+                case 'INFLATABLES':
+                    $guest_id = $this->input->post('guest_id');
+                    $message = '';
+                    $folderPath = 'capture_images/parents/';
+                    if(!empty($this->input->post('captured_image_data'))) {
+                        $image_parts = explode(";base64,", $this->input->post('captured_image_data'));
+                        $image_type_aux = explode("image/", $image_parts[0]);
+                        $image_type = $image_type_aux[1];
+                        $image_base64 = base64_decode($image_parts[1]);
+                        $file = $folderPath . uniqid() . '.png';
+                        file_put_contents($file, $image_base64);
+                    } else {
+                        $file = NULL;
+                    }
 
-            $time_in = date('H:i:s');
-            $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
-            $guest_id = $this->input->post('guest_id');
-            $message = '';
-            $folderPath = 'capture_images/parents/';
-            if(!empty($this->input->post('captured_image_data'))) {
-                $image_parts = explode(";base64,", $this->input->post('captured_image_data'));
-                $image_type_aux = explode("image/", $image_parts[0]);
-                $image_type = $image_type_aux[1];
-                $image_base64 = base64_decode($image_parts[1]);
-                $file = $folderPath . uniqid() . '.png';
-                file_put_contents($file, $image_base64);
-            } else {
-                $file = NULL;
+                    $update = array(
+                        'status' => 'REGISTERED',
+                        'slip_app_no' => $this->input->post('serial_no'),
+                        'picture' => $file
+                    );
+                break;
+                
+                case 'PARK':
+                    $pricing_id = $this->input->post('pricing_id');
+                    $this->db->where('pricing_id', $pricing_id);
+                    $query = $this->db->get('pricing_promo')->row();
+
+                    $time_in = date('H:i:s');
+                    $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
+
+                    $guest_id = $this->input->post('guest_id');
+                    $message = '';
+                    $folderPath = 'capture_images/parents/';
+                    if(!empty($this->input->post('captured_image_data'))) {
+                        $image_parts = explode(";base64,", $this->input->post('captured_image_data'));
+                        $image_type_aux = explode("image/", $image_parts[0]);
+                        $image_type = $image_type_aux[1];
+                        $image_base64 = base64_decode($image_parts[1]);
+                        $file = $folderPath . uniqid() . '.png';
+                        file_put_contents($file, $image_base64);
+                    } else {
+                        $file = NULL;
+                    }
+
+                    $update = array(
+                        'status' => 'REGISTERED',
+                        'slip_app_no' => $this->input->post('serial_no'),
+                        'picture' => $file
+                    );
+
+                    $insert_time = array(
+                        'package_promo' => $pricing_id,
+                        'guest_id' => $guest_id,
+                        'serial_no' => $this->input->post('serial_no'),
+                        'time_in' => $time_in,
+                        'time_out' => $time_out,
+                        'box_number' => $this->input->post('shoe_box'),
+                        'bag_number' => $this->input->post('bag_no'),
+                        'status' => 'Ongoing',
+                        'staff_in_charge' => $this->input->post('service_crew'),
+                    );
+                    $this->db->insert('time_management', $insert_time);
+                break;
             }
-
-            $update = array(
-                'status' => 'REGISTERED',
-                'slip_app_no' => $this->input->post('serial_no'),
-                'picture' => $file
-            );
-            $insert_time = array(
-                'package_promo' => $pricing_id,
-                'guest_id' => $guest_id,
-                'serial_no' => $this->input->post('serial_no'),
-                'time_in' => $time_in,
-                'time_out' => $time_out,
-                'box_number' => $this->input->post('shoe_box'),
-                'bag_number' => $this->input->post('bag_no'),
-                'status' => 'Ongoing',
-                'staff_in_charge' => $this->input->post('service_crew'),
-            );
         }
         if ($this->db->where('guest_id', $guest_id)->update('guest_details', $update)) {
-            $this->db->insert('time_management', $insert_time);
             $message = "Success";
         }
         $output['message'] = $message;
         echo json_encode($output);
+    }
+
+    public function save_time_management()
+    {
+        $pricing_id = $this->input->post('pricing_id');
+        $this->db->where('pricing_id', $pricing_id);
+        $query = $this->db->get('pricing_promo')->row();
+
+        $time_in = date('H:i:s');
+        $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
+
+        $data = $this->input->post('data');
+        // Insert data into the database
+        foreach ($data as $row) {
+            $this->db->insert('time_management', array(
+                'package_promo' => $this->input->post('pricing_id'),
+                'children_id' => $row[0],
+                'guest_id' => $row[1],
+                'serial_no' => $this->input->post('serial_no'),
+                'time_in' => $time_in,
+                'time_out' => $time_out,
+                'box_number' => $this->input->post('box_no'),
+                'bag_number' => $this->input->post('bag_no'),
+                'status' => 'Ongoing',
+                'staff_in_charge' => $this->input->post('service_crew'),
+            ));
+        }
+        // Return a response to the AJAX request
+        $response['success'] = true;
+        echo json_encode($response);
     }
 
     public function consumable_tocks()
@@ -465,18 +548,30 @@ class Main extends CI_Controller
             ->select("CONCAT(GC.child_fname, ' ',LEFT(GC.child_lname, 1),'.') as children, GC.child_age, GC.child_img")
             ->select("CONCAT(G.guest_fname, ' ',G.guest_lname) as guardian, G.status, G.service")
             ->from('time_management TM')
-            ->join('guest_children GC', 'TM.guest_id = GC.parent_id', 'LEFT')
+            ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
             ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
             ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) <', 5 * 60) // 15 minutes in seconds
+            ->where('TM.status', 'Ongoing')
+            ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) >', 0) // Add this line
             ->get();
 
         if ($query->num_rows() > 0) { 
             foreach ($query->result() as $list) {
-                // Calculate remaining time in seconds
-                if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
-                    $remaining_time = strtotime($list->time_out) - time();
+
+                if ($list->extend_time == NULL) {
+                    // Calculate remaining time in seconds
+                    if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
+                        $remaining_time = strtotime($list->time_out) - time();
+                    } else {
+                        $remaining_time = 0;
+                    }
                 } else {
-                    $remaining_time = 0;
+                    // Calculate remaining time in seconds
+                    if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
+                        $remaining_time = strtotime($list->extend_time) - time();
+                    } else {
+                        $remaining_time = 0;
+                    }
                 }
 
                 // Format remaining time as HH:MM:SS
@@ -485,9 +580,11 @@ class Main extends CI_Controller
                 if($list->service == 'INFLATABLES') {
                     $color = 'background: #7ebf06;';
                     $title = 'INFLATABLES';
+                    $guest = strtoupper($list->children);
                 } else {
                     $color = 'background: #e84393;';
                     $title = 'PARK';
+                    $guest = strtoupper($list->guardian);
                 }
                 $board1 .= '
                     <div class="card mb-3">
@@ -498,7 +595,7 @@ class Main extends CI_Controller
                             <div class="d-flex align-items-center justify-content-center">
                                 <img class="box-img-monitor" src="'.base_url('assets/img/avatar.png').'" alt="Profile-Pic">
                                 <div class="ms-2">
-                                    <h5 class="mb-0">'.strtoupper($list->children).'</h5>
+                                    <h5 class="mb-0">'.$guest.'</h5>
                                     <b class="mb-0">1234567890</b>
                                 </div>
                                 <div class="ms-2 text-center">
@@ -518,18 +615,29 @@ class Main extends CI_Controller
             ->select("CONCAT(GC.child_fname, ' ',LEFT(GC.child_lname, 1),'.') as children, GC.child_age, GC.child_img")
             ->select("CONCAT(G.guest_fname, ' ',G.guest_lname) as guardian, G.status, G.service")
             ->from('time_management TM')
-            ->join('guest_children GC', 'TM.guest_id = GC.parent_id', 'LEFT')
+            ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
             ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
-            ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) =', 15 * 60) // 15 minutes in seconds
+            ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) <=', 15 * 60) // 15 minutes in seconds
+            ->where('TM.status', 'Ongoing')
+            ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) >', 0) // Add this line
             ->get();
 
         if ($query->num_rows() > 0) { 
             foreach ($query->result() as $list) {
-                // Calculate remaining time in seconds
-                if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
-                    $remaining_time = strtotime($list->time_out) - time();
+                if ($list->extend_time == NULL) {
+                    // Calculate remaining time in seconds
+                    if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
+                        $remaining_time = strtotime($list->time_out) - time();
+                    } else {
+                        $remaining_time = 0;
+                    }
                 } else {
-                    $remaining_time = 0;
+                    // Calculate remaining time in seconds
+                    if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
+                        $remaining_time = strtotime($list->extend_time) - time();
+                    } else {
+                        $remaining_time = 0;
+                    }
                 }
 
                 // Format remaining time as HH:MM:SS
@@ -539,9 +647,11 @@ class Main extends CI_Controller
                 if($list->service == 'INFLATABLES') {
                     $color = 'background: #7ebf06;';
                     $title = 'INFLATABLES';
+                    $guest = strtoupper($list->children);
                 } else {
                     $color = 'background: #e84393;';
                     $title = 'PARK';
+                    $guest = strtoupper($list->guardian);
                 }
                 $board2 .= '
                     <div class="card mb-3">
@@ -552,7 +662,7 @@ class Main extends CI_Controller
                             <div class="d-flex align-items-center justify-content-center">
                                 <img class="box-img-monitor" src="'.base_url('assets/img/avatar.png').'" alt="Profile-Pic">
                                 <div class="ms-2">
-                                    <h5 class="mb-0">'.strtoupper($list->children).'</h5>
+                                    <h5 class="mb-0">'.$guest.'</h5>
                                     <b class="mb-0">'.$list->serial_no.'</b>
                                 </div>
                                 <div class="ms-2 text-center">
@@ -572,18 +682,29 @@ class Main extends CI_Controller
             ->select("CONCAT(GC.child_fname, ' ',LEFT(GC.child_lname, 1),'.') as children, GC.child_age, GC.child_img")
             ->select("CONCAT(G.guest_fname, ' ',G.guest_lname) as guardian, G.status, G.service")
             ->from('time_management TM')
-            ->join('guest_children GC', 'TM.guest_id = GC.parent_id', 'LEFT')
+            ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
             ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
             ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) >', 15 * 60) // 15 minutes in seconds
+            ->where('TM.status', 'Ongoing')
+            ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) >', 0) // Add this line
             ->get();
 
         if ($query->num_rows() > 0) { 
             foreach ($query->result() as $list) {
-                // Calculate remaining time in seconds
-                if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
-                    $remaining_time = strtotime($list->time_out) - time();
+                if ($list->extend_time == NULL) {
+                    // Calculate remaining time in seconds
+                    if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
+                        $remaining_time = strtotime($list->time_out) - time();
+                    } else {
+                        $remaining_time = 0;
+                    }
                 } else {
-                    $remaining_time = 0;
+                    // Calculate remaining time in seconds
+                    if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
+                        $remaining_time = strtotime($list->extend_time) - time();
+                    } else {
+                        $remaining_time = 0;
+                    }
                 }
 
                 // Format remaining time as HH:MM:SS
@@ -592,9 +713,11 @@ class Main extends CI_Controller
                 if($list->service == 'INFLATABLES') {
                     $color = 'background: #7ebf06;';
                     $title = 'INFLATABLES';
+                    $guest = strtoupper($list->children);
                 } else {
                     $color = 'background: #e84393;';
                     $title = 'PARK';
+                    $guest = strtoupper($list->guardian);
                 }
                 $board3 .= '
                     <div class="card mb-3">
@@ -605,7 +728,7 @@ class Main extends CI_Controller
                             <div class="d-flex align-items-center justify-content-center">
                                 <img class="box-img-monitor" src="'.base_url('assets/img/avatar.png').'" alt="Profile-Pic">
                                 <div class="ms-2">
-                                    <h5 class="mb-0">'.strtoupper($list->children).'</h5>
+                                    <h5 class="mb-0">'.$guest.'</h5>
                                     <b class="mb-0">1234567890</b>
                                 </div>
                                 <div class="ms-2 text-center">
@@ -625,8 +748,49 @@ class Main extends CI_Controller
             'playerBoard3' => $board3,
         );
         echo json_encode($data);
+    }
 
+    public function get_child()
+    {
+        $reg_no = $this->uri->segment(3);
 
+        $children = $this->main->get_child($reg_no);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($children as $list) {
+            $no++;
+            $row = array();
+
+            $row[] = $list->child_id;
+            $row[] = $list->parent_id;
+            $row[] = $list->registration_no;
+           
+            $data[] = $row;
+        }
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->main->count_all_child($reg_no),
+            "recordsFiltered" => $this->main->count_filtered_child($reg_no),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+
+    public function quit_claim()
+    {
+        require_once 'vendor/autoload.php';
+        $slip_no = $_GET['registration'];
+        // $data['transaction_date'] = $this->main->get_quit_claim($slip_no);
+        $mpdf = new \Mpdf\Mpdf( [ 
+            'format' => 'A4-P',
+            'margin_top' => 5,
+        ]);
+        // Enable auto-adjustment of top and bottom margins
+        $mpdf->showImageErrors = true;
+        $mpdf->showWatermarkImage = true;
+        $html = $this->load->view('pdf/quit_claim', [], true );
+        $mpdf->WriteHTML( $html );
+        $mpdf->Output();
     }
 }
 //End CI_Controller

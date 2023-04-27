@@ -8,7 +8,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
  */
 class Time_monitoring_model extends CI_Model
 {
-    var $guest = 'guest_details';
+    var $guest = 'time_management';
     var $guest_order = array('G.slip_app_no', 'G.guest_fname', 'G.guest_mname', 'G.guest_lname', 'G.service');
     var $guest_search = array('G.slip_app_no', 'G.guest_fname', 'G.guest_mname', 'G.guest_lname', 'G.service'); //set column field database for datatable searchable just article , description , serial_num, property_num, department are searchable
     var $order = array('G.guest_id' => 'desc'); // default order
@@ -43,14 +43,17 @@ class Time_monitoring_model extends CI_Model
 
     public function count_all()
     {
-        $this->db->select('G.*');
-        $this->db->select('TM.*');
-        $this->db->select('P.admission_type');
-        $this->db->from($this->guest.' G');
-        $this->db->join('time_management TM', 'TM.guest_id = G.guest_id', 'LEFT' );
-        $this->db->join('pricing_promo P', 'P.pricing_id = TM.package_promo', 'LEFT');
-        $this->db->where('G.status', 'REGISTERED');
-        $this->db->where('TM.guest_id IS NOT NULL');
+        $this->db
+            ->select('TM.*')
+            ->select('G.slip_app_no, G.guest_fname, G.guest_mname, G.guest_lname, G.service, G.contact_no')
+            ->select('P.admission_type')
+            ->select("CONCAT(GC.child_fname, ' ', GC.child_lname) as children, GC.child_id")
+            ->from($this->guest.' TM')
+            ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
+            ->join('pricing_promo P', 'TM.package_promo = P.pricing_id', 'LEFT')
+            ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
+            ->where('TM.status', 'Ongoing');
+
         return $this->db->count_all_results();
     }
 
@@ -65,17 +68,29 @@ class Time_monitoring_model extends CI_Model
             $this->db->or_like('G.slip_app_no', $searchValue);
             $this->db->group_end();
         }
-        $this->db->select('G.*');
-        $this->db->select('TM.*');
-        $this->db->select('P.admission_type');
-        $this->db->from($this->guest.' G');
-        $this->db->join('time_management TM', 'TM.guest_id = G.guest_id', 'LEFT' );
-        $this->db->join('pricing_promo P', 'P.pricing_id = TM.package_promo', 'LEFT');
-        $this->db->where('G.status', 'REGISTERED');
-        $this->db->where('TM.guest_id IS NOT NULL');
+
+        $this->db
+            ->select('TM.*')
+            ->select('G.slip_app_no, G.guest_fname, G.guest_mname, G.guest_lname, G.service, G.contact_no')
+            ->select('P.admission_type')
+            ->select("CONCAT(GC.child_fname, ' ', GC.child_lname) as children, GC.child_id")
+            ->from($this->guest.' TM')
+            ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
+            ->join('pricing_promo P', 'TM.package_promo = P.pricing_id', 'LEFT')
+            ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
+            ->where('TM.status', 'Ongoing');
 
         if ($this->input->post('package')) {
             $this->db->where('G.service', $this->input->post('package'));
+        }
+
+        $sort = $this->input->post('sort');
+        if ($sort == '5') {
+            $this->db->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) <', 5 * 60);
+        } else if ($sort == '15') {
+            $this->db->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) <=', 15 * 60);
+        } else if ($sort == 'Open') {
+            $this->db->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) >', 15 * 60);
         }
 
         $i = 0;
@@ -108,13 +123,14 @@ class Time_monitoring_model extends CI_Model
     function get_time_report()
     {
         $query = $this->db
-            ->select('G.*')
             ->select('TM.*')
+            ->select('G.slip_app_no, G.guest_fname, G.guest_mname, G.guest_lname, G.service, G.contact_no')
             ->select('P.admission_type')
-            ->from($this->guest.' G')
-            ->join('time_management TM', 'TM.guest_id = G.guest_id', 'LEFT' )
-            ->join('pricing_promo P', 'P.pricing_id = TM.package_promo', 'LEFT')
-            ->where('G.status', 'REGISTERED')
+            ->select("CONCAT(GC.child_fname, ' ', GC.child_mname) as children, GC.child_id")
+            ->from($this->guest.' TM')
+            ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
+            ->join('pricing_promo P', 'TM.package_promo = P.pricing_id', 'LEFT')
+            ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
             ->where('TM.guest_id IS NOT NULL')
             ->get();
         return $query->result();
@@ -123,16 +139,32 @@ class Time_monitoring_model extends CI_Model
     public function export_time_report()
 	{
 		$query = $this->db
-            ->select('G.*')
             ->select('TM.*')
+            ->select('G.slip_app_no, G.guest_fname, G.guest_mname, G.guest_lname, G.service, G.contact_no')
             ->select('P.admission_type')
-            ->from($this->guest.' G')
-            ->join('time_management TM', 'TM.guest_id = G.guest_id', 'LEFT' )
-            ->join('pricing_promo P', 'P.pricing_id = TM.package_promo', 'LEFT')
-            ->where('G.status', 'REGISTERED')
+            ->select("CONCAT(GC.child_fname, ' ', GC.child_mname) as children, GC.child_id")
+            ->from($this->guest.' TM')
+            ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
+            ->join('pricing_promo P', 'TM.package_promo = P.pricing_id', 'LEFT')
+            ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
             ->where('TM.guest_id IS NOT NULL')
             ->get();
 		return $query->result_array();
 	}
+
+    function checkout_guest($slip_no, $child_id)
+    {
+        $this->db->where('serial_no', $slip_no);
+        $this->db->where('children_id', $child_id);
+        $checkout = $this->db->update('time_management', array('status' => 'Checkout'));
+        return $checkout?TRUE:FALSE;
+    }
+
+    function checkout_guest_park($slip_no)
+    {
+        $this->db->where('serial_no', $slip_no);
+        $checkout = $this->db->update('time_management', array('status' => 'Checkout'));
+        return $checkout?TRUE:FALSE; 
+    }
 
 }

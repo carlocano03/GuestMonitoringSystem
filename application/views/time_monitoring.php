@@ -54,7 +54,7 @@
                         
                     </div>
                     <div class="col-md-4">
-                        <h5 class="text-white text-center">Players with 15 minutes left</h5>
+                        <h5 class="text-white text-center">Players with less than 15 minutes left</h5>
                         <hr style="height:5px; background: #222f3e;">
 
                         <div id="playerBoard2"></div>
