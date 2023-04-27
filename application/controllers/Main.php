@@ -516,10 +516,13 @@ class Main extends CI_Controller
         $inflatables = $this->db
             ->select('GC.*')
             ->select('G.guest_id, G.status, G.service')
+            ->select('TM.children_id, TM.status')
             ->from('guest_children GC')
             ->join('guest_details G', 'GC.parent_id = G.guest_id', 'LEFT')
+            ->join('time_management TM', 'TM.children_id = GC.child_id', 'LEFT')
             ->where('G.status', 'REGISTERED')
             ->where('G.service', 'INFLATABLES')
+            ->where('TM.status', 'Ongoing')
             ->get();
         $inflatables_count = $inflatables->num_rows();
 
@@ -527,6 +530,7 @@ class Main extends CI_Controller
             SELECT *
             FROM guest_details WHERE status='REGISTERED' AND service='PARK'
         ");
+
         $park_count = $park->num_rows();
 
         $data = array(

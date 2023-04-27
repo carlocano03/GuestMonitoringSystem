@@ -423,6 +423,8 @@
                                     text: 'Checkout successfully',
                                 });
                                 $('#checkoutModal').modal('hide');
+                                $('#boardModal').modal('hide');
+                                $('#viewModal').modal('hide');
                                 tbl_monitoring.draw();
                             } else {
                                 wal.fire('Warning!', 'Failed to checkout.', 'warning');
@@ -461,6 +463,9 @@
                                     text: 'Checkout successfully',
                                 });
                                 $('#checkoutModal').modal('hide');
+                                $('#checkoutModal').modal('hide');
+                                $('#boardModal').modal('hide');
+                                $('#viewModal').modal('hide');
                                 tbl_monitoring.draw();
                             } else {
                                 wal.fire('Warning!', 'Failed to checkout.', 'warning');
