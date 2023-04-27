@@ -49,6 +49,11 @@
                         <input type="text" class="form-control" name="search_value" id="search_value" placeholder="Search Pre-Registration No. or Name here...">
                     </div>
                 </div>
+                <div class="col-4">
+                    <div class="form-group mb-2">
+                        <a href="<?= base_url('home/services')?>" target="_blank" class="btn btn-success btn-sm"><i class="bi bi-plus-square-fill me-2"></i>ADD WALK-IN</a>
+                    </div>
+                </div>
             </div>
             <form method="POST" id="registerGuest" enctype="multipart/form-data">
                 <input type="hidden" id="serial_no" name="serial_no" value="<?= $serial?>">
@@ -785,6 +790,9 @@
                                     // alert('Success');
                                     var url = "<?= base_url('sales_invoice?transaction=')?>" + serial_no;
                                     window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');
+
+                                    var quit_claim = "<?= base_url('main/quit_claim?registration=')?>" + serial_no;
+                                    window.open(quit_claim, '_blank');
                                     location.reload();
                                     $('registerGuest').trigger('reset');
                                 } else {

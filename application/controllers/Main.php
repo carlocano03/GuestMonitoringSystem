@@ -775,5 +775,22 @@ class Main extends CI_Controller
         );
         echo json_encode($output);
     }
+
+    public function quit_claim()
+    {
+        require_once 'vendor/autoload.php';
+        $slip_no = $_GET['registration'];
+        // $data['transaction_date'] = $this->main->get_quit_claim($slip_no);
+        $mpdf = new \Mpdf\Mpdf( [ 
+            'format' => 'A4-P',
+            'margin_top' => 5,
+        ]);
+        // Enable auto-adjustment of top and bottom margins
+        $mpdf->showImageErrors = true;
+        $mpdf->showWatermarkImage = true;
+        $html = $this->load->view('pdf/quit_claim', [], true );
+        $mpdf->WriteHTML( $html );
+        $mpdf->Output();
+    }
 }
 //End CI_Controller

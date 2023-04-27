@@ -67,7 +67,7 @@ class Transaction extends CI_Controller
                 ->where('guest_id', $list->guest_id)
                 ->get()
                 ->row();
-            $total_amount = $sales->total_sales;
+            $total_amount += $sales->total_sales;
 
             $row[] = number_format($sales->total_sales, 2);
 
@@ -78,7 +78,7 @@ class Transaction extends CI_Controller
                 ->where('guest_id', $list->guest_id)
                 ->get()
                 ->row();
-            $inv_sales = $inv->inv_sales;
+            $inv_sales += $inv->inv_sales;
 
             $total_sales = $total_amount + $inv_sales;
 
@@ -188,10 +188,22 @@ class Transaction extends CI_Controller
                     ->get()
                     ->row();
                 // Calculate remaining time in seconds
-                if (date('Y-m-d', strtotime($time_info->date_added)) == date('Y-m-d')) {
-                    $remaining_time = strtotime($time_info->time_out) - time();
+                if ($time_info->extend_time == NULL) {
+                    $time_out = date('g:i A', strtotime($time_info->time_out));
+                    // Calculate remaining time in seconds
+                    if (date('Y-m-d', strtotime($time_info->date_added)) == date('Y-m-d')) {
+                        $remaining_time = strtotime($time_info->time_out) - time();
+                    } else {
+                        $remaining_time = 0;
+                    }
                 } else {
-                    $remaining_time = 0;
+                    $time_out = date('g:i A', strtotime($time_info->extend_time));
+                    // Calculate remaining time in seconds
+                    if (date('Y-m-d', strtotime($time_info->date_added)) == date('Y-m-d')) {
+                        $remaining_time = strtotime($time_info->extend_time) - time();
+                    } else {
+                        $remaining_time = 0;
+                    }
                 }
 
                 // Format remaining time as HH:MM:SS
@@ -264,9 +276,6 @@ class Transaction extends CI_Controller
                                 <div class="mb-0 text-muted">'.ucwords($parent->guest_fname).' '.ucwords($parent->guest_lname).'</div>
                                 <b class="mb-0 text-muted">'.$parent->guest_age.'</b>
                             </div>
-                            <div class="col-4">
-                                <button class="btn btn-danger w-100 btn-rounded">VOID THIS TRANSACTION</button>
-                            </div>
                         </div>
                         <hr>
                     ';
@@ -281,10 +290,22 @@ class Transaction extends CI_Controller
                     ->get()
                     ->row();
                 // Calculate remaining time in seconds
-                if (date('Y-m-d', strtotime($time_info->date_added)) == date('Y-m-d')) {
-                    $remaining_time = strtotime($time_info->time_out) - time();
+                if ($time_info->extend_time == NULL) {
+                    $time_out = date('g:i A', strtotime($time_info->time_out));
+                    // Calculate remaining time in seconds
+                    if (date('Y-m-d', strtotime($time_info->date_added)) == date('Y-m-d')) {
+                        $remaining_time = strtotime($time_info->time_out) - time();
+                    } else {
+                        $remaining_time = 0;
+                    }
                 } else {
-                    $remaining_time = 0;
+                    $time_out = date('g:i A', strtotime($time_info->extend_time));
+                    // Calculate remaining time in seconds
+                    if (date('Y-m-d', strtotime($time_info->date_added)) == date('Y-m-d')) {
+                        $remaining_time = strtotime($time_info->extend_time) - time();
+                    } else {
+                        $remaining_time = 0;
+                    }
                 }
 
                 // Format remaining time as HH:MM:SS
@@ -411,10 +432,22 @@ class Transaction extends CI_Controller
                     ->get()
                     ->row();
                 // Calculate remaining time in seconds
-                if (date('Y-m-d', strtotime($time_info->date_added)) == date('Y-m-d')) {
-                    $remaining_time = strtotime($time_info->time_out) - time();
+                if ($time_info->extend_time == NULL) {
+                    $time_out = date('g:i A', strtotime($time_info->time_out));
+                    // Calculate remaining time in seconds
+                    if (date('Y-m-d', strtotime($time_info->date_added)) == date('Y-m-d')) {
+                        $remaining_time = strtotime($time_info->time_out) - time();
+                    } else {
+                        $remaining_time = 0;
+                    }
                 } else {
-                    $remaining_time = 0;
+                    $time_out = date('g:i A', strtotime($time_info->extend_time));
+                    // Calculate remaining time in seconds
+                    if (date('Y-m-d', strtotime($time_info->date_added)) == date('Y-m-d')) {
+                        $remaining_time = strtotime($time_info->extend_time) - time();
+                    } else {
+                        $remaining_time = 0;
+                    }
                 }
 
                 // Format remaining time as HH:MM:SS
@@ -498,10 +531,22 @@ class Transaction extends CI_Controller
                     ->get()
                     ->row();
                 // Calculate remaining time in seconds
-                if (date('Y-m-d', strtotime($time_info->date_added)) == date('Y-m-d')) {
-                    $remaining_time = strtotime($time_info->time_out) - time();
+                if ($time_info->extend_time == NULL) {
+                    $time_out = date('g:i A', strtotime($time_info->time_out));
+                    // Calculate remaining time in seconds
+                    if (date('Y-m-d', strtotime($time_info->date_added)) == date('Y-m-d')) {
+                        $remaining_time = strtotime($time_info->time_out) - time();
+                    } else {
+                        $remaining_time = 0;
+                    }
                 } else {
-                    $remaining_time = 0;
+                    $time_out = date('g:i A', strtotime($time_info->extend_time));
+                    // Calculate remaining time in seconds
+                    if (date('Y-m-d', strtotime($time_info->date_added)) == date('Y-m-d')) {
+                        $remaining_time = strtotime($time_info->extend_time) - time();
+                    } else {
+                        $remaining_time = 0;
+                    }
                 }
 
                 // Format remaining time as HH:MM:SS
