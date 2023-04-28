@@ -51,7 +51,7 @@
                 </div>
                 <div class="col-4">
                     <div class="form-group mb-2">
-                        <a href="<?= base_url('home/services')?>" target="_blank" class="btn btn-success btn-sm"><i class="bi bi-plus-square-fill me-2"></i>ADD WALK-IN</a>
+                        <a href="<?= base_url('home/services')?>" target="_blank" class="btn btn-success btn-sm"><i class="bi bi-plus-square-fill me-2"></i>PRE-REGISTRATION</a>
                     </div>
                 </div>
             </div>

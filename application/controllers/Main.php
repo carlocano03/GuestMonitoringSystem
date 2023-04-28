@@ -516,10 +516,14 @@ class Main extends CI_Controller
         $inflatables = $this->db
             ->select('GC.*')
             ->select('G.guest_id, G.status, G.service')
+            ->select('TM.children_id, TM.status')
             ->from('guest_children GC')
             ->join('guest_details G', 'GC.parent_id = G.guest_id', 'LEFT')
+            ->join('time_management TM', 'TM.children_id = GC.child_id', 'LEFT')
             ->where('G.status', 'REGISTERED')
             ->where('G.service', 'INFLATABLES')
+            ->where('TM.status', 'Ongoing')
+            ->where('DATE(TM.date_added) = CURDATE()')
             ->get();
         $inflatables_count = $inflatables->num_rows();
 
@@ -527,6 +531,17 @@ class Main extends CI_Controller
             SELECT *
             FROM guest_details WHERE status='REGISTERED' AND service='PARK'
         ");
+
+        $park = $this->db
+            ->select('TM.*')
+            ->select('G.status, G.service')
+            ->from('time_management TM')
+            ->join('guest_details G', 'G.guest_id = TM.guest_id')
+            ->where('G.status', 'REGISTERED')
+            ->where('G.service', 'PARK')
+            ->where('DATE(TM.date_added) = CURDATE()')
+            ->get();
+
         $park_count = $park->num_rows();
 
         $data = array(
@@ -553,6 +568,7 @@ class Main extends CI_Controller
             ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) <', 5 * 60) // 15 minutes in seconds
             ->where('TM.status', 'Ongoing')
             ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) >', 0) // Add this line
+            ->where('DATE(TM.date_added) = CURDATE()')
             ->get();
 
         if ($query->num_rows() > 0) { 
@@ -620,6 +636,7 @@ class Main extends CI_Controller
             ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) <=', 15 * 60) // 15 minutes in seconds
             ->where('TM.status', 'Ongoing')
             ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) >', 0) // Add this line
+            ->where('DATE(TM.date_added) = CURDATE()')
             ->get();
 
         if ($query->num_rows() > 0) { 
@@ -687,6 +704,7 @@ class Main extends CI_Controller
             ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) >', 15 * 60) // 15 minutes in seconds
             ->where('TM.status', 'Ongoing')
             ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) >', 0) // Add this line
+            ->where('DATE(TM.date_added) = CURDATE()')
             ->get();
 
         if ($query->num_rows() > 0) { 
