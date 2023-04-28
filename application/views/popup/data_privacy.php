@@ -22,7 +22,8 @@ mandated by Republic Act 10173 and allied government regulations.<br><br>
 Kindly sign below to signify your free, prior, and informed consent for <b>Jack's Adventure</b> to 
 proceed with this personal data processing, and to allow <b>Jack's Adventure</b> to use the information for (i)the appropriate delivery 
 of its products and services, (ii) necessary documentation or submission, and/ or (iii) pursuance of transactions expected from its position.
-                    </p>
+<hr>                   
+</p>
                 </div>
                 <!-- <div class="modal-footer">
                     <button class="btn btn-primary w-100" id="save_discount">ADD DISCOUNT<i class="bi bi-arrow-right-square-fill ms-2"></i></button>
