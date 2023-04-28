@@ -198,7 +198,7 @@
                         <div class="form-check text-start mb-3">
                             <input class="form-check-input" type="checkbox" value="" id="waiver_check">
                             <label class="form-check-label" for="waiver_check">
-                                I hereby acknowledge and accept the <a href="">"Waiver and Quitclaim"</a> and agree to <a href="">Data Privacy Act of 2012</a>
+                                I hereby acknowledge and accept the <a href="#quitClaimModal" data-bs-toggle="modal">"Waiver and Quitclaim"</a> and agree to <a href="#dataPrivacyModal" data-bs-toggle="modal">Data Privacy Act of 2012</a>
                             </label>
                         </div>
                         <button class="save_record" type="submit">SAVED RECORD</button>
@@ -236,7 +236,8 @@
             </div>
         </div>
     </div>
-
+    <?php $this->load->view('popup/quitclaim.php');?>
+    <?php $this->load->view('popup/data_privacy.php');?>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
