@@ -307,8 +307,8 @@
         $(document).on('click', '.remove_inv', function(){
             var inv_id = $(this).attr('id');
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'Warning! You are about to delete this record.',
+                text: "Are you sure you want to continue? you can not revert this action.!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

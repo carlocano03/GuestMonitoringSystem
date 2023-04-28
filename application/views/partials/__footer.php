@@ -129,8 +129,8 @@
             var newAge = age + " years old";
             if (age > 12) {
                 Swal.fire({
-                    title: 'Warning!',
-                    text: 'You are overage.',
+                    title: 'Opps!',
+                    text: 'The inflatables are only suitable for children 12 y/o and below only.',
                     icon: 'warning'
                 });
                 $(this).val('');
@@ -145,8 +145,8 @@
             var newAge = age + " years old";
             if (age > 12) {
                 Swal.fire({
-                    title: 'Warning!',
-                    text: 'You are overage.',
+                    title: 'Opps!',
+                    text: 'The inflatables are only suitable for children 12 y/o and below only.',
                     icon: 'warning'
                 });
                 $(this).val('');
@@ -161,8 +161,8 @@
             var newAge = age + " years old";
             if (age > 12) {
                 Swal.fire({
-                    title: 'Warning!',
-                    text: 'You are overage.',
+                    title: 'Opps!',
+                    text: 'The inflatables are only suitable for children 12 y/o and below only.',
                     icon: 'warning'
                 });
                 $(this).val('');
