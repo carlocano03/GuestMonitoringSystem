@@ -57,7 +57,8 @@ class Inventory extends CI_Controller
             $row[] = $list->quantity;
             $row[] = $list->weekdays_price;
             // $row[] = $list->weekends_price;
-            $row[] = '<button class="btn btn-primary btn-sm edit_inv" id="'.$list->inv_id.'" title="Edit"><i class="bi bi-pencil-square"></i></button>
+            $row[] = '<button class="btn btn-secondary btn-sm view_inv" id="'.$list->inv_id.'" title="View inventory history"><i class="bi bi-eye-fill"></i></button>
+                      <button class="btn btn-primary btn-sm edit_inv" id="'.$list->inv_id.'" title="Edit"><i class="bi bi-pencil-square"></i></button>
                       <button class="btn btn-warning btn-sm add_qty" id="'.$list->inv_id.'" data-qty="'.$list->quantity.'" title="Add Quantity"><i class="bi bi-plus-square"></i></button>
                       <button class="btn btn-danger btn-sm remove_inv" id="'.$list->inv_id.'" title="Remove"><i class="bi bi-trash-fill"></i></button>';
             $data[] = $row;
@@ -66,6 +67,31 @@ class Inventory extends CI_Controller
             "draw" => $_POST['draw'],
             "recordsTotal" => $this->inventory->count_all(),
             "recordsFiltered" => $this->inventory->count_filtered(),
+            "data" => $data,
+        );
+        echo json_encode($output);
+    }
+
+    public function get_inventory_history()
+    {
+        $inv_id = $this->uri->segment(3);
+        $inv = $this->inventory->get_inventory_history($inv_id);
+        $data = array();
+        $no = $_POST['start'];
+        foreach ($inv as $list) {
+            $no++;
+            $row = array();
+
+            $row[] = $list->existing_stocks;
+            $row[] = $list->add_stocks;
+            $row[] = date('F j, Y', strtotime($list->date_stocks_added));
+            
+            $data[] = $row;
+        }
+        $output = array(
+            "draw" => $_POST['draw'],
+            "recordsTotal" => $this->inventory->count_all_history($inv_id),
+            "recordsFiltered" => $this->inventory->count_filtered_history($inv_id),
             "data" => $data,
         );
         echo json_encode($output);
@@ -105,7 +131,13 @@ class Inventory extends CI_Controller
     public function update_stocks()
     {
         $message = '';
-        if ($this->db->where('inv_id', $this->input->post('invId'))->update('inventory_stocks', array('quantity' => $this->input->post('additional_qty')))) {
+        $inv_history = array (
+            'inv_id' => $this->input->post('invId'),
+            'add_stocks' => $this->input->post('additional_qty'),
+            'existing_stocks' => $this->input->post('existing_qty'),
+        );
+        if ($this->db->where('inv_id', $this->input->post('invId'))->update('inventory_stocks', array('quantity' => $this->input->post('total_qty')))) {
+            $this->db->insert('inventory_history', $inv_history);
             $message = 'Success';
         } else {
             $message = 'Error';
@@ -129,5 +161,51 @@ class Inventory extends CI_Controller
         }
         $output['success'] = $message;
         echo json_encode($output);
+    }
+
+    public function print_records()
+    {
+        require_once 'vendor/autoload.php';
+        $data['inventory'] = $this->inventory->print_records();
+        $mpdf = new \Mpdf\Mpdf( [ 
+            'format' => 'A4-P',
+            'margin_top' => 5,
+            'margin_bottom' => 40,
+        ]);
+        // Enable auto-adjustment of top and bottom margins
+        $mpdf->showImageErrors = true;
+        $mpdf->showWatermarkImage = true;
+        $html = $this->load->view('pdf/inventory_report', $data, true );
+        $mpdf->WriteHTML( $html );
+        $mpdf->Output();
+    }
+
+    public function export_inv()
+    {
+        require_once 'vendor/autoload.php';
+        $date_no = date('F j, Y');
+        $timeData = $this->inventory->export_inv();
+        $objReader = IOFactory::createReader('Xlsx');
+        $fileName = 'Inventory.xlsx';
+        $newfileName = 'Inventory as of_'.$date_no.'.xlsx';
+
+        $spreadsheet = $objReader->load(FCPATH . '/template_reports/'. $fileName);
+        $startRow = 2;
+	    $currentRow = 2;
+        foreach ($timeData as $list) {
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($currentRow+1,1);
+
+            $spreadsheet->getActiveSheet()->setCellValue('A'.$currentRow, $list['descriptions']);
+            $spreadsheet->getActiveSheet()->setCellValue('B'.$currentRow, $list['quantity']);
+            $spreadsheet->getActiveSheet()->setCellValue('C'.$currentRow, $list['weekdays_price']);
+
+            $currentRow++;
+        }
+        $spreadsheet->getActiveSheet()->removeRow($currentRow,1);
+        $objWriter = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        header('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'); //mime type
+        header('Content-Disposition: attachment;filename="'.$newfileName.'"'); //tell browser what's the file name
+        header('Cache-Control: max-age=0'); //no cache
+        $objWriter->save('php://output');
     }
 }

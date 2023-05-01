@@ -278,7 +278,8 @@
                             </table>
                             <hr>
 
-                            <table style="display:none;" class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table_children">
+                            <!-- style="display:none;" -->
+                            <table class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table_children">
                                 <thead>
                                     <tr>
                                         <th>Children ID</th>
