@@ -62,6 +62,9 @@ class Pricing_model extends CI_Model
         
         $this->db->from($this->pricing);
         $this->db->where('is_deleted', 0);
+        if ($this->input->post('filter_by')) {
+            $this->db->where('package', $this->input->post('filter_by'));
+        }
         $i = 0;
         foreach ($this->pricing_search as $item) // loop column 
         {
@@ -87,6 +90,20 @@ class Pricing_model extends CI_Model
             $order = $this->order;
             $this->db->order_by(key($order), $order[key($order)]);
         }
+    }
+
+    function print_records()
+    {
+        $this->db->where('is_deleted', 0);
+        $query = $this->db->get('pricing_promo');
+        return $query->result();
+    }
+
+    function export_pricing()
+    {
+        $this->db->where('is_deleted', 0);
+        $query = $this->db->get('pricing_promo');
+        return $query->result_array();
     }
 
 }

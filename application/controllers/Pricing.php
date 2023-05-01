@@ -124,4 +124,51 @@ class Pricing extends CI_Controller
         echo json_encode($output);
     }
 
+    public function print_records()
+    {
+        require_once 'vendor/autoload.php';
+        $data['pricing'] = $this->pricing->print_records();
+        $mpdf = new \Mpdf\Mpdf( [ 
+            'format' => 'A4-P',
+            'margin_top' => 5,
+            'margin_bottom' => 40,
+        ]);
+        // Enable auto-adjustment of top and bottom margins
+        $mpdf->showImageErrors = true;
+        $mpdf->showWatermarkImage = true;
+        $html = $this->load->view('pdf/pricing_promo', $data, true );
+        $mpdf->WriteHTML( $html );
+        $mpdf->Output();
+    }
+
+    public function export_pricing()
+    {
+        require_once 'vendor/autoload.php';
+        $date_no = date('F j, Y');
+        $timeData = $this->pricing->export_pricing();
+        $objReader = IOFactory::createReader('Xlsx');
+        $fileName = 'Pricing.xlsx';
+        $newfileName = 'Pricing & Promo as of_'.$date_no.'.xlsx';
+
+        $spreadsheet = $objReader->load(FCPATH . '/template_reports/'. $fileName);
+        $startRow = 2;
+	    $currentRow = 2;
+        foreach ($timeData as $list) {
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($currentRow+1,1);
+
+            $spreadsheet->getActiveSheet()->setCellValue('A'.$currentRow, $list['admission_type']);
+            $spreadsheet->getActiveSheet()->setCellValue('B'.$currentRow, $list['time_admission']);
+            $spreadsheet->getActiveSheet()->setCellValue('C'.$currentRow, $list['weekdays_price']);
+            $spreadsheet->getActiveSheet()->setCellValue('D'.$currentRow, $list['package']);
+
+            $currentRow++;
+        }
+        $spreadsheet->getActiveSheet()->removeRow($currentRow,1);
+        $objWriter = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        header('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'); //mime type
+        header('Content-Disposition: attachment;filename="'.$newfileName.'"'); //tell browser what's the file name
+        header('Cache-Control: max-age=0'); //no cache
+        $objWriter->save('php://output');
+    }
+
 }

@@ -46,6 +46,14 @@ class Main extends CI_Controller
         $this->load->view('time_monitoring');
     }
 
+    public function customer_registration()
+    {
+        $this->load->view('partials/__header');
+        $this->load->view('partials/__navbar');
+        $this->load->view('partials/__footer');
+        $this->load->view('customer_registration');
+    }
+
     public function sales_transaction()
     {
         $this->load->view('partials/__header');

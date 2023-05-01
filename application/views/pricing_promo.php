@@ -31,6 +31,13 @@
                 <div class="col-md-3">
                     <input type="text" class="form-control form-control-sm" id="search_value" placeholder="Search Here...">
                 </div>
+                <div class="col-md-3">
+                    <select name="filter_by" id="filter_by" class="form-select">
+                        <option value="">Filter By</option>
+                        <option value="INFLATABLES">INFLATABLES</option>
+                        <option value="PARK">PARK</option>
+                    </select>
+                </div>
                 <div class="col-md-5">
                     <div class="row g-0">
                         <div class="col-sm-4 mb-2">
@@ -41,8 +48,8 @@
                 </div>
             </div>
                         <div class="col-sm-3 mb-2">
-                            <button class="btn btn-dark btn-sm"><i class="bi bi-printer-fill me-2"></i>PRINT RECORDS</button>
-                            <button class="btn btn-info btn-sm"><i class="bi bi-download me-2"></i>EXPORT THIS FILE</button>
+                            <button class="btn btn-dark btn-sm" id="print_records"><i class="bi bi-printer-fill me-2"></i>PRINT RECORDS</button>
+                            <a href="<?= base_url('pricing/export_pricing')?>" class="btn btn-info btn-sm"><i class="bi bi-download me-2"></i>EXPORT THIS FILE</a>
 
                         </div>
                      
@@ -89,7 +96,12 @@
                         <hr class="mt-0">
                         <form id="addPricing" method="POST">
                             <div class="form-group mb-3">
-                                <input type="text" class="form-control" name="admission_type" placeholder="ADMISSION TYPE" required>
+                                <select name="admission_type" id="admission_type" class="form-select" required>
+                                    <option value="">Select Admission Type</option>
+                                    <option value="Weekdays">Weekdays</option>
+                                    <option value="Weekends">Weekends</option>
+                                    <option value="Holiday">Holiday</option>
+                                </select>
                             </div>
                             <div class="form-group mb-3">
                                 <input type="number" class="form-control" name="time" placeholder="TIME" required>
@@ -221,12 +233,16 @@
                 "type": "POST",
                 "data": function(data) {
                     data.search_value = $('#search_value').val();
+                    data.filter_by = $('#filter_by').val();
                 }
             },
         });
         $('#search_value').on('input', function() {
             table_pricing.draw();
         });
+        $('#filter_by').on('change', function() {
+            table_pricing.draw();
+        })
 
         $(document).on('submit', '#addPricing', function(event){
             event.preventDefault();
@@ -347,6 +363,11 @@
                     });
                 }
             })
+        });
+
+        $(document).on('click', '#print_records', function() {
+            var url = "<?= base_url('pricing/print_records');?>";
+            window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');
         });
 
     });

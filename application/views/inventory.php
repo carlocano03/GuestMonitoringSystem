@@ -47,9 +47,9 @@
             </div>
 
             <div class="col-sm-3 mb-2">
-                            <button class="btn btn-dark btn-sm"><i class="bi bi-printer-fill me-2"></i>PRINT RECORDS</button>
-                            <button class="btn btn-info btn-sm"><i class="bi bi-download me-2"></i>EXPORT THIS FILE</button>
-                        </div>
+                <button class="btn btn-dark btn-sm" id="print_records"><i class="bi bi-printer-fill me-2"></i>PRINT RECORDS</button>
+                <a href="<?= base_url('inventory/export_inv')?>" class="btn btn-info btn-sm"><i class="bi bi-download me-2"></i>EXPORT THIS FILE</a>
+            </div>
 
             <div class="table-responsive">
                 <table class="table table-bordered" width="100%" id="tbl_inventory">
@@ -165,6 +165,7 @@
                             <div class="form-group mb-3">
                                 <label>Additional Quantity</label>
                                 <input type="number" class="form-control" name="additional_qty" id="additional_qty" required>
+                                <input type="hidden" id="total_qty" name="total_qty">
                             </div>
                             <div class="form-group mb-3">
                                 <button type="button" class="btn btn-secondary w-100 btn-rounded clear">CLEAR</button>
@@ -173,6 +174,36 @@
                                 <button type="submit" class="btn btn-primary w-100 btn-rounded">SUBMIT</button>
                             </div>
                         </form>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="view_invHistoryModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #6f42c1; color:#fff;">
+                    <h5 class="modal-title" id="exampleModalLabel">INVENTORY HISTORY</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                    <div class="modal-body">
+                        <h4 class="fw-bold">INVENTORY MODULE</h4>
+                        <hr class="mt-0">
+                        <div class="table-responsive">
+                            <table class="table table-bordered text-center" width="100%" id="tbl_inventory_history">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Stocks before replenished</th>
+                                        <th class="text-center">Additional Stocks</th>
+                                        <th class="text-center">Date Added</th>
+                                    </tr>
+                                    <tbody>
+
+                                    </tbody>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
             </div>
         </div>
@@ -372,6 +403,53 @@
                     Swal.fire('Error!', 'Something went wrong. Please try again later!', 'error');
                 }
             });
+        });
+
+        $('#additional_qty').on('input', function() {
+            var existing_qty = parseFloat($('#existing_qty').val());
+            var additional_qty = parseFloat($(this).val());
+            if (additional_qty == '') {
+                $('#total_qty').val(0);
+            } else {
+                var total_qty = existing_qty + additional_qty;
+                $('#total_qty').val(total_qty);
+            }
+        });
+
+        $(document).on('click', '.view_inv', function() {
+            var inv_id = $(this).attr('id');
+
+            var tbl_inventory_history = $('#tbl_inventory_history').DataTable({
+            language: {
+                search: '',
+                searchPlaceholder: "Search Here...",
+                "info": "_START_-_END_ of _TOTAL_ entries",
+                paginate: {
+                    next: '<i class="fas fa-chevron-right"></i>',
+                    previous: '<i class="fas fa-chevron-left"></i>'
+                }
+            },
+            "searching": false,
+            "ordering": false,
+            "bLengthChange": false,
+            "serverSide": true,
+            "info": false,
+            "paging": false,
+            "processing": true,
+            "deferRender": true,
+            "bDestroy": true,
+            "ajax": {
+                "url": "<?= base_url('inventory/get_inventory_history/') ?>" + inv_id,
+                "type": "POST",
+            },
+        });
+
+        $('#view_invHistoryModal').modal('show');
+        });
+
+        $(document).on('click', '#print_records', function() {
+            var url = "<?= base_url('inventory/print_records');?>";
+            window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');
         });
 
     });

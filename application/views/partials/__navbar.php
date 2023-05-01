@@ -42,11 +42,11 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-user-clock"></i></div>
                             Time Monitoring 
                         </a>
-                        <!--
-                        <a class="nav-link" href="#">
+                        
+                        <a class="nav-link <?= ($this->uri->segment(2) == 'customer_registration' ? 'active' : '') ?>" href="<?= base_url('main/customer_registration')?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-user-cog"></i></div>
                             Customer Registration
-                        </a>-->
+                        </a>
                         <a class="nav-link <?= ($this->uri->segment(2) == 'sales_transaction' ? 'active' : '') ?>" href="<?= base_url('main/sales_transaction')?>">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-line"></i></div>
                             Sales & Transaction
