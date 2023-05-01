@@ -630,6 +630,9 @@
             var guestQty = $('#child_count').val();
             var admission = $('#package_type').val();
 
+            var child_fname1 = $('#child_fname1').val();
+            var child_fname2 = $('#child_fname2').val();
+
             if (package_amt == '') {
                 Swal.fire('Warning!', 'No time selected.', 'warning');
             } else {
@@ -641,10 +644,20 @@
                         '<td>'+input2+'</td>' +
                         '<td>'+guestQty+'</td>' +
                         '<td>'+sum.toFixed(2)+'</td>' +
-                        // '<td></td>' +
                         '<td><span class="remove_row">Remove</span></td>' +
                     '</tr>'
                 );
+                // $('#table_inventory tbody').append(
+                //     '<tr class="row2">' +
+                //         '<td style="display:none;"></td>' +
+                //         '<td style="display:none;"></td>' +
+                //         '<td>'+child_fname+'</td>' +
+                //         '<td>'+input2+'</td>' +
+                //         '<td>'+guestQty+'</td>' +
+                //         '<td>'+sum.toFixed(2)+'</td>' +
+                //         '<td><span class="remove_row">Remove</span></td>' +
+                //     '</tr>'
+                // );
                 $('#table_inventory tbody tr.row2').each(function() {
                     var sumCell = $(this).find('td:eq(5)');
                     var sumValue = parseFloat(sumCell.text());

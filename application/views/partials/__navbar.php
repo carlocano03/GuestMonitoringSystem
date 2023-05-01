@@ -30,39 +30,56 @@
                             <div class="avatar-text"><?= $_SESSION['loggedIn']['access']; ?></div>
                         </div>
                         <hr class="mt-0" style="background: #8F3F96;">
-                        <a class="nav-link <?= ($this->uri->segment(2) == '' || $this->uri->segment(2) == 'main' ? 'active' : '') ?>" href="<?= base_url('main')?>">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Main Dashboard
-                        </a>
-                        <a class="nav-link <?= ($this->uri->segment(2) == 'monitoring_board' ? 'active' : '') ?>" href="<?= base_url('main/monitoring_board')?>">
-                            <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                            Guest Monitoring Board
-                        </a>
-                        <a class="nav-link" href="<?= base_url('main/time_monitoring')?>">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user-clock"></i></div>
-                            Time Monitoring 
-                        </a>
                         
-                        <a class="nav-link <?= ($this->uri->segment(2) == 'customer_registration' ? 'active' : '') ?>" href="<?= base_url('main/customer_registration')?>">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user-cog"></i></div>
-                            Customer Registration
-                        </a>
-                        <a class="nav-link <?= ($this->uri->segment(2) == 'sales_transaction' ? 'active' : '') ?>" href="<?= base_url('main/sales_transaction')?>">
-                            <div class="sb-nav-link-icon"><i class="fas fa-chart-line"></i></div>
-                            Sales & Transaction
-                        </a>
-                        <a class="nav-link <?= ($this->uri->segment(2) == 'pricing_promo' ? 'active' : '') ?>" href="<?= base_url('main/pricing_promo')?>">
-                            <div class="sb-nav-link-icon"><i class="fas fa-money-check"></i></div>
-                            Pricing & Promo
-                        </a>
-                        <a class="nav-link <?= ($this->uri->segment(2) == 'inventory' ? 'active' : '') ?>" href="<?= base_url('main/inventory')?>">
-                            <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
-                            Inventory Module
-                        </a>
-                        <a class="nav-link <?= ($this->uri->segment(2) == 'account' ? 'active' : '') ?>" href="<?= base_url('main/account')?>">
-                            <div class="sb-nav-link-icon"><i class="fas fa-user-alt"></i></div>
-                            Account Management
-                        </a>
+                        <?php if ($_SESSION['loggedIn']['access'] == 'Administrator'):?>
+                            <a class="nav-link <?= ($this->uri->segment(2) == '' || $this->uri->segment(2) == 'main' ? 'active' : '') ?>" href="<?= base_url('main')?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Main Dashboard
+                            </a>
+                            <a class="nav-link <?= ($this->uri->segment(2) == 'monitoring_board' ? 'active' : '') ?>" href="<?= base_url('main/monitoring_board')?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                Guest Monitoring Board
+                            </a>
+                            <a class="nav-link" href="<?= base_url('main/time_monitoring')?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user-clock"></i></div>
+                                Time Monitoring 
+                            </a>
+                            
+                            <a class="nav-link <?= ($this->uri->segment(2) == 'customer_registration' ? 'active' : '') ?>" href="<?= base_url('main/customer_registration')?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user-cog"></i></div>
+                                Customer Registration
+                            </a>
+                            <a class="nav-link <?= ($this->uri->segment(2) == 'sales_transaction' ? 'active' : '') ?>" href="<?= base_url('main/sales_transaction')?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-chart-line"></i></div>
+                                Sales & Transaction
+                            </a>
+                            <a class="nav-link <?= ($this->uri->segment(2) == 'pricing_promo' ? 'active' : '') ?>" href="<?= base_url('main/pricing_promo')?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-money-check"></i></div>
+                                Pricing & Promo
+                            </a>
+                            <a class="nav-link <?= ($this->uri->segment(2) == 'inventory' ? 'active' : '') ?>" href="<?= base_url('main/inventory')?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
+                                Inventory Module
+                            </a>
+                            <a class="nav-link <?= ($this->uri->segment(2) == 'account' ? 'active' : '') ?>" href="<?= base_url('main/account')?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user-alt"></i></div>
+                                Account Management
+                            </a>
+                        <?php else:?>
+                            <a class="nav-link <?= ($this->uri->segment(2) == '' || $this->uri->segment(2) == 'main' ? 'active' : '') ?>" href="<?= base_url('main')?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Main Dashboard
+                            </a>
+                            <a class="nav-link <?= ($this->uri->segment(2) == 'monitoring_board' ? 'active' : '') ?>" href="<?= base_url('main/monitoring_board')?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                Guest Monitoring Board
+                            </a>
+                            <a class="nav-link" href="<?= base_url('main/time_monitoring')?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-user-clock"></i></div>
+                                Time Monitoring 
+                            </a>
+                        <?php endif;?>
+                        
                         <!-- <a class="nav-link" href="#">
                             <div class="sb-nav-link-icon"><i class="fas fa-info-circle"></i></div>
                             Reservation & Inquiry
