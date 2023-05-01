@@ -437,12 +437,27 @@ class Main extends CI_Controller
             ORDER BY child_id ASC
         ");
 
+        $this->db->where('guest_slip_no', $slip_no);
+        $package = $this->db->get('guest_details')->row();
+
+        $this->db->where('package', $package->service);
+        $pricing_promo = $this->db->get('pricing_promo')->result();
+
         if ($query->num_rows() > 0) {
             foreach ($query->result() as $row) {
                 $no++;
+                // $output .= '
+                // <div class="form-group mb-2">
+                //     <select name="select_option" id="package'.$no.'" class="form-select text-uppercase">
+                //         <option value="">Select Time</option>';
+                //         foreach ($pricing_promo as $option) {
+                //             $output .= '<option value="'.$option->pricing_id.'">'.$option->admission_type.'</option>';
+                //         }
+                // $output .= '</select></div>';
+
                 $output .= '
                     <div class="form-group mb-2">
-                        <input type="text" value="'.$row->child_fname.'" name="child_fname" id="child_fname" class="form-control text-uppercase" placeholder="Enter First Name (Juan)">
+                        <input type="text" value="'.$row->child_fname.'" name="child_fname" id="child_fname'.$no.'" class="form-control text-uppercase" placeholder="Enter First Name (Juan)">
                     </div>
                     <div class="form-group mb-2">
                         <input type="text" value="'.$row->child_lname.'" name="child_lname" id="child_lname" class="form-control text-uppercase" placeholder="Enter Last Name (Bonifacio)">
