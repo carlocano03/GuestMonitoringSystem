@@ -394,7 +394,7 @@
                 } else {
                     Swal.fire({
                         title: 'Opps!',
-                        text: 'Please check the terms and conditions before you proceed.',
+                        text: 'Please accept / check acknowledge the Waiver / Quit Claim and Data Privacy Act of 2012. ',
                         icon: 'warning'
                     });
                 }

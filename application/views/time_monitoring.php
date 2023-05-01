@@ -23,7 +23,7 @@
             <div class="header">
                 <div class="row">
                     <div class="col-md-2 text-center">
-                        <img src="<?= base_url('assets/img/jacks.png')?>" width="200">
+                        <img src="<?= base_url('assets/img/jacks.png')?>" width="210">
                     </div>
                     <div class="col-md-5">
                         <h1 class="text-white" style="margin-bottom: -20px;">PLAY TIME BOARD</h1>
@@ -31,11 +31,11 @@
                     </div>
                     <div class="col-md-4">
                         <div style="margin-bottom: -20px;" class="d-flex align-items-center justify-content-center">
-                            <img src="<?= base_url('assets/img/logo/infla.png')?>" width="200"> 
+                            <img src="<?= base_url('assets/img/logo/infla.png')?>" width="300"> 
                             <span style="font-size: 40px; font-weight: bold; color: #fff;" id="inflatables">0</span>
                         </div>
                         <div class="d-flex align-items-center justify-content-center">
-                            <img src="<?= base_url('assets/img/logo/par.png')?>" width="200"> 
+                            <img src="<?= base_url('assets/img/logo/par.png')?>" width="300"> 
                             <span style="font-size: 40px; font-weight: bold; color: #fff;" id="park">0</span>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-4">
-                        <h5 class="text-white text-center">Players with less than 5 minutes left</h5>
+                        <h3 class="text-white text-center">Players with LESS THAN 5 minutes left</h3>
                         <hr style="height:5px; background: #222f3e;">
                         
                         <div id="playerBoard1"></div>
@@ -54,19 +54,20 @@
                         
                     </div>
                     <div class="col-md-4">
-                        <h5 class="text-white text-center">Players with less than 15 minutes left</h5>
+                        <h3 class="text-white text-center">Players with LESS THAN15 minutes left</h3>
                         <hr style="height:5px; background: #222f3e;">
 
                         <div id="playerBoard2"></div>
 
                     </div>
                     <div class="col-md-4">
-                        <h5 class="text-white text-center">Players with more than 15 minutes left</h5>
+                        <h3 class="text-white text-center">Players with MORE THAN 15 minutes left</h3>
                         <hr style="height:5px; background: #222f3e;">
 
                         <div id="playerBoard3"></div>
 
                     </div>
+                    
                 </div>
             </div>
         </div>
