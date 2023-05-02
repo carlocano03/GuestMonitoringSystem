@@ -692,8 +692,8 @@ class Main extends CI_Controller
             ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
             ->where('TM.status', 'Ongoing')
             ->where('DATE(TM.date_added) = CURDATE()')
-            ->where('(TM.extend_time IS NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) <= ' . (15 * 60) . ' AND TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) > 0)')
-            ->or_where('(TM.extend_time IS NOT NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.extend_time) <= ' . (15 * 60) . ' AND TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) > 0)')
+            ->where('(TM.extend_time IS NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) <= ' . (15 * 60) . ' AND TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) > 0 AND TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) >= ' . (5 * 60) . ')')
+            ->or_where('(TM.extend_time IS NOT NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.extend_time) <= ' . (15 * 60) . ' AND TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) > 0 AND TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) >= ' . (5 * 60) . ')')
             ->get();
 
 
