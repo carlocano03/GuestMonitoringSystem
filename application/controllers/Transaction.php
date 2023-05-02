@@ -26,6 +26,7 @@ class Transaction extends CI_Controller
         $inv_sales = 0;
         $total_sales = 0;
         $no_transaction = 0;
+        $total_discount = 0;
         foreach ($guest as $list) {
             $no++;
             $row = array();
@@ -80,9 +81,19 @@ class Transaction extends CI_Controller
                 ->row();
             $inv_sales += $inv->inv_sales;
 
-            $total_sales = $total_amount + $inv_sales;
-
             $row[] = number_format($inv->inv_sales, 2);
+
+            $discount = $this->db
+                ->select('discount_amt')
+                ->from('consumable_stocks')
+                ->where('guest_id', $list->guest_id)
+                ->group_by('serial_no')
+                ->get()
+                ->row();
+            $total_discount += $discount->discount_amt;
+            $row[] = number_format($discount->discount_amt, 2);
+
+            $total_sales = $total_amount + $inv_sales - $total_discount;
 
             $this->db->from('consumable_stocks');
             $this->db->group_by('transaction_no');
@@ -98,6 +109,7 @@ class Transaction extends CI_Controller
             "totalAmount" => number_format($total_amount, 2),
             "totalInv" => number_format($inv_sales, 2),
             "totalSales" => number_format($total_sales, 2),
+            "total_discount" => number_format($total_discount, 2),
             "no_transaction" => number_format($no_transaction),
         );
         echo json_encode($output);
@@ -209,7 +221,13 @@ class Transaction extends CI_Controller
                 }
 
                 // Format remaining time as HH:MM:SS
-                $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                //$remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                if ($remaining_time < 0) {
+                    $remaining_time_formatted = '00:00:00';
+                } else {
+                    $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                }
+                
                 if ($remaining_time < 300) {
                     $disabled = 'disabled';
                 } else {
@@ -311,7 +329,13 @@ class Transaction extends CI_Controller
                 }
 
                 // Format remaining time as HH:MM:SS
-                $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                //$remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                if ($remaining_time < 0) {
+                    $remaining_time_formatted = '00:00:00';
+                } else {
+                    $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                }
+                
                 if ($remaining_time < 300) {
                     $disabled = 'disabled';
                 } else {
@@ -453,7 +477,13 @@ class Transaction extends CI_Controller
                 }
 
                 // Format remaining time as HH:MM:SS
-                $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                //$remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                if ($remaining_time < 0) {
+                    $remaining_time_formatted = '00:00:00';
+                } else {
+                    $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                }
+                
                 if ($remaining_time < 300) {
                     $disabled = 'disabled';
                 } else {
@@ -552,7 +582,13 @@ class Transaction extends CI_Controller
                 }
 
                 // Format remaining time as HH:MM:SS
-                $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                //$remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                if ($remaining_time < 0) {
+                    $remaining_time_formatted = '00:00:00';
+                } else {
+                    $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                }
+                
                 if ($remaining_time < 300) {
                     $disabled = 'disabled';
                 } else {
