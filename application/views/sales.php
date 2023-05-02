@@ -17,7 +17,9 @@
     #tbl_sales th:nth-child(11),
     #tbl_sales td:nth-child(11),
     #tbl_sales th:nth-child(12),
-    #tbl_sales td:nth-child(12) {
+    #tbl_sales td:nth-child(12),
+    #tbl_sales th:nth-child(13),
+    #tbl_sales td:nth-child(13) {
         background: var(--bs-yellow);
         color: #2d3436;
     }
@@ -105,6 +107,7 @@
                             <th>Qty</th>
                             <th>Amount</th>
                             <th>Inventory</th>
+                            <th>Discount</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -128,6 +131,11 @@
                             <div class="text-end">
                             Inventory Sales:
                                 <b id="total_inv"></b>
+                            </div>
+
+                            <div class="text-end">
+                            Discount:
+                                <b id="total_discount"></b>
                             </div>
 
                             <hr class="mt-0 mb-2">
@@ -252,6 +260,7 @@
                     $('#total_amount').text('₱ ' + json.totalAmount);
                     $('#total_inv').text('₱ ' + json.totalInv);
                     $('#total_sales').text('₱ ' + json.totalSales);
+                    $('#total_discount').text('₱ -' + json.total_discount);
                     $('#no_transaction').text(json.no_transaction);
                 return json.data;
                 }
