@@ -72,6 +72,7 @@
                             }
                         ?>
                         <?php
+                            $total_discount = 0;
                             $sales = $this->db
                                 ->select("SUM(total_amt) as total_sales")
                                 ->from('consumable_stocks')
@@ -117,6 +118,7 @@
                                 ->group_by('serial_no')
                                 ->get()
                                 ->row();
+                            $total_discount += $discount->discount_amt;
                         ?>
 
                         <td><?= ucwords($kids)?></td>
@@ -134,9 +136,9 @@
         <div class="total" style="text-align: right;">
             <h5 style="margin-bottom:5px;">Sales: ₱ <?= number_format($sales->total_sales, 2);?></h5>
             <h5>Inventory Sales: ₱ <?= number_format($inv_sales->total_inv, 2);?></h5>
-            <h5>Discount: ₱ -<?= number_format($discount->discount_amt, 2);?></h5>
+            <h5>Discount: ₱ -<?= number_format($total_discount, 2);?></h5>
             <?php
-                $total = $sales->total_sales + $inv_sales->total_inv - $discount->discount_amt;
+                $total = $sales->total_sales + $inv_sales->total_inv - $total_discount;
             ?>
             <h4>Total Sales: ₱ <?= number_format($total, 2)?></h4>
         </div>
