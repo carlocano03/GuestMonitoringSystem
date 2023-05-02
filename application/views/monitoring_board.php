@@ -17,8 +17,8 @@
         color: #fff;
     }
 
-    #tbl_monitoring td:nth-child(11),
-    #tbl_monitoring th:nth-child(11) {
+    #tbl_monitoring td:nth-child(12),
+    #tbl_monitoring th:nth-child(12) {
         display: none;
     }
 </style>
@@ -79,6 +79,7 @@
                                 <th>PACKAGE</th>
                                 <th>TIME IN</th>
                                 <th>TIME OUT</th>
+                                <th>EXTEND TIME</th>
                                 <th>REMAINING TIME</th>
                                 <th>GUEST / KIDS NAME</th>
                                 <th>PARENT / GUARDIAN</th>
@@ -241,11 +242,11 @@
         }, 2000);
         var tbl_monitoring = $('#tbl_monitoring').DataTable({
             "fnRowCallback": function(nRow, aData, iDisplayIndex, asd) {
-                if (aData[10] == 'Red') { // less than 5 minutes
+                if (aData[11] == 'Red') { // less than 5 minutes
                     $('td', nRow).css('background-color', 'rgba(249, 187, 191, 0.8)');
-                } else if (aData[10] == 'Yellow') { // less than 15 minutes
+                } else if (aData[11] == 'Yellow') { // less than 15 minutes
                     $('td', nRow).css('background-color', 'rgba(252, 241, 136, 0.8)');
-                } else if (aData[10] == 'Orange') { // less than 30 minutes
+                } else if (aData[11] == 'Orange') { // less than 30 minutes
                     $('td', nRow).css('background-color', 'rgba(252, 203, 136, 0.8)');
                 } 
             },
@@ -472,6 +473,26 @@
                             }
                         }
                     });
+                }
+            })
+        });
+
+        $(document).on('click', '.extend_guest', function() {
+            var serial_no = $(this).attr('id');
+            var guest_id = $(this).data('guest_id');
+            var package = $(this).data('package');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to extend this guest.",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    
                 }
             })
         });

@@ -134,7 +134,7 @@
                         <hr>
                         <div class="form-group mb-2">
                             <button class="btn btn-success" type="button" data-bs-toggle="modal" data-bs-target="#cameraModal"><i class="bi bi-camera-fill me-2"></i>CAPTURE IMAGE</button>
-                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#signatureModal"><i class="bi bi-pen-fill me-2"></i>E-SIGNATURE</button>
+                            <!-- <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#signatureModal"><i class="bi bi-pen-fill me-2"></i>E-SIGNATURE</button> -->
                         </div>
                         <hr>
                         <div class="form-group mb-2 camera">
@@ -210,9 +210,24 @@
                         </div>
                         <div class="form-group mb-2">
                             <input type="hidden" id="child_count">
+
+                            <!-- Children 1 - Package -->
                             <input type="hidden" id="package_price_amt">
-                            <input type="hidden" id="package_total_amt">
                             <input type="hidden" id="package_type">
+                            <input type="hidden" id="package_total_amt">
+                            <!-- Children 1 - Package -->
+
+                            <!-- Children 2 - Package -->
+                            <input type="hidden" id="package_price_amt2">
+                            <input type="hidden" id="package_type2">
+                            <input type="hidden" id="package_total_amt2">
+                            <!-- Children 2 - Package -->
+
+                            <!-- Children 3 - Package -->
+                            <input type="hidden" id="package_price_amt3">
+                            <input type="hidden" id="package_type3">
+                            <input type="hidden" id="package_total_amt3">
+                            <!-- Children 3 - Package -->
                         </div>
                         <div class="form-group mb-2">
                             <button type="button" class="btn btn-success fw-bold w-100 add_guest"><i class="bi bi-plus-square me-2"></i>ADD TO CART</button>
@@ -279,7 +294,7 @@
                             <hr>
 
                             <!-- style="display:none;" -->
-                            <table class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table_children">
+                            <table style="display:none;" class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table_children">
                                 <thead>
                                     <tr>
                                         <th>Children ID</th>
@@ -311,7 +326,7 @@
                             <input type="hidden" id="remarks_discount">
                         <hr>
                         <div class="form-group mb-2">
-                            <button type="reset" class="btn btn-secondary btn-lg w-100">CLEAR</button>
+                            <button type="button" class="btn btn-secondary btn-lg w-100 clear">CLEAR</button>
                                 </div>
                             <div class="form-group mb-2">
                             <button type="submit" class="btn btn-success btn-lg w-100" id="process_payment">PROCESS PAYMENT</button>
@@ -603,6 +618,60 @@
             })
         });
 
+        //Children 1 - Package
+        $(document).on('change', '#package1', function() {
+            var pricing_id = $(this).val();
+            $.ajax({
+                url: "<?= base_url('main/get_pricing')?>",
+                method: "POST",
+                data: {
+                    pricing_id: pricing_id
+                },
+                success: function(data) { 
+                    if (Object.keys(data).length > 0) {
+                        $('#package_price_amt').val(data.weekdays_price == null ? '' : data.weekdays_price);
+                        $('#package_type').val(data.admission_type == null ? '' : data.admission_type);
+                    }
+                }
+            });
+        });
+
+        //Children 2 - Package
+        $(document).on('change', '#package2', function() {
+            var pricing_id = $(this).val();
+            $.ajax({
+                url: "<?= base_url('main/get_pricing')?>",
+                method: "POST",
+                data: {
+                    pricing_id: pricing_id
+                },
+                success: function(data) { 
+                    if (Object.keys(data).length > 0) {
+                        $('#package_price_amt2').val(data.weekdays_price == null ? '' : data.weekdays_price);
+                        $('#package_type2').val(data.admission_type == null ? '' : data.admission_type);
+                    }
+                }
+            });
+        });
+
+        //Children 2 - Package
+        $(document).on('change', '#package3', function() {
+            var pricing_id = $(this).val();
+            $.ajax({
+                url: "<?= base_url('main/get_pricing')?>",
+                method: "POST",
+                data: {
+                    pricing_id: pricing_id
+                },
+                success: function(data) { 
+                    if (Object.keys(data).length > 0) {
+                        $('#package_price_amt3').val(data.weekdays_price == null ? '' : data.weekdays_price);
+                        $('#package_type3').val(data.admission_type == null ? '' : data.admission_type);
+                    }
+                }
+            });
+        });
+
         $(document).on('change', '#pricing_id', function() {
             var pricing_id = $(this).val();
             $.ajax({
@@ -621,11 +690,17 @@
         });
 
         $(document).on('click', '.add_guest', function() {
-            var package_amt = $('#package_price_amt').val();
-            var input1 = parseFloat($('#child_count').val());
-            var input2 = parseFloat($('#package_price_amt').val());
-            var sum = input1 * input2;
             var totalSum = 0;
+
+            //Children 1 - Package
+            var package_amt = $('#package_price_amt').val();
+            var input2 = parseFloat($('#package_price_amt').val());
+            var input1 = parseFloat($('#child_count').val()); //Child count
+            //var input1 = 1 //Child count one is to one
+            var sum = input1 * input2; //Total Amount per child
+            
+
+
 
             var guestQty = $('#child_count').val();
             var admission = $('#package_type').val();
@@ -807,7 +882,9 @@
 
                                     var quit_claim = "<?= base_url('main/quit_claim?registration=')?>" + serial_no;
                                     window.open(quit_claim, '_blank');
-                                    location.reload();
+                                    setTimeout(() => {
+                                        location.reload();
+                                    }, 1000);
                                     $('registerGuest').trigger('reset');
                                 } else {
                                     alert('Failed to save');
@@ -918,6 +995,10 @@
                     $('#pricing_id').html(data);
                 }
             });
+        });
+
+        $(document).on('click', '.clear', function() {
+            location.reload();
         });
         
     });
