@@ -32,6 +32,7 @@ class Time_monitoring extends CI_Controller
             $row[] = $list->slip_app_no;
             $row[] = date('F j, Y', strtotime($list->date_added));
             $row[] = $list->admission_type;
+            $row[] = $list->service;
             $row[] = date('g:i a', strtotime($list->time_in));
             $row[] = date('g:i a', strtotime($list->time_out));
             // // Calculate remaining time in seconds
@@ -381,7 +382,12 @@ class Time_monitoring extends CI_Controller
                 }
                 
                 // Format remaining time as HH:MM:SS
-                $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                //$remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                if ($remaining_time < 0) {
+                    $remaining_time_formatted = '00:00:00';
+                } else {
+                    $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                }
 
                 if ($remaining_time < 300) {
                     $disabled = 'disabled';
@@ -505,7 +511,13 @@ class Time_monitoring extends CI_Controller
                 }
 
                 // Format remaining time as HH:MM:SS
-                $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                //$remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                if ($remaining_time < 0) {
+                    $remaining_time_formatted = '00:00:00';
+                } else {
+                    $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                }
+
                 if ($remaining_time < 300) {
                     $disabled = 'disabled';
                 } else {
@@ -660,7 +672,12 @@ class Time_monitoring extends CI_Controller
                 }
                 
                 // Format remaining time as HH:MM:SS
-                $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                //$remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                if ($remaining_time < 0) {
+                    $remaining_time_formatted = '00:00:00';
+                } else {
+                    $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                }
 
                 if ($remaining_time < 300) {
                     $disabled = 'disabled';
@@ -773,7 +790,13 @@ class Time_monitoring extends CI_Controller
                 }
 
                 // Format remaining time as HH:MM:SS
-                $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                //$remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                if ($remaining_time < 0) {
+                    $remaining_time_formatted = '00:00:00';
+                } else {
+                    $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));
+                }
+                
                 if ($remaining_time < 300) {
                     $disabled = 'disabled';
                 } else {

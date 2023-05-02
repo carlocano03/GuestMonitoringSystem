@@ -82,6 +82,8 @@ class Transaction extends CI_Controller
 
             $total_sales = $total_amount + $inv_sales;
 
+            $row[] = number_format($inv->inv_sales, 2);
+
             $this->db->from('consumable_stocks');
             $this->db->group_by('transaction_no');
             $no_transaction = $this->db->count_all_results();

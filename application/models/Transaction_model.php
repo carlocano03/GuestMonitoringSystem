@@ -65,7 +65,7 @@ class Transaction_model extends CI_Model
 
         $this->db
             ->select('TM.*')
-            ->select('G.slip_app_no, G.guest_fname, G.guest_mname, G.guest_lname, G.service, G.contact_no,G.status')
+            ->select('G.slip_app_no, G.guest_fname, G.guest_mname, G.guest_lname, G.service, G.contact_no, G.status, G.service')
             ->select('CS.transaction_no, CS.type_id, CS.qty, CS.total_amt')
             ->select("CONCAT(GC.child_fname, ' ', GC.child_lname) as children, GC.child_id")
             ->from($this->guest.' TM')
@@ -74,6 +74,14 @@ class Transaction_model extends CI_Model
             ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
             ->where('G.status', 'REGISTERED')
             ->group_by('CS.guest_id');
+
+        if ($this->input->post('filter_by')) {
+            $this->db->where('G.service', $this->input->post('filter_by'));
+        }
+        if ($this->input->post('from') && $this->input->post('to')) {
+            $this->db->where('DATE(TM.date_added) >=', $this->input->post('from'));
+            $this->db->where('DATE(TM.date_added) <=', $this->input->post('to'));
+        }
         $i = 0;
         foreach ($this->guest_search as $item) // loop column 
         {

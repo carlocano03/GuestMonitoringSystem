@@ -17,8 +17,8 @@
         color: #fff;
     }
 
-    #tbl_monitoring td:nth-child(12),
-    #tbl_monitoring th:nth-child(12) {
+    #tbl_monitoring td:nth-child(13),
+    #tbl_monitoring th:nth-child(13) {
         display: none;
     }
 </style>
@@ -77,6 +77,7 @@
                                 <th>SERIAL #</th>
                                 <th>DATE</th>
                                 <th>PACKAGE</th>
+                                <th>CATEGORY</th>
                                 <th>TIME IN</th>
                                 <th>TIME OUT</th>
                                 <th>EXTEND TIME</th>
@@ -242,11 +243,11 @@
         }, 2000);
         var tbl_monitoring = $('#tbl_monitoring').DataTable({
             "fnRowCallback": function(nRow, aData, iDisplayIndex, asd) {
-                if (aData[11] == 'Red') { // less than 5 minutes
+                if (aData[12] == 'Red') { // less than 5 minutes
                     $('td', nRow).css('background-color', 'rgba(249, 187, 191, 0.8)');
-                } else if (aData[11] == 'Yellow') { // less than 15 minutes
+                } else if (aData[12] == 'Yellow') { // less than 15 minutes
                     $('td', nRow).css('background-color', 'rgba(252, 241, 136, 0.8)');
-                } else if (aData[11] == 'Orange') { // less than 30 minutes
+                } else if (aData[12] == 'Orange') { // less than 30 minutes
                     $('td', nRow).css('background-color', 'rgba(252, 203, 136, 0.8)');
                 } 
             },

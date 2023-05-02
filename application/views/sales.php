@@ -15,7 +15,9 @@
     }
 
     #tbl_sales th:nth-child(11),
-    #tbl_sales td:nth-child(11) {
+    #tbl_sales td:nth-child(11),
+    #tbl_sales th:nth-child(12),
+    #tbl_sales td:nth-child(12) {
         background: var(--bs-yellow);
         color: #2d3436;
     }
@@ -52,6 +54,8 @@
                         <div class="col-sm-6">
                             <select name="filter_by" id="filter_by" class="form-select form-select-sm">
                                 <option value="">Filter by</option>
+                                <option value="INFLATABLES">Inflatables</option>
+                                <option value="PARK">Park</option>
                             </select>
                         </div>
                         <div class="col-sm-6">
@@ -60,10 +64,16 @@
                             </select>
                         </div>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" name="dt_from" id="dt_from" placeholder="Date From">
+                            <div class="input-group input-group-sm mb-3">
+                                <label class="input-group-text">From</label>
+                                <input type="date" class="form-control form-control-sm" id="dt_from">
+                            </div>
                         </div>
                         <div class="col-sm-6">
-                            <input type="text" class="form-control form-control-sm" name="dt_to" id="dt_to" placeholder="Date To">
+                            <div class="input-group input-group-sm mb-3">
+                                <label class="input-group-text">To</label>
+                                <input type="date" class="form-control form-control-sm" id="dt_to">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -94,6 +104,7 @@
                             <th>Parent / Guardian</th>
                             <th>Qty</th>
                             <th>Amount</th>
+                            <th>Inventory</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -233,6 +244,9 @@
                 "type": "POST",
                 "data": function(data) {
                     data.search_value = $('#search_value').val();
+                    data.filter_by = $('#filter_by').val();
+                    data.from = $('#dt_from').val();
+                    data.to = $('#dt_to').val();
                 },
                 "dataSrc": function(json) {
                     $('#total_amount').text('₱ ' + json.totalAmount);
@@ -245,6 +259,33 @@
         });
         $('#search_value').on('input', function() {
             tbl_sales.draw();
+        });
+        $('#filter_by').on('change', function () {
+            tbl_sales.draw();
+        });
+        $('#dt_from').on('change', function() {
+            if ($('#dt_from').val() > $('#dt_to').val() && $('#dt_to').val() != '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Invalid Date Range,Please Check the date. Thank you!',
+                });
+                $('#dt_from').val('');
+            } else {
+                tbl_sales.draw();
+            }
+        });
+        $('#dt_to').on('change', function() {
+            if ($('#dt_to').val() < $('#dt_from').val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Invalid Date Range,Please Check the date. Thank you!',
+                });
+                $('#dt_to').val('');
+            } else {
+                tbl_sales.draw();
+            }
         });
 
         // var total = 0;
