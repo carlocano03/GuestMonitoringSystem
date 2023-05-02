@@ -34,13 +34,35 @@ class Time_monitoring extends CI_Controller
             $row[] = $list->admission_type;
             $row[] = date('g:i a', strtotime($list->time_in));
             $row[] = date('g:i a', strtotime($list->time_out));
+            // // Calculate remaining time in seconds
+            // if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
+            //     $remaining_time = strtotime($list->time_out) - time();
+            // } else {
+            //     $remaining_time = 0;
+            // }
 
-            // Calculate remaining time in seconds
-            if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
-                $remaining_time = strtotime($list->time_out) - time();
+            if ($list->extend_time == NULL) {
+                $row[] = '';
+                // Calculate remaining time in seconds
+                if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
+                    $remaining_time = strtotime($list->time_out) - time();
+                } else {
+                    $remaining_time = 0;
+                }
             } else {
-                $remaining_time = 0;
+                $row[] = date('g:i a', strtotime($list->extend_time));
+                // Calculate remaining time in seconds
+                $time_out = strtotime($list->time_out);
+                $extend_time = strtotime($list->extend_time);
+                $total_time = $time_out + $extend_time;
+
+                if (date('Y-m-d', strtotime($list->date_added)) == date('Y-m-d')) {
+                    $remaining_time = strtotime($list->extend_time) - time();
+                } else {
+                    $remaining_time = 0;
+                }
             }
+
 
             // Format remaining time as HH:MM:SS
             $remaining_time_formatted = sprintf('%02d:%02d:%02d', ($remaining_time / 3600), ($remaining_time / 60 % 60), ($remaining_time % 60));

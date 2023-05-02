@@ -581,17 +581,31 @@ class Main extends CI_Controller
         $board3 = '';
 
         //less than 5 minutes
+        // $query = $this->db
+        //     ->select('TM.*, TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) AS remaining_time')
+        //     ->select("CONCAT(GC.child_fname, ' ',LEFT(GC.child_lname, 1),'.') as children, GC.child_age, GC.child_img")
+        //     ->select("CONCAT(G.guest_fname, ' ',G.guest_lname) as guardian, G.status, G.service")
+        //     ->from('time_management TM')
+        //     ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
+        //     ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
+        //     ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) <', 5 * 60) // 15 minutes in seconds
+        //     ->or_where('TIMESTAMPDIFF(SECOND, NOW(), TM.extend_time) <', 5 * 60) // 15 minutes in seconds
+        //     ->where('TM.status', 'Ongoing')
+        //     // ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) >', 0) // Add this line
+        //     ->where('DATE(TM.date_added) = CURDATE()')
+        //     ->get();
+
         $query = $this->db
-            ->select('TM.*, TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) AS remaining_time')
+            ->select('TM.*, TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) AS remaining_time')
             ->select("CONCAT(GC.child_fname, ' ',LEFT(GC.child_lname, 1),'.') as children, GC.child_age, GC.child_img")
             ->select("CONCAT(G.guest_fname, ' ',G.guest_lname) as guardian, G.status, G.service")
             ->from('time_management TM')
             ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
             ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
-            ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) <', 5 * 60) // 15 minutes in seconds
             ->where('TM.status', 'Ongoing')
-            ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) >', 0) // Add this line
             ->where('DATE(TM.date_added) = CURDATE()')
+            ->where('(TM.extend_time IS NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) < ' . (5 * 60) . ')')
+            ->or_where('(TM.extend_time IS NOT NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.extend_time) < ' . (1 * 60) . ')')
             ->get();
 
         if ($query->num_rows() > 0) { 
@@ -625,6 +639,12 @@ class Main extends CI_Controller
                     $title = 'PARK';
                     $guest = strtoupper($list->guardian);
                 }
+
+                if ($list->child_img == '' || $list->child_img == NULL) {
+                    $profile_child = base_url('assets/img/avatar.png');
+                } else {
+                    $profile_child = base_url($list->child_img);
+                }
                 $board1 .= '
                     <div class="card mb-3">
                         <div class="card-header" style="'.$color.'">
@@ -632,7 +652,7 @@ class Main extends CI_Controller
                         </div>
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-center">
-                                <img class="box-img-monitor" src="'.base_url('assets/img/avatar.png').'" alt="Profile-Pic">
+                                <img class="box-img-monitor" src="'.$profile_child.'" alt="Profile-Pic">
                                 <div class="ms-2">
                                     <h5 class="mb-0">'.$guest.'</h5>
                                     <b class="mb-0">1234567890</b>
@@ -648,19 +668,34 @@ class Main extends CI_Controller
             }
         }
 
-        //15 minutes
+        // //15 minutes
+        // $query = $this->db
+        //     ->select('TM.*, TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) AS remaining_time')
+        //     ->select("CONCAT(GC.child_fname, ' ',LEFT(GC.child_lname, 1),'.') as children, GC.child_age, GC.child_img")
+        //     ->select("CONCAT(G.guest_fname, ' ',G.guest_lname) as guardian, G.status, G.service")
+        //     ->from('time_management TM')
+        //     ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
+        //     ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
+        //     ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) <=', 15 * 60) // 15 minutes in seconds
+        //     ->or_where('TIMESTAMPDIFF(SECOND, NOW(), TM.extend_time) <=', 15 * 60) // 15 minutes in seconds
+        //     ->where('TM.status', 'Ongoing')
+        //     // ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) >', 0) // Add this line
+        //     ->where('DATE(TM.date_added) = CURDATE()')
+        //     ->get();
+        
         $query = $this->db
-            ->select('TM.*, TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) AS remaining_time')
+            ->select('TM.*, TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) AS remaining_time')
             ->select("CONCAT(GC.child_fname, ' ',LEFT(GC.child_lname, 1),'.') as children, GC.child_age, GC.child_img")
             ->select("CONCAT(G.guest_fname, ' ',G.guest_lname) as guardian, G.status, G.service")
             ->from('time_management TM')
             ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
             ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
-            ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) <=', 15 * 60) // 15 minutes in seconds
             ->where('TM.status', 'Ongoing')
-            ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) >', 0) // Add this line
             ->where('DATE(TM.date_added) = CURDATE()')
+            ->where('(TM.extend_time IS NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) <= ' . (15 * 60) . ' AND TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) > 0)')
+            ->or_where('(TM.extend_time IS NOT NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.extend_time) <= ' . (15 * 60) . ' AND TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) > 0)')
             ->get();
+
 
         if ($query->num_rows() > 0) { 
             foreach ($query->result() as $list) {
@@ -693,6 +728,12 @@ class Main extends CI_Controller
                     $title = 'PARK';
                     $guest = strtoupper($list->guardian);
                 }
+
+                if ($list->child_img == '' || $list->child_img == NULL) {
+                    $profile_child = base_url('assets/img/avatar.png');
+                } else {
+                    $profile_child = base_url($list->child_img);
+                }
                 $board2 .= '
                     <div class="card mb-3">
                         <div class="card-header" style="'.$color.'">
@@ -700,7 +741,7 @@ class Main extends CI_Controller
                         </div>
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-center">
-                                <img class="box-img-monitor" src="'.base_url('assets/img/avatar.png').'" alt="Profile-Pic">
+                                <img class="box-img-monitor" src="'.$profile_child.'" alt="Profile-Pic">
                                 <div class="ms-2">
                                     <h5 class="mb-0">'.$guest.'</h5>
                                     <b class="mb-0">'.$list->serial_no.'</b>
@@ -716,18 +757,30 @@ class Main extends CI_Controller
             }
         }
 
-        //more than 15 minutes
+        // //more than 15 minutes
+        // $query = $this->db
+        //     ->select('TM.*, TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) AS remaining_time')
+        //     ->select("CONCAT(GC.child_fname, ' ',LEFT(GC.child_lname, 1),'.') as children, GC.child_age, GC.child_img")
+        //     ->select("CONCAT(G.guest_fname, ' ',G.guest_lname) as guardian, G.status, G.service")
+        //     ->from('time_management TM')
+        //     ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
+        //     ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
+        //     ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) >', 15 * 60) // 15 minutes in seconds
+        //     ->or_where('TIMESTAMPDIFF(SECOND, NOW(), TM.extend_time) >', 15 * 60) // 15 minutes in seconds
+        //     ->where('TM.status', 'Ongoing')
+        //     ->where('DATE(TM.date_added) = CURDATE()')
+        //     ->get();
         $query = $this->db
-            ->select('TM.*, TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) AS remaining_time')
+            ->select('TM.*, TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) AS remaining_time')
             ->select("CONCAT(GC.child_fname, ' ',LEFT(GC.child_lname, 1),'.') as children, GC.child_age, GC.child_img")
             ->select("CONCAT(G.guest_fname, ' ',G.guest_lname) as guardian, G.status, G.service")
             ->from('time_management TM')
             ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
             ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
-            ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) >', 15 * 60) // 15 minutes in seconds
             ->where('TM.status', 'Ongoing')
-            ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) >', 0) // Add this line
             ->where('DATE(TM.date_added) = CURDATE()')
+            ->where('(TM.extend_time IS NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) > ' . (15 * 60) . ')')
+            ->or_where('(TM.extend_time IS NOT NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.extend_time) > ' . (15 * 60) . ')')
             ->get();
 
         if ($query->num_rows() > 0) { 
@@ -760,6 +813,12 @@ class Main extends CI_Controller
                     $title = 'PARK';
                     $guest = strtoupper($list->guardian);
                 }
+
+                if ($list->child_img == '' || $list->child_img == NULL) {
+                    $profile_child = base_url('assets/img/avatar.png');
+                } else {
+                    $profile_child = base_url($list->child_img);
+                }
                 $board3 .= '
                     <div class="card mb-3">
                         <div class="card-header" style="'.$color.'">
@@ -767,7 +826,7 @@ class Main extends CI_Controller
                         </div>
                         <div class="card-body">
                             <div class="d-flex align-items-center justify-content-center">
-                                <img class="box-img-monitor" src="'.base_url('assets/img/avatar.png').'" alt="Profile-Pic">
+                                <img class="box-img-monitor" src="'.$profile_child.'" alt="Profile-Pic">
                                 <div class="ms-2">
                                     <h5 class="mb-0">'.$guest.'</h5>
                                     <b class="mb-0">1234567890</b>
@@ -829,7 +888,7 @@ class Main extends CI_Controller
         // Enable auto-adjustment of top and bottom margins
         $mpdf->showImageErrors = true;
         $mpdf->showWatermarkImage = true;
-        $html = $this->load->view('pdf/quit_claim', [], true );
+        $html = $this->load->view('pdf/quit_claim', [], true);
         $mpdf->WriteHTML( $html );
         $mpdf->Output();
     }
