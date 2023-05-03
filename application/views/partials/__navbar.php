@@ -40,7 +40,7 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                                 Guest Monitoring Board
                             </a>
-                            <a class="nav-link" href="<?= base_url('main/time_monitoring')?>">
+                            <a class="nav-link" href="<?= base_url('main/time_monitoring')?>" target="_blank">
                                 <div class="sb-nav-link-icon"><i class="fas fa-user-clock"></i></div>
                                 Time Monitoring 
                             </a>
@@ -74,7 +74,7 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                                 Guest Monitoring Board
                             </a>
-                            <a class="nav-link" href="<?= base_url('main/time_monitoring')?>">
+                            <a class="nav-link" href="<?= base_url('main/time_monitoring')?>" target="_blank">
                                 <div class="sb-nav-link-icon"><i class="fas fa-user-clock"></i></div>
                                 Time Monitoring 
                             </a>
