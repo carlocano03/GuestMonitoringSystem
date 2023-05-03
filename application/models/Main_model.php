@@ -124,7 +124,11 @@ class Main_model extends CI_Model
         $query = $this->db->get('pricing_promo');
         $output = '<option value="">Select Time</option>';
         foreach ($query->result() as $row) {
-            $output .= '<option value="'.$row->pricing_id.'">'. $row->admission_type .'</option>';
+            $input_hours = $row->time_admission;
+            $seconds = intval($input_hours * 3600);
+            $time_string = date('H:i:s', strtotime("midnight +{$seconds} seconds"));
+
+            $output .= '<option value="'.$row->pricing_id.'">'. $row->admission_type .' - '.$time_string.'</option>';
         }
         return $output;
     }

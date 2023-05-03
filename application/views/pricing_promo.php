@@ -32,7 +32,7 @@
                     <input type="text" class="form-control form-control-sm" id="search_value" placeholder="Search Here...">
                 </div>
                 <div class="col-md-3">
-                    <select name="filter_by" id="filter_by" class="form-select">
+                    <select name="filter_by" id="filter_by" class="form-select form-select-sm">
                         <option value="">Filter By</option>
                         <option value="INFLATABLES">INFLATABLES</option>
                         <option value="PARK">PARK</option>
@@ -50,7 +50,6 @@
                         <div class="col-sm-3 mb-2">
                             <button class="btn btn-dark btn-sm" id="print_records"><i class="bi bi-printer-fill me-2"></i>PRINT RECORDS</button>
                             <a href="<?= base_url('pricing/export_pricing')?>" class="btn btn-info btn-sm"><i class="bi bi-download me-2"></i>EXPORT THIS FILE</a>
-
                         </div>
                      
             <div class="table-responsive">
@@ -104,7 +103,8 @@
                                 </select>
                             </div>
                             <div class="form-group mb-3">
-                                <input type="number" class="form-control" name="time" placeholder="TIME" required>
+                                <small>Note: To input 1 hour and 30 minutes, enter '1.5', and to input 30 minutes, enter '0.5'.</small>
+                                <input type="text" class="form-control" name="time" placeholder="TIME" required>
                             </div>
                             <div class="form-group mb-3">
                                 <input type="text" class="form-control" name="weekdays_price" placeholder="PRICE" required>
@@ -157,7 +157,8 @@
                                 <input type="text" class="form-control" name="admission_type" id="admission_type" placeholder="ADMISSION TYPE" required>
                             </div>
                             <div class="form-group mb-3">
-                                <input type="number" class="form-control" name="time" id="time" placeholder="TIME" required>
+                                <small>Note: To input 1 hour and 30 minutes, enter '1.5', and to input 30 minutes, enter '.5'.</small>
+                                <input type="text" class="form-control" name="time" id="time" placeholder="TIME" required>
                             </div>
                             <div class="form-group mb-3">
                                 <input type="text" class="form-control" name="weekdays_price" id="weekdays_price" placeholder="PRICE" required>

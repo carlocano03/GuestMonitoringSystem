@@ -244,8 +244,15 @@ class Main extends CI_Controller
                     $this->db->where('pricing_id', $pricing_id);
                     $query = $this->db->get('pricing_promo')->row();
 
-                    $time_in = date('H:i:s');
-                    $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
+                    $input_hours = $query->time_admission;
+                    if (strpos($input_hours, '.') !== false) {
+                        $time_admission = $query->time_admission;
+                        $time_in = date('H:i:s');
+                        $time_out = date('H:i:s', strtotime('+' . intval($time_admission) . ' hour ' . intval(($time_admission - intval($time_admission)) * 60) . ' minutes', strtotime($time_in)));
+                    } else {
+                        $time_in = date('H:i:s');
+                        $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
+                    }
 
                     $guest_id = $this->input->post('guest_id');
                     $message = '';
@@ -311,8 +318,15 @@ class Main extends CI_Controller
                     $this->db->where('pricing_id', $pricing_id);
                     $query = $this->db->get('pricing_promo')->row();
 
-                    $time_in = date('H:i:s');
-                    $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
+                    $input_hours = $query->time_admission;
+                    if (strpos($input_hours, '.') !== false) {
+                        $time_admission = $query->time_admission;
+                        $time_in = date('H:i:s');
+                        $time_out = date('H:i:s', strtotime('+' . intval($time_admission) . ' hour ' . intval(($time_admission - intval($time_admission)) * 60) . ' minutes', strtotime($time_in)));
+                    } else {
+                        $time_in = date('H:i:s');
+                        $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
+                    }
 
                     $guest_id = $this->input->post('guest_id');
                     $message = '';
@@ -362,8 +376,15 @@ class Main extends CI_Controller
         $this->db->where('pricing_id', $pricing_id);
         $query = $this->db->get('pricing_promo')->row();
 
-        $time_in = date('H:i:s');
-        $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
+        $input_hours = $query->time_admission;
+        if (strpos($input_hours, '.') !== false) {
+            $time_admission = $query->time_admission;
+            $time_in = date('H:i:s');
+            $time_out = date('H:i:s', strtotime('+' . intval($time_admission) . ' hour ' . intval(($time_admission - intval($time_admission)) * 60) . ' minutes', strtotime($time_in)));
+        } else {
+            $time_in = date('H:i:s');
+            $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
+        }
 
         $data = $this->input->post('data');
         // Insert data into the database
