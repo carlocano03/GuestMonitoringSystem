@@ -58,9 +58,14 @@ class Pricing extends CI_Controller
             $no++;
             $row = array();
 
+            //Convert Hours
+            $input_hours = $list->time_admission;
+            $seconds = intval($input_hours * 3600);
+            $time_string = date('H:i:s', strtotime("midnight +{$seconds} seconds"));
+
             $row[] = $list->pricing_id;
             $row[] = $list->admission_type;
-            $row[] = $list->time_admission;
+            $row[] = $time_string;
             $row[] = $list->weekdays_price;
             $row[] = $list->package;
             $row[] = '<button class="btn btn-primary btn-sm edit_pricing" id="'.$list->pricing_id.'" title="Edit"><i class="bi bi-pencil-square"></i></button>
