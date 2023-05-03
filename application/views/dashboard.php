@@ -683,7 +683,9 @@
                 success: function(data) { 
                     if (Object.keys(data).length > 0) {
                         $('#package_price_amt').val(data.weekdays_price == null ? '' : data.weekdays_price);
-                        $('#package_type').val(data.admission_type == null ? '' : data.admission_type);
+                        var admission_type = data.admission_type == null ? '' : data.admission_type;
+                        var time_admission = data.time_admission == null ? '' : data.time_admission;
+                        $('#package_type').val(admission_type + (time_admission ? ' - ' + time_admission : ''));
                     }
                 }
             })
