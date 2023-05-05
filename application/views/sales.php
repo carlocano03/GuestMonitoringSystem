@@ -159,6 +159,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <input type="hidden" id="trans_no">
                     <div class="text-end">
                         <small id="date_added"></small>
                     </div>
@@ -306,6 +307,7 @@
         $(document).on('click', '.void', function(){
             var serial_no = $(this).attr('id');
             var service = $(this).data('service');
+            var trans_no = $(this).data('trans');
             switch (service) {
                 case 'INFLATABLES':
                      $('.children_info').show(200);
@@ -331,6 +333,7 @@
                     $('#time_info').html(data.time_info);
                     $('#date_added').html(data.date_added);
                     $('#transactionModal').modal('show');
+                    $('#trans_no').val(trans_no);
                 }
             });
         });
@@ -381,6 +384,46 @@
         $(document).on('click', '#export_files', function() {
             var url = "<?= base_url('time_monitoring/export_time_monitoring');?>";
             window.location.href = url;
+        });
+
+        $(document).on('click', '.void_trans', function() {
+            var trans_no = $('#trans_no').val();
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to void this transaction!",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "<?= base_url('transaction/void_trans')?>",
+                        method: "POST",
+                        data: {
+                            trans_no: trans_no
+                        },
+                        dataType: "json",
+                        success: function(data) {
+                            if (data.message == 'Success') {
+                                Swal.fire(
+                                    'Thank you!',
+                                    'Void successfully.',
+                                    'success'
+                                );
+                            } else {
+                                Swal.fire(
+                                    'Warning!',
+                                    'Failed to void.',
+                                    'warning'
+                                );
+                            }
+                        }
+                    });
+                }
+            })
         });
     });
 </script>
