@@ -53,4 +53,6 @@ class Sales_invoice_model extends CI_Model
         return $query->row();
     }
 
+    
+
 }

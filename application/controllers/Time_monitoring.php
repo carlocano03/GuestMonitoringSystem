@@ -355,7 +355,7 @@ class Time_monitoring extends CI_Controller
                 //Package Details
                 $time_info = $this->db
                     ->select('TM.*')
-                    ->select('P.admission_type, P.time_admission, P.weekdays_price')
+                    ->select('P.admission_type, P.time_admission, P.weekdays_price, P.pricing_id, P.package')
                     ->from('time_management TM')
                     ->join('pricing_promo P', 'TM.package_promo = P.pricing_id', 'LEFT')
                     ->where('TM.serial_no', $parent->slip_app_no)
@@ -395,6 +395,32 @@ class Time_monitoring extends CI_Controller
                     $disabled = '';
                 }
                 //$row[] = '<span class="remaining-time" data-remaining-time="' . $remaining_time . '">' . $remaining_time_formatted . '</span>';;
+                
+                $sales = $this->db
+                    ->select("SUM(total_amt) as sales")
+                    ->from('consumable_stocks')
+                    ->where('serial_no', $parent->slip_app_no)
+                    ->get()
+                    ->row();
+
+                $discount = $this->db
+                    ->select('discount_amt AS discount')
+                    ->from('consumable_stocks')
+                    ->where('serial_no', $parent->slip_app_no)
+                    ->group_by('serial_no')
+                    ->get()
+                    ->row();
+                
+                $total_sales = $sales->sales - $discount->discount;
+                
+                $package_promo = $this->db
+                    ->select('CS.*')
+                    ->from('consumable_stocks CS')
+                    ->where('type_id', 0)
+                    ->where('serial_no', $parent->slip_app_no)
+                    ->get()
+                    ->row();
+
                 $output_time_info .= '
                     <div class="form-group mb-3">
                         <label>Package:</label>
@@ -435,13 +461,18 @@ class Time_monitoring extends CI_Controller
                     <hr>
                     <div class="text-center">
                         <label>Total Amount</label>
-                        <h4>P '.number_format($time_info->weekdays_price, 2).'</h4>
+                        <h4>P '.number_format($total_sales, 2).'</h4>
                     </div>
                     <div class="mx-auto">
                         <button class="btn btn-success w-100 mb-3 btn-rounded extend_guest" '.$disabled.'
-                            id="'.$time_info->serial_no.'"
-                            data-guest_id="'.$time_info->guest_id.'"
-                            data-package="'.$time_info->package_promo.'"
+                            data-guest="'.$package_promo->guest_id.'"
+                            data-serial_no="'.$package_promo->serial_no.'"
+                            data-price="'.$package_promo->price.'"
+                            data-details="'.$package_promo->details.'"
+                            data-extend="'.$package_promo->extended.'"
+                            data-pricing="'.$time_info->pricing_id.'"
+                            data-service="'.$time_info->package.'"
+                            data-time_id="'.$time_info->time_id.'"
                         >EXTEND TIME</button>
                         <button class="btn btn-danger btn-rounded w-100 checkout_guest" id="'.$parent->slip_app_no.'" data-child="'.$child_id.'">CHECK OUT</button>
                     </div>
@@ -524,6 +555,23 @@ class Time_monitoring extends CI_Controller
                     $disabled = '';
                 }
                 //$row[] = '<span class="remaining-time" data-remaining-time="' . $remaining_time . '">' . $remaining_time_formatted . '</span>';;
+                $sales = $this->db
+                    ->select("SUM(total_amt) as sales")
+                    ->from('consumable_stocks')
+                    ->where('serial_no', $parent->slip_app_no)
+                    ->get()
+                    ->row();
+
+                $discount = $this->db
+                    ->select('discount_amt AS discount')
+                    ->from('consumable_stocks')
+                    ->where('serial_no', $parent->slip_app_no)
+                    ->group_by('serial_no')
+                    ->get()
+                    ->row();
+                
+                $total_sales = $sales->sales - $discount->discount;
+               
                 $output_time_info .= '
                     <div class="form-group mb-3">
                         <label>Package:</label>
@@ -564,7 +612,7 @@ class Time_monitoring extends CI_Controller
                     <hr>
                     <div class="text-center hide_data">
                         <label>Total Amount</label>
-                        <h4>P '.number_format($time_info->weekdays_price, 2).'</h4>
+                        <h4>P '.number_format($total_sales, 2).'</h4>
                     </div>
                     <hr>
                 ';
@@ -685,6 +733,24 @@ class Time_monitoring extends CI_Controller
                     $disabled = '';
                 }
                 //$row[] = '<span class="remaining-time" data-remaining-time="' . $remaining_time . '">' . $remaining_time_formatted . '</span>';;
+                
+                $sales = $this->db
+                    ->select("SUM(total_amt) as sales")
+                    ->from('consumable_stocks')
+                    ->where('serial_no', $parent->slip_app_no)
+                    ->get()
+                    ->row();
+
+                $discount = $this->db
+                    ->select('discount_amt AS discount')
+                    ->from('consumable_stocks')
+                    ->where('serial_no', $parent->slip_app_no)
+                    ->group_by('serial_no')
+                    ->get()
+                    ->row();
+                
+                $total_sales = $sales->sales - $discount->discount;
+
                 $output_time_info .= '
                     <div class="form-group mb-3">
                         <label>Package:</label>
@@ -725,7 +791,7 @@ class Time_monitoring extends CI_Controller
                     <hr>
                     <div class="text-center">
                         <label>Total Amount</label>
-                        <h4>P '.number_format($time_info->weekdays_price, 2).'</h4>
+                        <h4>P '.number_format($total_sales, 2).'</h4>
                     </div>
                     <hr>
                 ';
@@ -803,6 +869,23 @@ class Time_monitoring extends CI_Controller
                     $disabled = '';
                 }
                 //$row[] = '<span class="remaining-time" data-remaining-time="' . $remaining_time . '">' . $remaining_time_formatted . '</span>';;
+                
+                $sales = $this->db
+                    ->select("SUM(total_amt) as sales")
+                    ->from('consumable_stocks')
+                    ->where('serial_no', $parent->slip_app_no)
+                    ->get()
+                    ->row();
+
+                $discount = $this->db
+                    ->select('discount_amt AS discount')
+                    ->from('consumable_stocks')
+                    ->where('serial_no', $parent->slip_app_no)
+                    ->group_by('serial_no')
+                    ->get()
+                    ->row();
+                
+                $total_sales = $sales->sales - $discount->discount;
                 $output_time_info .= '
                     <div class="form-group mb-3">
                         <label>Package:</label>
@@ -843,7 +926,7 @@ class Time_monitoring extends CI_Controller
                     <hr>
                     <div class="text-center hide_data">
                         <label>Total Amount</label>
-                        <h4>P '.number_format($time_info->weekdays_price, 2).'</h4>
+                        <h4>P '.number_format($total_sales, 2).'</h4>
                     </div>
                     <hr>
                 ';
@@ -885,6 +968,96 @@ class Time_monitoring extends CI_Controller
             $message = 'Success';
         } else {
             $message = 'Error';
+        }
+        $output['message'] = $message;
+        echo json_encode($output);
+    }
+
+    public function extend_guest()
+    {
+        $message = '';
+        $pricing_id = $this->input->post('pricing');
+        $this->db->where('pricing_id', $pricing_id);
+        $query = $this->db->get('pricing_promo')->row();
+
+        $service = $this->input->post('service');
+        $extend_id = $this->input->post('time_id');
+
+        $this->db->where('time_id', $extend_id);
+        $time_out_data = $this->db->get('time_management')->row();
+
+        switch ($service) {
+            case 'INFLATABLES':
+                $input_hours = $query->time_admission;
+                if (strpos($input_hours, '.') !== false) {
+                    $time_admission = $query->time_admission;
+                    $time_in = date('H:i:s', strtotime($time_out_data->time_out));
+                    $time_out = date('H:i:s', strtotime('+' . intval($time_admission) . ' hour ' . intval(($time_admission - intval($time_admission)) * 60) . ' minutes', strtotime($time_in)));
+                } else {
+                    $$time_in = date('H:i:s', strtotime($time_out_data->time_out));
+                    $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
+                }
+
+                $extend_inflatables = array(
+                    'extend_time' => $time_out,
+                );
+
+                $transaction_no = 'JCK-'.rand(10,1000);
+                $cosumable_stocks = array(
+                    'guest_id' => $this->input->post('guest_id'),
+                    'transaction_no' => $transaction_no,
+                    'serial_no' => $this->input->post('serial_no'),
+                    'type_id' => 0,
+                    'price' => $this->input->post('price'),
+                    'qty' => $this->input->post('qty'),
+                    'total_amt' => $this->input->post('total_price'),
+                    'details' => $this->input->post('details'),
+                    'extended' => 'YES',
+                );
+                if ($this->db->insert('consumable_stocks', $cosumable_stocks)) {
+                    $this->db->where('time_id', $extend_id);
+                    $this->db->update('time_management', $extend_inflatables);
+                    $message = 'Success';
+                } else {
+                    $message = 'Error';
+                }
+                break;
+            
+            case 'PARK':
+                $input_hours = $query->time_admission;
+                if (strpos($input_hours, '.') !== false) {
+                    $time_admission = $query->time_admission;
+                    $time_in = date('H:i:s', strtotime($time_out_data->time_out));
+                    $time_out = date('H:i:s', strtotime('+' . intval($time_admission) . ' hour ' . intval(($time_admission - intval($time_admission)) * 60) . ' minutes', strtotime($time_in)));
+                } else {
+                    $time_in = date('H:i:s', strtotime($time_out_data->time_out));
+                    $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
+                }
+
+                $extend_inflatables = array(
+                    'extend_time' => $time_out,
+                );
+
+                $transaction_no = 'JCK-'.rand(10,1000);
+                $cosumable_stocks = array(
+                    'guest_id' => $this->input->post('guest_id'),
+                    'transaction_no' => $transaction_no,
+                    'serial_no' => $this->input->post('serial_no'),
+                    'type_id' => 0,
+                    'price' => $this->input->post('price'),
+                    'qty' => $this->input->post('qty'),
+                    'total_amt' => $this->input->post('total_price'),
+                    'details' => $this->input->post('details'),
+                    'extended' => 'YES',
+                );
+                if ($this->db->insert('consumable_stocks', $cosumable_stocks)) {
+                    $this->db->where('time_id', $extend_id);
+                    $this->db->update('time_management', $extend_inflatables);
+                    $message = 'Success';
+                } else {
+                    $message = 'Error';
+                }
+                break;
         }
         $output['message'] = $message;
         echo json_encode($output);

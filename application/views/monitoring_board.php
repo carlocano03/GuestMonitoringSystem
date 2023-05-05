@@ -479,9 +479,35 @@
         });
 
         $(document).on('click', '.extend_guest', function() {
-            var serial_no = $(this).attr('id');
-            var guest_id = $(this).data('guest_id');
-            var package = $(this).data('package');
+            var guest_id = $(this).data('guest');
+            var serial_no = $(this).data('serial_no');
+            var price = $(this).data('price');
+            var details = $(this).data('details');
+            var pricing = $(this).data('pricing');
+            var extend = $(this).data('extend');
+            var service = $(this).data('service');
+            var time_id = $(this).data('time_id');
+
+            console.log(extend);
+            var total_price = 0;
+            var qty = 0;
+
+            switch (service) {
+                case 'INFLATABLES':
+                    if (extend === null) {
+                        total_price = price * 2;
+                        qty = 2;
+                    } else {
+                        total_price = price;
+                        qty = 1;
+                    }
+                    break;
+            
+                case 'PARK':
+                    total_price = price;
+                    qty = 1;
+                    break;
+            }
 
             Swal.fire({
                 title: 'Are you sure?',
@@ -493,7 +519,32 @@
                 confirmButtonText: 'Yes'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    
+                    $.ajax({
+                        url: "<?= base_url('time_monitoring/extend_guest')?>",
+                        method: "POST",
+                        data: {
+                            guest_id: guest_id,
+                            serial_no: serial_no,
+                            price: price,
+                            details: details,
+                            pricing: pricing,
+                            service: service,
+                            total_price: total_price,
+                            qty: qty,
+                            time_id: time_id,
+                        },
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.message == 'Success') {
+                                alert('Success');
+                            } else {
+                                alert('Failed');
+                            }
+                            
+                            // var url = "<?= base_url('sales_invoice/extended?transaction=')?>" + serial_no;
+                            // window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');
+                        }
+                    });
                 }
             })
         });

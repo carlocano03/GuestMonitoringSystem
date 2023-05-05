@@ -42,4 +42,27 @@ class Sales_invoice extends CI_Controller
         $mpdf->WriteHTML( $html );
         $mpdf->Output();
     }
+
+    public function extended()
+    {
+        require_once 'vendor/autoload.php';
+        $slip_no = $_GET['transaction'];
+        $data['sales'] = $this->sales->get_sales_extend($slip_no);
+        $data['discount'] = $this->sales->get_discount_extend($slip_no);
+        $data['total'] = $this->sales->get_total_sales_extend($slip_no);
+        $data['transaction_date'] = $this->sales->get_transaction_date_extend($slip_no);
+        $mpdf = new \Mpdf\Mpdf( [ 
+            'format' => [80, 150],
+            'margin_top' => 5,
+            'margin_bottom' => 40,
+            'margin_left' => 2,
+            'margin_right' => 2,
+        ]);
+        // Enable auto-adjustment of top and bottom margins
+        $mpdf->showImageErrors = true;
+        $mpdf->showWatermarkImage = true;
+        $html = $this->load->view('pdf/sales_invoice', $data, true );
+        $mpdf->WriteHTML( $html );
+        $mpdf->Output();
+    }
 }

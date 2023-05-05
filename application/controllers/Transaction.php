@@ -33,7 +33,7 @@ class Transaction extends CI_Controller
 
             $row[] = '<button class="btn btn-secondary btn-sm view" id="'.$list->slip_app_no.'" data-child="'.$list->child_id.'" data-service="'.$list->service.'" title="View"><i class="bi bi-eye-fill"></i></button>
                       <button class="btn btn-primary btn-sm print" id="'.$list->slip_app_no.'" data-child="'.$list->child_id.'" title="Print"><i class="bi bi-printer-fill"></i></button>
-                      <button class="btn btn-danger btn-sm void" id="'.$list->slip_app_no.'"  data-service="'.$list->service.'" title="Void"><i class="bi bi-x-square-fill"></i></button>';
+                      <button class="btn btn-danger btn-sm void" id="'.$list->slip_app_no.'" data-trans="'.$list->transaction_no.'"  data-service="'.$list->service.'" title="Void"><i class="bi bi-x-square-fill"></i></button>';
             $row[] = $list->transaction_no;
             $row[] = $list->slip_app_no;
             $row[] = date('F j, Y', strtotime($list->date_added));
@@ -65,7 +65,8 @@ class Transaction extends CI_Controller
                 ->select("SUM(total_amt) as total_sales")
                 ->from('consumable_stocks')
                 ->where('type_id', 0)
-                ->where('guest_id', $list->guest_id)
+                // ->where('guest_id', $list->guest_id)
+                ->where('transaction_no', $list->transaction_no)
                 ->get()
                 ->row();
             $total_amount += $sales->total_sales;
@@ -76,7 +77,8 @@ class Transaction extends CI_Controller
                 ->select("SUM(total_amt) as inv_sales")
                 ->from('consumable_stocks')
                 ->where('type_id !=', 0)
-                ->where('guest_id', $list->guest_id)
+                // ->where('guest_id', $list->guest_id)
+                ->where('transaction_no', $list->transaction_no)
                 ->get()
                 ->row();
             $inv_sales += $inv->inv_sales;
@@ -86,7 +88,8 @@ class Transaction extends CI_Controller
             $discount = $this->db
                 ->select('discount_amt')
                 ->from('consumable_stocks')
-                ->where('guest_id', $list->guest_id)
+                // ->where('guest_id', $list->guest_id)
+                ->where('transaction_no', $list->transaction_no)
                 ->group_by('serial_no')
                 ->get()
                 ->row();
@@ -234,6 +237,15 @@ class Transaction extends CI_Controller
                     $disabled = '';
                 }
                 //$row[] = '<span class="remaining-time" data-remaining-time="' . $remaining_time . '">' . $remaining_time_formatted . '</span>';;
+                
+                $trans_no = $this->db
+                    ->select('transaction_no')
+                    ->from('consumable_stocks')
+                    ->where('serial_no', $parent->slip_app_no)
+                    ->group_by('transaction_no')
+                    ->get()
+                    ->row();
+
                 $output_time_info .= '
                     <div class="form-group mb-3">
                         <label>Package:</label>
@@ -264,7 +276,7 @@ class Transaction extends CI_Controller
                         <h4>P '.number_format($time_info->weekdays_price, 2).'</h4>
                     </div>
                     <div class="mx-auto">
-                        <button class="btn btn-danger w-100 btn-rounded">VOID THIS TRANSACTION</button>
+                        <button class="btn btn-danger w-100 btn-rounded void_trans" data-id="'.$trans_no->transaction_no.'">VOID THIS TRANSACTION</button>
                     </div>
                     <hr>
                 ';
@@ -636,5 +648,20 @@ class Transaction extends CI_Controller
             'date_added' => date('F j, Y', strtotime($time_info->date_added)) . ' ' . date('g:i A', strtotime($time_info->time_in)),
         );
         echo json_encode($data);
+    }
+
+    public function void_trans()
+    {
+        $message = '';
+        $trans_no = $this->input->post('trans_no');
+
+        if ($this->db->where('transaction_no', $trans_no)->update('consumable_stocks', array('status' => 2))) {
+            $message = 'Success';
+        } else {
+            $message = 'Error';
+        }
+
+        $output['message'] = $message;
+        echo json_encode($output);
     }
 }

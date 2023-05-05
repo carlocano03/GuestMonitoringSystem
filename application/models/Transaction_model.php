@@ -66,14 +66,15 @@ class Transaction_model extends CI_Model
         $this->db
             ->select('TM.*')
             ->select('G.slip_app_no, G.guest_fname, G.guest_mname, G.guest_lname, G.service, G.contact_no, G.status, G.service')
-            ->select('CS.transaction_no, CS.type_id, CS.qty, CS.total_amt')
+            ->select('CS.transaction_no, CS.type_id, CS.qty, CS.total_amt, CS.status')
             ->select("CONCAT(GC.child_fname, ' ', GC.child_lname) as children, GC.child_id")
             ->from($this->guest.' TM')
             ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
             ->join('consumable_stocks CS', 'CS.guest_id = G.guest_id', 'LEFT')
             ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
             ->where('G.status', 'REGISTERED')
-            ->group_by('CS.guest_id');
+            ->where('CS.status', 0)
+            ->group_by('CS.transaction_no');
 
         if ($this->input->post('filter_by')) {
             $this->db->where('G.service', $this->input->post('filter_by'));

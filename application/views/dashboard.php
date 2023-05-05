@@ -815,6 +815,7 @@
                 case 'INFLATABLES':
                     if ($('#agreement').is(':checked')) {
                         $.ajax({
+                            async: false,
                             url: "<?= base_url('main/register_guest')?>",
                             method: "POST",
                             data: new FormData(this),
@@ -882,8 +883,8 @@
                                     var url = "<?= base_url('sales_invoice?transaction=')?>" + serial_no;
                                     window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');
 
-                                    var quit_claim = "<?= base_url('main/quit_claim?registration=')?>" + serial_no;
-                                    window.open(quit_claim, '_blank');
+                                    // var quit_claim = "<?= base_url('main/quit_claim?registration=')?>" + serial_no;
+                                    // window.open(quit_claim, 'targetWindow','resizable=yes,width=1000,height=1000');
                                     setTimeout(() => {
                                         location.reload();
                                     }, 1000);
