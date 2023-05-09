@@ -73,8 +73,10 @@
                         <div class="form-group mb-3">
                             <input type="text" class="form-control text-uppercase" name="age" id="age" placeholder="Enter Age" readonly required>
                         </div>
-                        <div class="alert alert-secondary p-1 text-start">Complete Address</div>
+                        <div class="alert alert-primary p-1 text-start">Complete Address</div>
+                       
                         <div class="form-group mb-3">
+                        <div class="alert alert-secondary p-1 text-start"> To search Metro Manila, Search National Capital Region</div>
                             <select name="province_code" id="province_code" class="form-select text-uppercase" required>
                                 <option value="">Select Province</option>
                                 <?php foreach ($province as $pval) { ?>

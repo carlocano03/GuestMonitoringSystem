@@ -26,9 +26,9 @@
                                 <li>All children within the premises <span class="text-red fw-bold">must be accompanied by a parent/guardian</span>
                                     at all times who is eighteen (18) years old to (60) years old only.
                                 </li>
-                                <li>A <span class="text-red fw-bold">maximum of two (2) kids per parent/guardian</span> only is allowed.</li>
+                                <li>A <span class="text-red fw-bold">maximum of three (3) kids per parent/guardian</span> only is allowed.</li>
                                 <li>We strictly implement <span class="text-red fw-bold">NO Guardian No Entry</span> on our facilities
-                                    for children 12 y/o and below.
+                                    for children <span class="text-red fw-bold">12 y/o and below only.</span>.
                                 </li>
                                 <li>Wearing <span class="text-red fw-bold">grip socks</span> while playing or staying inside our facilities is required.</li>
                                 <li>Only the same parent or guardian whose signature appears on the registration form and who has taken the picture together with
