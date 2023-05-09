@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sales Invoice</title>
+    <title>Sales Transaction Slip</title>
 </head>
 <style>
     body {
@@ -39,7 +39,7 @@
 <body>
     <div class="header">
         <img src="<?= base_url('assets/img/jacks.png')?>" alt="Img" width="70">
-        <h5>SALES INVOICE</h5>
+        <h5>Transaction Slip</h5>
         <small><?= date('D, F j, Y', strtotime($transaction_date->date_added))?></small>
         <hr>
         <h5>TRANSACTION NO.: <?= isset($discount->transaction_no) ? $discount->transaction_no : '';?></h5>
