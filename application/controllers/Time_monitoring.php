@@ -421,6 +421,12 @@ class Time_monitoring extends CI_Controller
                     ->get()
                     ->row();
 
+                $extensionRates = $this->db
+                    ->where('package', 'INFLATABLES')
+                    ->from('pricing_promo')
+                    ->get()
+                    ->result();
+                
                 $output_time_info .= '
                     <div class="form-group mb-3">
                         <label>Package:</label>
@@ -463,6 +469,24 @@ class Time_monitoring extends CI_Controller
                         <label>Total Amount</label>
                         <h4>P '.number_format($total_sales, 2).'</h4>
                     </div>
+                    <div class="rates mb-2">
+                        <div class="form-group">
+                            <label>Extension Rates</label>
+                            <select class="form-select form-select-sm" id="rates_extension">
+                                <option value="">Please select time</option>';
+                                foreach ($extensionRates as $rate) {
+                                    $input_hours = $rate->time_admission;
+                                    $seconds = intval($input_hours * 3600);
+                                    $time_string = date('H:i:s', strtotime("midnight +{$seconds} seconds"));
+                                    $output_time_info .= '<option value="' . $rate->pricing_id . '">' . $rate->admission_type . ' - ' . $time_string . '</option>';
+                                }
+
+                    $output_time_info .= '
+                            </select>
+                        </div>
+                    </div>
+                    <input type="hidden" id="package_price_amt">
+                    <input type="hidden" id="package_type">
                     <div class="mx-auto">
                         <button class="btn btn-success w-100 mb-3 btn-rounded extend_guest" '.$disabled.'
                             data-guest="'.$package_promo->guest_id.'"
@@ -976,7 +1000,8 @@ class Time_monitoring extends CI_Controller
     public function extend_guest()
     {
         $message = '';
-        $pricing_id = $this->input->post('pricing');
+        // $pricing_id = $this->input->post('pricing');
+        $pricing_id = $this->input->post('rate_extension');
         $this->db->where('pricing_id', $pricing_id);
         $query = $this->db->get('pricing_promo')->row();
 
@@ -994,7 +1019,7 @@ class Time_monitoring extends CI_Controller
                     $time_in = date('H:i:s', strtotime($time_out_data->time_out));
                     $time_out = date('H:i:s', strtotime('+' . intval($time_admission) . ' hour ' . intval(($time_admission - intval($time_admission)) * 60) . ' minutes', strtotime($time_in)));
                 } else {
-                    $$time_in = date('H:i:s', strtotime($time_out_data->time_out));
+                    $time_in = date('H:i:s', strtotime($time_out_data->time_out));
                     $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
                 }
 
@@ -1008,10 +1033,10 @@ class Time_monitoring extends CI_Controller
                     'transaction_no' => $transaction_no,
                     'serial_no' => $this->input->post('serial_no'),
                     'type_id' => 0,
-                    'price' => $this->input->post('price'),
-                    'qty' => $this->input->post('qty'),
-                    'total_amt' => $this->input->post('total_price'),
-                    'details' => $this->input->post('details'),
+                    'price' => $query->weekdays_price,
+                    'qty' => 1,
+                    'total_amt' => $query->weekdays_price,
+                    'details' => $this->input->post('package_type'),
                     'extended' => 'YES',
                 );
                 if ($this->db->insert('consumable_stocks', $cosumable_stocks)) {
@@ -1044,10 +1069,10 @@ class Time_monitoring extends CI_Controller
                     'transaction_no' => $transaction_no,
                     'serial_no' => $this->input->post('serial_no'),
                     'type_id' => 0,
-                    'price' => $this->input->post('price'),
-                    'qty' => $this->input->post('qty'),
-                    'total_amt' => $this->input->post('total_price'),
-                    'details' => $this->input->post('details'),
+                    'price' => $query->weekdays_price,
+                    'qty' => 1,
+                    'total_amt' => $query->weekdays_price,
+                    'details' => $this->input->post('package_type'),
                     'extended' => 'YES',
                 );
                 if ($this->db->insert('consumable_stocks', $cosumable_stocks)) {

@@ -22,14 +22,14 @@ class Sales_invoice_model extends CI_Model
 
     function get_sales($slip_no)
     {
-        $this->db->where('serial_no', $slip_no);
+        $this->db->where('transaction_no', $slip_no);
         $query = $this->db->get('consumable_stocks');
         return $query->result();
     }
 
     function get_discount($slip_no)
     {
-        $this->db->where('serial_no', $slip_no);
+        $this->db->where('transaction_no', $slip_no);
         $this->db->group_by('serial_no');
         $query = $this->db->get('consumable_stocks');
         return $query->row();
@@ -39,7 +39,7 @@ class Sales_invoice_model extends CI_Model
     {
         $this->db->select("SUM(total_amt) as total_sales");
         $this->db->from('consumable_stocks');
-        $this->db->where('serial_no', $slip_no);
+        $this->db->where('transaction_no', $slip_no);
         $query = $this->db->get();
         $result = $query->row();
         return $result->total_sales;
@@ -47,9 +47,9 @@ class Sales_invoice_model extends CI_Model
 
     function get_transaction_date($slip_no)
     {
-        $this->db->where('serial_no', $slip_no);
+        $this->db->where('transaction_no', $slip_no);
         $this->db->group_by('serial_no');
-        $query = $this->db->get('time_management');
+        $query = $this->db->get('consumable_stocks');
         return $query->row();
     }
 

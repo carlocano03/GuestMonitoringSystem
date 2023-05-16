@@ -470,10 +470,29 @@
                                 $('#viewModal').modal('hide');
                                 tbl_monitoring.draw();
                             } else {
-                                wal.fire('Warning!', 'Failed to checkout.', 'warning');
+                                Swal.fire('Warning!', 'Failed to checkout.', 'warning');
                             }
                         }
                     });
+                }
+            })
+        });
+
+        $(document).on('change', '#rates_extension', function() {
+            var pricing_id = $(this).val();
+            $.ajax({
+                url: "<?= base_url('main/get_pricing')?>",
+                method: "POST",
+                data: {
+                    pricing_id: pricing_id
+                },
+                success: function(data) { 
+                    if (Object.keys(data).length > 0) {
+                        $('#package_price_amt').val(data.weekdays_price == null ? '' : data.weekdays_price);
+                        var admission_type = data.admission_type == null ? '' : data.admission_type;
+                        var time_admission = data.time_admission == null ? '' : data.time_admission;
+                        $('#package_type').val(admission_type + (time_admission ? ' - ' + time_admission : ''));
+                    }
                 }
             })
         });
@@ -487,29 +506,17 @@
             var extend = $(this).data('extend');
             var service = $(this).data('service');
             var time_id = $(this).data('time_id');
+            var rate_extension = $('#rates_extension').val();
 
-            console.log(extend);
+            var package_price = $('#package_price_amt').val();
+            var package_type = $('#package_type').val();
+
             var total_price = 0;
             var qty = 0;
+            total_price = price;
 
-            switch (service) {
-                case 'INFLATABLES':
-                    if (extend === null) {
-                        total_price = price * 2;
-                        qty = 2;
-                    } else {
-                        total_price = price;
-                        qty = 1;
-                    }
-                    break;
-            
-                case 'PARK':
-                    total_price = price;
-                    qty = 1;
-                    break;
-            }
-
-            Swal.fire({
+            if (rate_extension != '') {
+                Swal.fire({
                 title: 'Are you sure?',
                 text: "You want to extend this guest.",
                 icon: 'question',
@@ -526,12 +533,16 @@
                             guest_id: guest_id,
                             serial_no: serial_no,
                             price: price,
-                            details: details,
+                            //details: details,
                             pricing: pricing,
                             service: service,
-                            total_price: total_price,
-                            qty: qty,
+                            // total_price: total_price,
+                            // qty: qty,
                             time_id: time_id,
+
+                            rate_extension: rate_extension,
+                            package_price: package_price,
+                            package_type: package_type,
                         },
                         dataType: "json",
                         success: function (data) {
@@ -547,6 +558,15 @@
                     });
                 }
             })
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Ooopss...',
+                    text: 'Please select time extension.',
+                });
+            }
+
         });
+
     });
 </script>
