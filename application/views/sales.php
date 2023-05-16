@@ -184,7 +184,7 @@
     </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="viewModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="viewModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #8E3C95; color:#fff;">
@@ -212,6 +212,25 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="voidModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #8E3C95; color:#fff;">
+                    <h5 class="modal-title" id="exampleModalLabel"><i class="bi bi-file-earmark-text-fill me-2"></i>VOID TRANSACTION</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="background-color: #8E3C95; color:#fff;">
+                    <input type="password" class="form-control" id="passcode" placeholder="ENTER YOUR PASSCODE">
+                    <input type="hidden" id="transaction_no">
+                    <div class="mt-2">
+                        <button class="btn btn-danger btn-sm w-100" id="void_trans">VOID TRANSACTION</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <footer class="py-3 text-white mt-auto" style="background: #8F3F96;">
         <div class="container-fluid px-4">
@@ -389,7 +408,49 @@
 
         $(document).on('click', '.void_trans', function() {
             var trans_no = $('#trans_no').val();
+            $('#transaction_no').val(trans_no);
+            $('#voidModal').modal('show');
 
+            // Swal.fire({
+            //     title: 'Are you sure?',
+            //     text: "You want to void this transaction!",
+            //     icon: 'question',
+            //     showCancelButton: true,
+            //     confirmButtonColor: '#3085d6',
+            //     cancelButtonColor: '#d33',
+            //     confirmButtonText: 'Yes'
+            // }).then((result) => {
+            //     if (result.isConfirmed) {
+            //         $.ajax({
+            //             url: "<?= base_url('transaction/void_trans')?>",
+            //             method: "POST",
+            //             data: {
+            //                 trans_no: trans_no
+            //             },
+            //             dataType: "json",
+            //             success: function(data) {
+            //                 if (data.message == 'Success') {
+            //                     Swal.fire(
+            //                         'Thank you!',
+            //                         'Void successfully.',
+            //                         'success'
+            //                     );
+            //                 } else {
+            //                     Swal.fire(
+            //                         'Warning!',
+            //                         'Failed to void.',
+            //                         'warning'
+            //                     );
+            //                 }
+            //             }
+            //         });
+            //     }
+            // })
+        });
+
+        $(document).on('click', '#void_trans', function() {
+            var trans_no = $('#transaction_no').val();
+            var passcode = $('#passcode').val();
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You want to void this transaction!",
@@ -404,7 +465,8 @@
                         url: "<?= base_url('transaction/void_trans')?>",
                         method: "POST",
                         data: {
-                            trans_no: trans_no
+                            trans_no: trans_no,
+                            passcode: passcode
                         },
                         dataType: "json",
                         success: function(data) {
@@ -414,10 +476,13 @@
                                     'Void successfully.',
                                     'success'
                                 );
+                                setTimeout(() => {
+                                    location.reload();
+                                }, 1000);
                             } else {
                                 Swal.fire(
                                     'Warning!',
-                                    'Failed to void.',
+                                    'Failed to void. Check your password.',
                                     'warning'
                                 );
                             }
