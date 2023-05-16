@@ -186,4 +186,30 @@ class Main_model extends CI_Model
         }
     }
 
+    function get_quit_claim($slip_no)
+    {
+        $this->db->where('slip_app_no', $slip_no);
+        $query = $this->db->get('guest_details');
+        return $query->row();
+    }
+
+    function get_children_data($slip_no)
+    {
+        $query = $this->db
+            ->select('GD.*')
+            ->select("CONCAT(GC.child_fname, ' ', GC.child_lname) as children, GC.child_age")
+            ->from('guest_details GD')
+            ->join('guest_children GC', 'GD.guest_id = GC.parent_id')
+            ->where('GD.slip_app_no', $slip_no)
+            ->get();
+        return $query->result();
+    }
+
+    function get_time_details($slip_no)
+    {
+        $this->db->where('serial_no', $slip_no);
+        $query = $this->db->get('time_management');
+        return $query->row();
+    }
+
 }

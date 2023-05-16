@@ -339,6 +339,30 @@
         </div>
         <!-- Main div -->
     </main>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="jacksModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header text-white" style="background: #8F3F96;">
+                <h5 class="modal-title" id="exampleModalLabel">Jack's Adventure</h5>
+                <button type="button" class="btn-close text-white" id="close_jacks"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex align-items-center justify-content-center">
+                    <img src="<?= base_url('assets/img/jacks.png')?>" alt="Jacks-Img" width="150">
+                    <h5 class="ms-5">Hello Adventurers!<br> Thank you.</h5>
+                </div>
+                <input type="hidden" id="guest_serial_no">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm print_salesInvoice"><i class="bi bi-printer-fill me-2"></i>Print Sales Invoice</button>
+                <button type="button" class="btn btn-success btn-sm print_waiver"><i class="bi bi-printer-fill me-2"></i>Print Quit Claim Waiver</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
 
     <?php $this->load->view('popup/quitclaim.php');?>
     <?php $this->load->view('popup/data_privacy.php');?>
@@ -417,6 +441,10 @@
     var present_muncode;
     var present_brgycode;
     $(document).ready(function() {
+        $(document).on('click', '#close_jacks', function() {
+            $('#jacksModal').modal('hide');
+            location.reload()
+        });
         $('.discount_added').hide();
         $('#process_payment').attr('disabled', true);
         $('#add_discount').attr('disabled', true);
@@ -575,7 +603,7 @@
                                 dataType: "json",
                                 success: function(data) {
                                     $('#kids_info').html(data.childrenData);
-                                    $('#child_count').val(data.childCount + 1);
+                                    $('#child_count').val(data.childCount);
                                 }
                             });
 
@@ -701,9 +729,6 @@
             //var input1 = 1 //Child count one is to one
             var sum = input1 * input2; //Total Amount per child
             
-
-
-
             var guestQty = $('#child_count').val();
             var admission = $('#package_type').val();
 
@@ -880,14 +905,18 @@
                                     });
 
                                     // alert('Success');
-                                    var url = "<?= base_url('sales_invoice?transaction=')?>" + serial_no;
-                                    window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');
+                                    // var url = "<?= base_url('sales_invoice?transaction=')?>" + serial_no;
+                                    // window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');
 
-                                    // var quit_claim = "<?= base_url('main/quit_claim?registration=')?>" + serial_no;
-                                    // window.open(quit_claim, 'targetWindow','resizable=yes,width=1000,height=1000');
-                                    setTimeout(() => {
-                                        location.reload();
-                                    }, 1000);
+                                    // // var quit_claim = "<?= base_url('main/quit_claim?registration=')?>" + serial_no;
+                                    // // window.open(quit_claim, 'targetWindow','resizable=yes,width=1000,height=1000');
+                                    
+                                    // setTimeout(() => {
+                                    //     location.reload();
+                                    // }, 1000);
+                                    
+                                    $('#guest_serial_no').val(serial_no);
+                                    $('#jacksModal').modal('show');
                                     $('registerGuest').trigger('reset');
                                 } else {
                                     alert('Failed to save');
@@ -944,9 +973,12 @@
                                     });
 
                                     // alert('Success');
-                                    var url = "<?= base_url('sales_invoice?transaction=')?>" + serial_no;
-                                    window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');
-                                    location.reload();
+                                    // var url = "<?= base_url('sales_invoice?transaction=')?>" + serial_no;
+                                    // window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');
+                                    // location.reload();
+
+                                    $('#guest_serial_no').val(serial_no);
+                                    $('#jacksModal').modal('show');
                                     $('registerGuest').trigger('reset');
                                 } else {
                                     alert('Failed to save');
@@ -962,6 +994,18 @@
                     break;
             }
             
+        });
+
+        $(document).on('click', '.print_salesInvoice', function() {
+            var serial_no = $('#guest_serial_no').val();
+            var url = "<?= base_url('sales_invoice?transaction=')?>" + serial_no;
+            window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');
+        });
+
+        $(document).on('click', '.print_waiver', function() {
+            var serial_no = $('#guest_serial_no').val();
+            var quit_claim = "<?= base_url('main/quit_claim?registration=')?>" + serial_no;
+            window.open(quit_claim, 'targetWindow','resizable=yes,width=1000,height=1000');
         });
 
         $(document).on('click', '#add_discount', function() {

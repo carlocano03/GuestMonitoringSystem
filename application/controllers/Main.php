@@ -133,7 +133,8 @@ class Main extends CI_Controller
     public function getProvince()
     {
         $psgc_province = $this->db
-            ->order_by('name')
+            // ->order_by('name')
+            ->order_by("code = '133900000' DESC, name ASC")
             ->get('psgc_province')
             ->result();
         return $this->output
@@ -901,15 +902,17 @@ class Main extends CI_Controller
     {
         require_once 'vendor/autoload.php';
         $slip_no = $_GET['registration'];
-        // $data['transaction_date'] = $this->main->get_quit_claim($slip_no);
-        $mpdf = new \Mpdf\Mpdf( [ 
+        $data['guest'] = $this->main->get_quit_claim($slip_no);
+        $data['children'] = $this->main->get_children_data($slip_no);
+        $data['time'] = $this->main->get_time_details($slip_no);
+        $mpdf = new \Mpdf\Mpdf([ 
             'format' => 'A4-P',
             'margin_top' => 5,
         ]);
         // Enable auto-adjustment of top and bottom margins
         $mpdf->showImageErrors = true;
         $mpdf->showWatermarkImage = true;
-        $html = $this->load->view('pdf/quit_claim', [], true);
+        $html = $this->load->view('pdf/quit_claim', $data, true);
         $mpdf->WriteHTML( $html );
         $mpdf->Output();
     }

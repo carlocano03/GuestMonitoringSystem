@@ -35,7 +35,7 @@ class Home extends CI_Controller
 
     public function park()
     {
-        $data['province'] = $this->db->order_by('name', 'ASC')->get('psgc_province')->result();
+        $data['province'] = $this->db->order_by("code = '133900000' DESC, name ASC")->get('psgc_province')->result();
         $this->load->view('partials/__header');
         $this->load->view('partials/__footer');
         $this->load->view('services/park', $data);
@@ -43,7 +43,7 @@ class Home extends CI_Controller
 
     public function inflatables()
     {
-        $data['province'] = $this->db->order_by('name', 'ASC')->get('psgc_province')->result();
+        $data['province'] = $this->db->order_by("code = '133900000' DESC, name ASC")->get('psgc_province')->result();
         $this->load->view('partials/__header');
         $this->load->view('partials/__footer');
         $this->load->view('services/inflatables', $data);
