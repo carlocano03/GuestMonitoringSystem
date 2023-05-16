@@ -102,7 +102,8 @@
                             <th>Category</th>
                             <th>TIME IN</th>
                             <th>TIME OUT</th>
-                            <th>Guest name</th>
+                            <!-- <th>Guest name</th> -->
+                            <th>Status</th>
                             <th>Parent / Guardian</th>
                             <th>Qty</th>
                             <th>Amount</th>

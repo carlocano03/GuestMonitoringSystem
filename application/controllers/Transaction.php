@@ -32,7 +32,7 @@ class Transaction extends CI_Controller
             $row = array();
 
             $row[] = '<button class="btn btn-secondary btn-sm view" id="'.$list->slip_app_no.'" data-child="'.$list->child_id.'" data-service="'.$list->service.'" title="View"><i class="bi bi-eye-fill"></i></button>
-                      <button class="btn btn-primary btn-sm print" id="'.$list->slip_app_no.'" data-child="'.$list->child_id.'" title="Print"><i class="bi bi-printer-fill"></i></button>
+                      <button class="btn btn-primary btn-sm print" id="'.$list->transaction_no.'" data-child="'.$list->child_id.'" title="Print"><i class="bi bi-printer-fill"></i></button>
                       <button class="btn btn-danger btn-sm void" id="'.$list->slip_app_no.'" data-trans="'.$list->transaction_no.'"  data-service="'.$list->service.'" title="Void"><i class="bi bi-x-square-fill"></i></button>';
             $row[] = $list->transaction_no;
             $row[] = $list->slip_app_no;
@@ -41,23 +41,28 @@ class Transaction extends CI_Controller
             
             $row[] = date('g:i a', strtotime($list->time_in));
             $row[] = date('g:i a', strtotime($list->time_out));
-
-            if ($list->service == 'INFLATABLES') {
-                $children = $this->db
-                    ->select("CONCAT(child_fname, ' ', child_lname) AS children")
-                    ->from('guest_children')
-                    ->where('parent_id', $list->guest_id)
-                    ->get()
-                    ->result_array();
-                $children_names = "";
-                foreach ($children as $child) {
-                    $children_names .= $child['children'] . "<br>";
-                }
-                $row[] = $children_names;
+            
+            // if ($list->service == 'INFLATABLES') {
+            //     $children = $this->db
+            //         ->select("CONCAT(child_fname, ' ', child_lname) AS children")
+            //         ->from('guest_children')
+            //         ->where('parent_id', $list->guest_id)
+            //         ->get()
+            //         ->result_array();
+            //     $children_names = "";
+            //     foreach ($children as $child) {
+            //         $children_names .= $child['children'] . "<br>";
+            //     }
+            //     $row[] = $children_names;
+            // } else {
+            //     $row[] = $list->guest_fname. ' ' .$list->guest_lname;
+            // }
+            if ($list->extended == 'YES') {
+                $row[] = 'Extended';
             } else {
-                $row[] = $list->guest_fname. ' ' .$list->guest_lname;
+                $row[] = '';
             }
-
+            
             $row[] = $list->guest_fname. ' ' .$list->guest_lname;
             $row[] = $list->qty;
 
