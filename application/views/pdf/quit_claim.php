@@ -13,12 +13,17 @@
     .body {
         text-align: justify;
     }
-    #guardian {
+    #guardian,
+    #footer {
         width: 100%;
         border-collapse: collapse;
     }
-    #guardian th, td {
+    #guardian th, #guardian td {
         border: 1px solid black;
+    }
+
+    #footer th, #footer td {
+        border: none;
     }
 </style>
 <body>
@@ -48,12 +53,17 @@
         <p style="margin-top:-10px;">I accept and agree on the "Rules and Regulations" stated above:</p>
         <table id="guardian">
             <tr>
-                <td colspan="2">Name/Guardian:</td>
-                <td colspan="2">Contact:</td>
+                <td colspan="2">Name/Guardian: 
+                    <?= isset($guest->guest_fname) ? ucwords($guest->guest_fname) : '';?> 
+                    <?= isset($guest->guest_lname) ? ucwords($guest->guest_lname) : '';?> 
+                </td>
+                <td colspan="2">Contact:
+                    <?= isset($guest->contact_no) ? $guest->contact_no : '';?> 
+                </td>
             </tr>
             <tr>
-                <td>Age:</td>
-                <td>Entry Time:</td>
+                <td>Age: <?= isset($guest->guest_age) ? $guest->guest_age : '';?> </td>
+                <td>Entry Time: </td>
                 <td>Exit Time:</td>
                 <td>Extension:</td>
             </tr>
@@ -65,11 +75,29 @@
                 <th>Age</th>
             </tr>
             <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
-                </tr>
+                <?php foreach($children as $list) : ?>
+                    <tr>
+                        <td><?= ucwords($list->children)?></td>
+                        <td><?= $list->child_age?></td>
+                    </tr>
+                <?php endforeach;?>
+                
             </tbody>
+        </table>
+
+        <table id="footer">
+            <tr>
+                <td>Socks:</td>
+            </tr>
+            <tr>
+                <td>OR #:</td>
+                <td>Shoe Locker #: <?= isset($time->box_number) ? $time->box_number : '';?></td>
+                <td>Bag #: <?= isset($time->bag_number) ? $time->bag_number : '';?></td>
+            </tr>
+            <tr>
+                <td>Cahier Name: <?= isset($time->staff_in_charge) ? $time->staff_in_charge : '';?></td>
+                <td>Serial Number: <?= isset($time->serial_no) ? $time->serial_no : '';?></td>
+            </tr>
         </table>
     </div>
 
