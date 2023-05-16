@@ -129,4 +129,11 @@ class Transaction_model extends CI_Model
         return $query->result();
     }
 
+    function check_passcode($passcode)
+    {
+        $this->db->where('passcode', $passcode);
+        $query = $this->db->get('user');
+        return $query->num_rows();
+    }
+
 }

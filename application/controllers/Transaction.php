@@ -659,12 +659,22 @@ class Transaction extends CI_Controller
     {
         $message = '';
         $trans_no = $this->input->post('trans_no');
+        $passcode = $this->input->post('passcode');
 
-        if ($this->db->where('transaction_no', $trans_no)->update('consumable_stocks', array('status' => 2))) {
+        $check_pass = $this->transaction->check_passcode($passcode);
+        if ($check_pass > 0) {
+            $this->db->where('transaction_no', $trans_no)->update('consumable_stocks', array('status' => 2));
             $message = 'Success';
         } else {
-            $message = 'Error';
+            $message = 'Error'; 
         }
+
+
+        // if ($this->db->where('transaction_no', $trans_no)->update('consumable_stocks', array('status' => 2))) {
+        //     $message = 'Success';
+        // } else {
+        //     $message = 'Error';
+        // }
 
         $output['message'] = $message;
         echo json_encode($output);
