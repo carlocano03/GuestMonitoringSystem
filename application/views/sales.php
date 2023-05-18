@@ -53,18 +53,12 @@
                 </div>
                 <div class="col-md-4">
                     <div class="row g-1">
-                        <div class="col-sm-6">
-                            <select name="filter_by" id="filter_by" class="form-select form-select-sm">
-                                <option value="">Filter by</option>
-                                <option value="INFLATABLES">Inflatables</option>
-                                <option value="PARK">Park</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-6">
+                       
+                        <!--<div class="col-sm-6">
                             <select name="sort_by" id="sort_by" class="form-select form-select-sm">
                                 <option value="">Sort by</option>
                             </select>
-                        </div>
+                        </div>-->
                         <div class="col-sm-6">
                             <div class="input-group input-group-sm mb-3">
                                 <label class="input-group-text">From</label>
@@ -76,6 +70,13 @@
                                 <label class="input-group-text">To</label>
                                 <input type="date" class="form-control form-control-sm" id="dt_to">
                             </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <select name="filter_by" id="filter_by" class="form-select form-select-sm">
+                                <option value="">Filter by</option>
+                                <option value="INFLATABLES">Inflatables</option>
+                                <option value="PARK">Park</option>
+                            </select>
                         </div>
                     </div>
                 </div>
