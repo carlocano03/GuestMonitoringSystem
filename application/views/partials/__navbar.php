@@ -65,6 +65,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-user-alt"></i></div>
                                 Account Management
                             </a>
+                            <a class="nav-link" href="#" id="backup">
+                                <div class="sb-nav-link-icon"><i class="fas fa-database"></i></div>
+                                Backup Database
+                            </a>
                         <?php else:?>
                             <a class="nav-link <?= ($this->uri->segment(2) == '' || $this->uri->segment(2) == 'main' ? 'active' : '') ?>" href="<?= base_url('main')?>">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
@@ -77,6 +81,10 @@
                             <a class="nav-link" href="<?= base_url('main/time_monitoring')?>" target="_blank">
                                 <div class="sb-nav-link-icon"><i class="fas fa-user-clock"></i></div>
                                 Time Monitoring 
+                            </a>
+                            <a class="nav-link" href="#" id="backup">
+                                <div class="sb-nav-link-icon"><i class="fas fa-database"></i></div>
+                                Backup Database
                             </a>
                         <?php endif;?>
                         

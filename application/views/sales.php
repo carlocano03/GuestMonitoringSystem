@@ -110,6 +110,7 @@
                             <th>Amount</th>
                             <th>Inventory</th>
                             <th>Discount</th>
+                            <th>Remarks</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -252,6 +253,11 @@
             $('#loading').hide();
         }, 2000);
         var tbl_sales = $('#tbl_sales').DataTable({
+            "fnRowCallback": function(nRow, aData, iDisplayIndex, asd) {
+                if (aData[13] == 'Voided') { // less than 5 minutes
+                    $('td', nRow).css('background-color', 'rgba(249, 187, 191, 0.8)');
+                }
+            },
             language: {
                 search: '',
                 searchPlaceholder: "Search Here...",
@@ -398,7 +404,9 @@
         });
 
         $(document).on('click', '#print_reports', function() {
-            var url = "<?= base_url('transaction/sales_report');?>";
+            var dt_from = $('#dt_from').val();
+            var dt_to = $('#dt_to').val();
+            var url = "<?= base_url('transaction/sales_report/');?>" + dt_from + '/' + dt_to ;
             window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');
         });
 
