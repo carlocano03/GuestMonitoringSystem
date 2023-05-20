@@ -73,7 +73,6 @@ class Transaction_model extends CI_Model
             ->join('consumable_stocks CS', 'CS.guest_id = G.guest_id', 'LEFT')
             ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
             ->where('G.status', 'REGISTERED')
-            ->where('CS.status', 0)
             ->group_by('CS.transaction_no');
 
         if ($this->input->post('filter_by')) {
@@ -110,22 +109,42 @@ class Transaction_model extends CI_Model
         }
     }
 
-    function get_transaction()
+    function get_transaction($dt_from, $dt_to)
     {
-        $query = $this->db
-            ->select('TM.*')
-            ->select('G.slip_app_no, G.guest_fname, G.guest_mname, G.guest_lname, G.service, G.contact_no,G.status')
-            ->select('CS.transaction_no, CS.type_id, CS.qty, CS.total_amt')
-            ->select("CONCAT(GC.child_fname, ' ', GC.child_lname) as children, GC.child_id")
-            ->select('P.admission_type')
-            ->from($this->guest.' TM')
-            ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
-            ->join('consumable_stocks CS', 'CS.guest_id = G.guest_id', 'LEFT')
-            ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
-            ->join('pricing_promo P', 'TM.package_promo = P.pricing_id', 'LEFT')
-            ->where('G.status', 'REGISTERED')
-            ->group_by('CS.guest_id')
-            ->get();
+        if ($dt_from == '' && $dt_to == '') {
+            $query = $this->db
+                ->select('TM.*')
+                ->select('G.slip_app_no, G.guest_fname, G.guest_mname, G.guest_lname, G.service, G.contact_no,G.status')
+                ->select('CS.transaction_no, CS.type_id, CS.qty, CS.total_amt, CS.status AS Void_Stat')
+                ->select("CONCAT(GC.child_fname, ' ', GC.child_lname) as children, GC.child_id")
+                ->select('P.admission_type')
+                ->from($this->guest.' TM')
+                ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
+                ->join('consumable_stocks CS', 'CS.guest_id = G.guest_id', 'LEFT')
+                ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
+                ->join('pricing_promo P', 'TM.package_promo = P.pricing_id', 'LEFT')
+                ->where('G.status', 'REGISTERED')
+                ->group_by('CS.guest_id')
+                ->get();
+        } else {
+            $query = $this->db
+                ->select('TM.*')
+                ->select('G.slip_app_no, G.guest_fname, G.guest_mname, G.guest_lname, G.service, G.contact_no,G.status')
+                ->select('CS.transaction_no, CS.type_id, CS.qty, CS.total_amt, CS.status AS Void_Stat')
+                ->select("CONCAT(GC.child_fname, ' ', GC.child_lname) as children, GC.child_id")
+                ->select('P.admission_type')
+                ->from($this->guest.' TM')
+                ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
+                ->join('consumable_stocks CS', 'CS.guest_id = G.guest_id', 'LEFT')
+                ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
+                ->join('pricing_promo P', 'TM.package_promo = P.pricing_id', 'LEFT')
+                ->where('G.status', 'REGISTERED')
+                ->where('DATE(TM.date_added) >=', $dt_from)
+                ->where('DATE(TM.date_added) <=', $dt_to)
+                ->group_by('CS.guest_id')
+                ->get();
+        }
+        
         return $query->result();
     }
 

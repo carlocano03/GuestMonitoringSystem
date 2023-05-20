@@ -972,8 +972,13 @@ class Time_monitoring extends CI_Controller
         $slip_no = $this->input->post('slip_no');
         $child_id = $this->input->post('child_id');
 
+        $history_data = array(
+            'transacation' => 'Checkout guest - '. $slip_no,
+            'user' => $_SESSION['loggedIn']['fullname'],
+        );
         $result = $this->time->checkout_guest($slip_no, $child_id);
         if ($result == TRUE) {
+            $this->db->insert('history_logs', $history_data);
             $message = 'Success';
         } else {
             $message = 'Error';
@@ -987,8 +992,14 @@ class Time_monitoring extends CI_Controller
         $message = '';
         $slip_no = $this->input->post('slip_no');
 
+        $history_data = array(
+            'transacation' => 'Checkout guest - '. $slip_no,
+            'user' => $_SESSION['loggedIn']['fullname'],
+        );
+
         $result = $this->time->checkout_guest_park($slip_no);
         if ($result == TRUE) {
+            $this->db->insert('history_logs', $history_data);
             $message = 'Success';
         } else {
             $message = 'Error';
@@ -1039,9 +1050,16 @@ class Time_monitoring extends CI_Controller
                     'details' => $this->input->post('package_type'),
                     'extended' => 'YES',
                 );
+
+                $history_data = array(
+                    'transacation' => 'Extend guest - '. $this->input->post('serial_no'),
+                    'user' => $_SESSION['loggedIn']['fullname'],
+                );
+
                 if ($this->db->insert('consumable_stocks', $cosumable_stocks)) {
                     $this->db->where('time_id', $extend_id);
                     $this->db->update('time_management', $extend_inflatables);
+                    $this->db->insert('history_logs', $history_data);
                     $message = 'Success';
                 } else {
                     $message = 'Error';
@@ -1075,9 +1093,14 @@ class Time_monitoring extends CI_Controller
                     'details' => $this->input->post('package_type'),
                     'extended' => 'YES',
                 );
+                $history_data = array(
+                    'transacation' => 'Extend guest - '. $this->input->post('serial_no'),
+                    'user' => $_SESSION['loggedIn']['fullname'],
+                );
                 if ($this->db->insert('consumable_stocks', $cosumable_stocks)) {
                     $this->db->where('time_id', $extend_id);
                     $this->db->update('time_management', $extend_inflatables);
+                    $this->db->insert('history_logs', $history_data);
                     $message = 'Success';
                 } else {
                     $message = 'Error';

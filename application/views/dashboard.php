@@ -294,7 +294,7 @@
                             <hr>
 
                             <!-- style="display:none;" -->
-                            <table style="display:none;" class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table_children">
+                            <table class="table table-bordered table-striped" width="100%" style="vertical-align:middle;" id="table_children">
                                 <thead>
                                     <tr>
                                         <th>Children ID</th>
@@ -354,6 +354,7 @@
                     <h5 class="ms-5">Hello Adventurers!<br> Thank you.</h5>
                 </div>
                 <input type="hidden" id="guest_serial_no">
+                <input type="hidden" id="guest_trans_no">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary btn-sm print_salesInvoice"><i class="bi bi-printer-fill me-2"></i>Print Sales Invoice</button>
@@ -417,10 +418,6 @@
                 search: '',
                 searchPlaceholder: "Search Here...",
                 processing: '<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i><br>Loading... ',
-                // paginate: {
-                //     next: '<i class="fas fa-chevron-right"></i>',
-                //     previous: '<i class="fas fa-chevron-left"></i>'
-                // }
             },
             "ordering": false,
             "info": false,
@@ -836,168 +833,90 @@
             var pricing_id = $('#pricing_id').val();
             var package = $('#package').val();
 
-            switch (package) {
-                case 'INFLATABLES':
-                    if ($('#agreement').is(':checked')) {
-                        $.ajax({
-                            async: false,
-                            url: "<?= base_url('main/register_guest')?>",
-                            method: "POST",
-                            data: new FormData(this),
-                            contentType: false,
-                            processData: false,
-                            dataType: "json",
-                            success: function(data) {
-                                if (data.message == 'Success') {
-                                    $('#table_inventory .row2').each(function(row,tr){
-                                        var sub = {
-                                            'type_id': $(tr).find('td:eq(0)').text(),
-                                            'details': $(tr).find('td:eq(2)').text(),
-                                            'price': $(tr).find('td:eq(3)').text(),
-                                            'qty': $(tr).find('td:eq(4)').text(),
-                                            'total_amt': $(tr).find('td:eq(5)').text(),
-                                        };
-                                        table_data.push(sub);
-                                    });
-                                    var data = {
-                                        'data_table': table_data, 
-                                        serial_no: serial_no, 
-                                        guest_id: guest_id,
-                                        amt_total: amt_total, 
-                                        discount_check: discount_check, 
-                                        discount_remarks: discount_remarks
-                                    };
-                                    $.ajax({
-                                        url: "<?= base_url('main/consumable_tocks')?>",
-                                        method: "POST",
-                                        data: data,
-                                        dataType: "json",
-                                        success: function(data) {
-                                            if (data.message == 'Success') {
-                                                console.log(data);
-                                            }
-                                        }
-                                    });
-
-                                    var data = $('#table_children').DataTable().rows().data().toArray(); 
-                                    var pricing = $('#pricing_id').val();
-                                    var box_no = $('#shoe_box').val();
-                                    var bag_no = $('#bag_no').val();
-                                    var service_crew = $('#service_crew').val();
-                                    var serial = $('#serialno').val();
-                                    $.ajax({
-                                        url: '<?= base_url('main/save_time_management'); ?>',
-                                        method: 'POST',
-                                        data: {
-                                            data: data,
-                                            pricing_id: pricing,
-                                            box_no: box_no,
-                                            bag_no: bag_no,
-                                            service_crew: service_crew,
-                                            serial_no: serial,
-                                        },
-                                        dataType: 'json',
-                                        success: function(response) {
-                                            if (response.success) {
-                                                console.log(response.success);
-                                            }
-                                        }
-                                    });
-
-                                    // alert('Success');
-                                    // var url = "<?= base_url('sales_invoice?transaction=')?>" + serial_no;
-                                    // window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');
-
-                                    // // var quit_claim = "<?= base_url('main/quit_claim?registration=')?>" + serial_no;
-                                    // // window.open(quit_claim, 'targetWindow','resizable=yes,width=1000,height=1000');
-                                    
-                                    // setTimeout(() => {
-                                    //     location.reload();
-                                    // }, 1000);
-                                    
-                                    $('#guest_serial_no').val(serial_no);
-                                    $('#jacksModal').modal('show');
-                                    $('registerGuest').trigger('reset');
-                                } else {
-                                    alert('Failed to save');
+            if ($('#agreement').is(':checked')) {
+                $.ajax({
+                    async: false,
+                    url: "<?= base_url('main/register_guest')?>",
+                    method: "POST",
+                    data: new FormData(this),
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+                    success: function(data) {
+                        if (data.message == 'Success') {
+                            $('#table_inventory .row2').each(function(row,tr){
+                                var sub = {
+                                    'type_id': $(tr).find('td:eq(0)').text(),
+                                    'details': $(tr).find('td:eq(2)').text(),
+                                    'price': $(tr).find('td:eq(3)').text(),
+                                    'qty': $(tr).find('td:eq(4)').text(),
+                                    'total_amt': $(tr).find('td:eq(5)').text(),
+                                };
+                                table_data.push(sub);
+                            });
+                            var data = {
+                                'data_table': table_data, 
+                                serial_no: serial_no, 
+                                guest_id: guest_id,
+                                amt_total: amt_total, 
+                                discount_check: discount_check, 
+                                discount_remarks: discount_remarks
+                            };
+                            $.ajax({
+                                url: "<?= base_url('main/consumable_tocks')?>",
+                                method: "POST",
+                                data: data,
+                                dataType: "json",
+                                success: function(data) {
+                                    if (data.success == 'Success') {
+                                        $('#guest_trans_no').val(data.trans_no);
+                                    }
                                 }
-                            },
-                            error: function() {
-                                alert('Failed');
-                            }
-                        });
-                    } else {
-                        Swal.fire('Warning!', 'Please accept the agreement.', 'warning');
-                    }
-                    break;
-            
-                case 'PARK':
-                    if ($('#agreement').is(':checked')) {
-                        $.ajax({
-                            url: "<?= base_url('main/register_guest')?>",
-                            method: "POST",
-                            data: new FormData(this),
-                            contentType: false,
-                            processData: false,
-                            dataType: "json",
-                            success: function(data) {
-                                if (data.message == 'Success') {
-                                    $('#table_inventory .row2').each(function(row,tr){
-                                        var sub = {
-                                            'type_id': $(tr).find('td:eq(0)').text(),
-                                            'details': $(tr).find('td:eq(2)').text(),
-                                            'price': $(tr).find('td:eq(3)').text(),
-                                            'qty': $(tr).find('td:eq(4)').text(),
-                                            'total_amt': $(tr).find('td:eq(5)').text(),
-                                        };
-                                        table_data.push(sub);
-                                    });
-                                    var data = {
-                                        'data_table': table_data, 
-                                        serial_no: serial_no, 
-                                        guest_id: guest_id,
-                                        amt_total: amt_total, 
-                                        discount_check: discount_check, 
-                                        discount_remarks: discount_remarks
-                                    };
-                                    $.ajax({
-                                        url: "<?= base_url('main/consumable_tocks')?>",
-                                        method: "POST",
-                                        data: data,
-                                        dataType: "json",
-                                        success: function(data) {
-                                            if (data.message == 'Success') {
-                                                console.log(data);
-                                            }
-                                        }
-                                    });
+                            });
 
-                                    // alert('Success');
-                                    // var url = "<?= base_url('sales_invoice?transaction=')?>" + serial_no;
-                                    // window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');
-                                    // location.reload();
-
-                                    $('#guest_serial_no').val(serial_no);
-                                    $('#jacksModal').modal('show');
-                                    $('registerGuest').trigger('reset');
-                                } else {
-                                    alert('Failed to save');
+                            var data = $('#table_children').DataTable().rows().data().toArray(); 
+                            var pricing = $('#pricing_id').val();
+                            var box_no = $('#shoe_box').val();
+                            var bag_no = $('#bag_no').val();
+                            var service_crew = $('#service_crew').val();
+                            var serial = $('#serialno').val();
+                            $.ajax({
+                                url: '<?= base_url('main/save_time_management'); ?>',
+                                method: 'POST',
+                                data: {
+                                    data: data,
+                                    pricing_id: pricing,
+                                    box_no: box_no,
+                                    bag_no: bag_no,
+                                    service_crew: service_crew,
+                                    serial_no: serial,
+                                },
+                                dataType: 'json',
+                                success: function(response) {
+                                    if (response.success) {
+                                        console.log(response.success);
+                                    }
                                 }
-                            },
-                            error: function() {
-                                alert('Failed');
-                            }
-                        });
-                    } else {
-                        Swal.fire('Warning!', 'Please accept the agreement.', 'warning');
+                            });
+                                    
+                            $('#guest_serial_no').val(serial_no);
+                            $('#jacksModal').modal('show');
+                            $('registerGuest').trigger('reset');
+                        } else {
+                            alert('Failed to save');
+                        }
+                    },
+                    error: function() {
+                        alert('Failed');
                     }
-                    break;
+                });
+            } else {
+                Swal.fire('Warning!', 'Please accept the agreement.', 'warning');
             }
-            
         });
 
         $(document).on('click', '.print_salesInvoice', function() {
-            var serial_no = $('#guest_serial_no').val();
+            var serial_no = $('#guest_trans_no').val();
             var url = "<?= base_url('sales_invoice?transaction=')?>" + serial_no;
             window.open(url, 'targetWindow','resizable=yes,width=1000,height=1000');
         });

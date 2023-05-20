@@ -47,6 +47,7 @@
                 <th style="width: 5%;">Amount</th>
                 <th>Inventory Amount</th>
                 <th>Discount Amount</th>
+                <th>Remarks</th>
             </tr>
             <tbody>
                 <?php foreach($transaction as $list) : ?>
@@ -77,6 +78,7 @@
                                 ->select("SUM(total_amt) as total_sales")
                                 ->from('consumable_stocks')
                                 ->where('type_id', 0)
+                                ->where('status', 0)
                                 ->get()
                                 ->row();
 
@@ -84,6 +86,7 @@
                                 ->select("SUM(total_amt) as total_inv")
                                 ->from('consumable_stocks')
                                 ->where('type_id !=', 0)
+                                ->where('status', 0)
                                 ->get()
                                 ->row();
 
@@ -128,19 +131,27 @@
                         <td><?= number_format($sales_guest->total_sales, 2)?></td>
                         <td><?= number_format($inv_guest->inv_sales, 2)?></td>
                         <td><?= number_format($discount_guest->discount_amt, 2)?></td>
+                        <?php
+                            if ($list->Void_Stat == 2) {
+                                $status = 'Voided';
+                            } else {
+                                $status = '';
+                            }
+                        ?>
+                        <td><?= $status;?></td>
                     </tr>
                 <?php endforeach;?>
             </tbody>
         </table>
         <hr>
         <div class="total" style="text-align: right;">
-            <h5 style="margin-bottom:5px;">Sales: ₱ <?= number_format($sales->total_sales, 2);?></h5>
-            <h5>Inventory Sales: ₱ <?= number_format($inv_sales->total_inv, 2);?></h5>
-            <h5>Discount: ₱ -<?= number_format($total_discount, 2);?></h5>
+            <h5 style="margin-bottom:5px;">Sales: ₱ <?= isset($sales->total_sales) ? number_format($sales->total_sales, 2) : '';?></h5>
+            <h5>Inventory Sales: ₱ <?= isset($inv_sales->total_inv) ? number_format($inv_sales->total_inv, 2) : '';?></h5>
+            <h5>Discount: ₱ -<?= isset($total_discount) ? number_format($total_discount, 2) : '';?></h5>
             <?php
-                $total = $sales->total_sales + $inv_sales->total_inv - $total_discount;
+                $total = (isset($sales->total_sales) ? $sales->total_sales : 0) + (isset($inv_sales->total_inv) ? $inv_sales->total_inv : 0) - (isset($total_discount) ? $total_discount : 0);
             ?>
-            <h4>Total Sales: ₱ <?= number_format($total, 2)?></h4>
+            <h4>Total Sales: ₱ <?= isset($total) ? number_format($total, 2) : ''?></h4>
         </div>
     </div>
 </body>

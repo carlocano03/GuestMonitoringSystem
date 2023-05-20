@@ -14,6 +14,8 @@ class Main extends CI_Controller
         $this->load->helper('url');
         $this->load->library('form_validation');
         $this->load->database();
+        $this->load->dbutil();
+        $this->load->helper('file');
         $this->load->model('Main_model', 'main');
         if (!isset($_SESSION['loggedIn'])) {
             redirect('user');
@@ -100,6 +102,19 @@ class Main extends CI_Controller
         $this->load->view('partials/__navbar');
         $this->load->view('registration');
         $this->load->view('partials/__footer');
+    }
+
+    public function backupDB()
+    {
+        $backup = $this->dbutil->backup();
+        $file_name = 'database_backup_' . date('Y-m-d_H-i-s') . '.gz';
+        $save_path = 'backup_db/' . $file_name;
+        
+        write_file($save_path, $backup);
+
+        // Send a JSON response with the file name
+        $response = array('file_name' => $file_name);
+        echo json_encode($response);
     }
 
     public function logout()
@@ -269,24 +284,25 @@ class Main extends CI_Controller
                         $file = NULL;
                     }
 
+                    //Children Park
+                    $folderPathChild = 'capture_images/children/';
+                    if(!empty($this->input->post('captured_image_data'))) {
+                        $image_partsChild = explode(";base64,", $this->input->post('captured_image_data'));
+                        $image_type_auxChild = explode("image/", $image_partsChild[0]);
+                        $image_typeChild = $image_type_auxChild[1];
+                        $image_base64Child = base64_decode($image_partsChild[1]);
+                        $fileChild = $folderPathChild . uniqid() . '.png';
+                        file_put_contents($fileChild, $image_base64Child);
+                    } else {
+                        $fileChild = NULL;
+                    }
+
                     $update = array(
                         'status' => 'REGISTERED',
                         'slip_app_no' => $serial_no,
                         'picture' => $file
                     );
-
-                    $insert_time = array(
-                        'package_promo' => $pricing_id,
-                        'guest_id' => $guest_id,
-                        'serial_no' => $serial_no,
-                        'time_in' => $time_in,
-                        'time_out' => $time_out,
-                        'box_number' => $this->input->post('shoe_box'),
-                        'bag_number' => $this->input->post('bag_no'),
-                        'status' => 'Ongoing',
-                        'staff_in_charge' => $this->input->post('service_crew'),
-                    );
-                    $this->db->insert('time_management', $insert_time);
+                    $this->db->where('parent_id', $guest_id)->update('guest_children', array('child_img' => $fileChild));
                 break;
             }
 
@@ -343,24 +359,25 @@ class Main extends CI_Controller
                         $file = NULL;
                     }
 
+                    //Children Park
+                    $folderPathChild = 'capture_images/children/';
+                    if(!empty($this->input->post('captured_image_data'))) {
+                        $image_partsChild = explode(";base64,", $this->input->post('captured_image_data'));
+                        $image_type_auxChild = explode("image/", $image_partsChild[0]);
+                        $image_typeChild = $image_type_auxChild[1];
+                        $image_base64Child = base64_decode($image_partsChild[1]);
+                        $fileChild = $folderPathChild . uniqid() . '.png';
+                        file_put_contents($fileChild, $image_base64Child);
+                    } else {
+                        $fileChild = NULL;
+                    }
+
                     $update = array(
                         'status' => 'REGISTERED',
                         'slip_app_no' => $this->input->post('serial_no'),
                         'picture' => $file
                     );
-
-                    $insert_time = array(
-                        'package_promo' => $pricing_id,
-                        'guest_id' => $guest_id,
-                        'serial_no' => $this->input->post('serial_no'),
-                        'time_in' => $time_in,
-                        'time_out' => $time_out,
-                        'box_number' => $this->input->post('shoe_box'),
-                        'bag_number' => $this->input->post('bag_no'),
-                        'status' => 'Ongoing',
-                        'staff_in_charge' => $this->input->post('service_crew'),
-                    );
-                    $this->db->insert('time_management', $insert_time);
+                    $this->db->where('parent_id', $guest_id)->update('guest_children', array('child_img' => $fileChild));
                 break;
             }
         }
@@ -443,6 +460,7 @@ class Main extends CI_Controller
         }
         $output = array(
             'success' => $success,
+            'trans_no' => $transaction_no,
         );
         echo json_encode($output);
     }
@@ -602,21 +620,6 @@ class Main extends CI_Controller
         $board2 = '';
         $board3 = '';
 
-        //less than 5 minutes
-        // $query = $this->db
-        //     ->select('TM.*, TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) AS remaining_time')
-        //     ->select("CONCAT(GC.child_fname, ' ',LEFT(GC.child_lname, 1),'.') as children, GC.child_age, GC.child_img")
-        //     ->select("CONCAT(G.guest_fname, ' ',G.guest_lname) as guardian, G.status, G.service")
-        //     ->from('time_management TM')
-        //     ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
-        //     ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
-        //     ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) <', 5 * 60) // 15 minutes in seconds
-        //     ->or_where('TIMESTAMPDIFF(SECOND, NOW(), TM.extend_time) <', 5 * 60) // 15 minutes in seconds
-        //     ->where('TM.status', 'Ongoing')
-        //     // ->where('TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) >', 0) // Add this line
-        //     ->where('DATE(TM.date_added) = CURDATE()')
-        //     ->get();
-
         $query = $this->db
             ->select('TM.*, TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) AS remaining_time')
             ->select("CONCAT(GC.child_fname, ' ',LEFT(GC.child_lname, 1),'.') as children, GC.child_age, GC.child_img")
@@ -677,7 +680,7 @@ class Main extends CI_Controller
                                 <img class="box-img-monitor" src="'.$profile_child.'" alt="Profile-Pic">
                                 <div class="ms-2">
                                     <h5 class="mb-0">'.$guest.'</h5>
-                                    <b class="mb-0">1234567890</b>
+                                    <b class="mb-0">'.$list->serial_no.'</b>
                                 </div>
                                 <div class="ms-2 text-center">
                                     <h5 style="color: #e84393; font-weight:700">TIME LEFT</h5>
@@ -851,7 +854,7 @@ class Main extends CI_Controller
                                 <img class="box-img-monitor" src="'.$profile_child.'" alt="Profile-Pic">
                                 <div class="ms-2">
                                     <h5 class="mb-0">'.$guest.'</h5>
-                                    <b class="mb-0">1234567890</b>
+                                    <b class="mb-0">'.$list->serial_no.'</b>
                                 </div>
                                 <div class="ms-2 text-center">
                                     <h5 style="color: #e84393; font-weight:700">TIME LEFT</h5>
