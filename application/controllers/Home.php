@@ -112,7 +112,21 @@ class Home extends CI_Controller
             'status' => 'PRE-REGISTRATION',
             'guest_slip_no' => $regNo,
         );
+        
         if ($this->db->insert('guest_details', $insertPark)) {
+            $parentID = $this->db->insert_id();
+            $data = array(
+                'parent_id' => $parentID,
+                'registration_no' => $regNo,
+                'child_fname' => $this->input->post('fname'),
+                'child_lname' => $this->input->post('lname'),
+                'child_mname' => $this->input->post('mname'),
+                'child_suffix' => $this->input->post('suffix'),
+                'child_bday' => date('Y-m-d', strtotime($this->input->post('birthday'))),
+                'child_age' => $this->input->post('age'),
+                'services_category' => 'PARK',
+            );
+            $this->db->insert('guest_children', $data);
             $message = 'Success';
         } else {
             $message = 'Error';
@@ -166,6 +180,7 @@ class Home extends CI_Controller
                     'child_suffix' => $this->db->escape_str($this->input->post('kid_suffix')[$i]),
                     'child_bday' => date('Y-m-d', strtotime($this->input->post('kid_birthday')[$i])),
                     'child_age' => $this->db->escape_str($this->input->post('kid_age')[$i]),
+                    'services_category' => 'INFLATABLES',
                 );
                 $this->db->insert('guest_children', $data);
             }

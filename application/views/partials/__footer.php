@@ -184,7 +184,33 @@
 
     }
 
+    function backupDatabase() {
+        $.ajax({
+            url: '<?= base_url('main/backupDB'); ?>',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                console.log('Backup saved as: ' + response.file_name);
+            },
+            error: function(xhr, status, error) {
+                console.log('Error:', error);
+            }
+        });
+    }
+
+    $(document).on('click', '#backup', function(){
+        backupDatabase(function(success) {
+            if (success) {
+                alert('Success');
+            } else {
+                alert('Error');
+            }
+        });
+    });
+
     $(document).ready(function() {
+        setInterval(backupDatabase, 3600000);
+        
         $(document).on('change', '#province_code', function() {
             var elem = $(this);
             var code = elem.val();

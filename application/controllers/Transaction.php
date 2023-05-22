@@ -27,13 +27,15 @@ class Transaction extends CI_Controller
         $total_sales = 0;
         $no_transaction = 0;
         $total_discount = 0;
+        $total_inv_sales = 0;
+        $total_amount_sales = 0;
         foreach ($guest as $list) {
             $no++;
             $row = array();
 
             $row[] = '<button class="btn btn-secondary btn-sm view" id="'.$list->slip_app_no.'" data-child="'.$list->child_id.'" data-service="'.$list->service.'" title="View"><i class="bi bi-eye-fill"></i></button>
                       <button class="btn btn-primary btn-sm print" id="'.$list->transaction_no.'" data-child="'.$list->child_id.'" title="Print"><i class="bi bi-printer-fill"></i></button>
-                      <button class="btn btn-danger btn-sm void" id="'.$list->slip_app_no.'" data-trans="'.$list->transaction_no.'"  data-service="'.$list->service.'" title="Void"><i class="bi bi-x-square-fill"></i></button>';
+                      <button '.($list->status == 2  ? 'disabled' : '').' class="btn btn-danger btn-sm void" id="'.$list->slip_app_no.'" data-trans="'.$list->transaction_no.'"  data-service="'.$list->service.'" title="Void"><i class="bi bi-x-square-fill"></i></button>';
             $row[] = $list->transaction_no;
             $row[] = $list->slip_app_no;
             $row[] = date('F j, Y', strtotime($list->date_added));
@@ -41,22 +43,7 @@ class Transaction extends CI_Controller
             
             $row[] = date('g:i a', strtotime($list->time_in));
             $row[] = date('g:i a', strtotime($list->time_out));
-            
-            // if ($list->service == 'INFLATABLES') {
-            //     $children = $this->db
-            //         ->select("CONCAT(child_fname, ' ', child_lname) AS children")
-            //         ->from('guest_children')
-            //         ->where('parent_id', $list->guest_id)
-            //         ->get()
-            //         ->result_array();
-            //     $children_names = "";
-            //     foreach ($children as $child) {
-            //         $children_names .= $child['children'] . "<br>";
-            //     }
-            //     $row[] = $children_names;
-            // } else {
-            //     $row[] = $list->guest_fname. ' ' .$list->guest_lname;
-            // }
+
             if ($list->extended == 'YES') {
                 $row[] = 'Extended';
             } else {
@@ -99,13 +86,63 @@ class Transaction extends CI_Controller
                 ->get()
                 ->row();
             $total_discount += $discount->discount_amt;
+
+            //Void
+            $total_discount_void = 0;
+            $total_amount_void = 0;
+            $discount_void = $this->db
+                ->select('discount_amt')
+                ->from('consumable_stocks')
+                ->where('transaction_no', $list->transaction_no)
+                ->where('status', 2)
+                ->group_by('serial_no')
+                ->get()
+                ->row();
+            $total_discount_void += $discount->discount_amt;
+
+            $sales_void = $this->db
+                ->select("SUM(total_amt) as total_sales")
+                ->from('consumable_stocks')
+                ->where('type_id', 0)
+                ->where('status', 2)
+                ->where('transaction_no', $list->transaction_no)
+                ->get()
+                ->row();
+            $total_amount_void += $sales->total_sales;
+
+            $inv_void = $this->db
+                ->select("SUM(total_amt) as inv_sales")
+                ->from('consumable_stocks')
+                ->where('type_id !=', 0)
+                ->where('status', 2)
+                ->where('transaction_no', $list->transaction_no)
+                ->get()
+                ->row();
+
+            $sales_void = $this->db
+                ->select("SUM(total_amt) as total_sales")
+                ->from('consumable_stocks')
+                ->where('type_id', 0)
+                ->where('status', 2)
+                ->where('transaction_no', $list->transaction_no)
+                ->get()
+                ->row();
+            //End Void
+
             $row[] = number_format($discount->discount_amt, 2);
 
-            $total_sales = $total_amount + $inv_sales - $total_discount;
-
+            $total_sales = $total_amount + $inv_sales - $total_discount - $total_discount_void - $total_amount_void - $inv_void->inv_sales;
+            $total_inv_sales = $inv_sales - $inv_void->inv_sales;
+            $total_amount_sales = $total_amount - $sales_void->total_sales;
             $this->db->from('consumable_stocks');
             $this->db->group_by('transaction_no');
             $no_transaction = $this->db->count_all_results();
+
+            if ($list->status == 2) {
+                $row[] = 'Voided';
+            } else {
+                $row[] = '';
+            }
 
             $data[] = $row;
         }
@@ -114,8 +151,8 @@ class Transaction extends CI_Controller
             "recordsTotal" => $this->transaction->count_all(),
             "recordsFiltered" => $this->transaction->count_filtered(),
             "data" => $data, 
-            "totalAmount" => number_format($total_amount, 2),
-            "totalInv" => number_format($inv_sales, 2),
+            "totalAmount" => number_format($total_amount_sales, 2),
+            "totalInv" => number_format($total_inv_sales, 2),
             "totalSales" => number_format($total_sales, 2),
             "total_discount" => number_format($total_discount, 2),
             "no_transaction" => number_format($no_transaction),
@@ -126,7 +163,11 @@ class Transaction extends CI_Controller
     public function sales_report()
     {
         require_once 'vendor/autoload.php';
-        $data['transaction'] = $this->transaction->get_transaction();
+        $dt_from = $this->uri->segment(3);
+        $dt_to = $this->uri->segment(4);
+
+        $data['transaction'] = $this->transaction->get_transaction($dt_from, $dt_to);
+
         $mpdf = new \Mpdf\Mpdf( [ 
             'format' => 'A4-L',
             'margin_top' => 5,
@@ -359,6 +400,14 @@ class Transaction extends CI_Controller
                     $disabled = '';
                 }
                 //$row[] = '<span class="remaining-time" data-remaining-time="' . $remaining_time . '">' . $remaining_time_formatted . '</span>';;
+                $trans_no = $this->db
+                    ->select('transaction_no')
+                    ->from('consumable_stocks')
+                    ->where('serial_no', $parent->slip_app_no)
+                    ->group_by('transaction_no')
+                    ->get()
+                    ->row();
+
                 $output_time_info .= '
                     <div class="form-group mb-3">
                         <label>Package:</label>
@@ -388,7 +437,7 @@ class Transaction extends CI_Controller
                         <h4>P '.number_format($time_info->weekdays_price, 2).'</h4>
                     </div>
                     <div class="mx-auto hide_data">
-                        <button class="btn btn-danger w-100 btn-rounded">VOID THIS TRANSACTION</button>
+                        <button class="btn btn-danger w-100 btn-rounded void_trans" data-id="'.$trans_no->transaction_no.'">VOID THIS TRANSACTION</button>
                     </div>
                     <hr>
                 ';
@@ -661,20 +710,18 @@ class Transaction extends CI_Controller
         $trans_no = $this->input->post('trans_no');
         $passcode = $this->input->post('passcode');
 
+        $void_data = array(
+            'transacation' => 'Void transaction - '. $trans_no,
+            'user' => $_SESSION['loggedIn']['fullname'],
+        );
         $check_pass = $this->transaction->check_passcode($passcode);
         if ($check_pass > 0) {
             $this->db->where('transaction_no', $trans_no)->update('consumable_stocks', array('status' => 2));
+            $this->db->insert('history_logs', $void_data);
             $message = 'Success';
         } else {
             $message = 'Error'; 
         }
-
-
-        // if ($this->db->where('transaction_no', $trans_no)->update('consumable_stocks', array('status' => 2))) {
-        //     $message = 'Success';
-        // } else {
-        //     $message = 'Error';
-        // }
 
         $output['message'] = $message;
         echo json_encode($output);
