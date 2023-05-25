@@ -367,6 +367,7 @@
         $(document).on('click', '.view', function(){
             var serial_no = $(this).attr('id');
             var service = $(this).data('service');
+            var con_id = $(this).data('con_id');
             switch (service) {
                 case 'INFLATABLES':
                      $('.children_info').show(200);
@@ -383,7 +384,8 @@
                 method: "POST",
                 data: {
                     serial_no: serial_no,
-                    service: service
+                    service: service,
+                    con_id: con_id
                 },
                 dataType: "json",
                 success: function(data) {

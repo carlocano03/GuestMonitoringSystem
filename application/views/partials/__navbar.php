@@ -65,6 +65,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-user-alt"></i></div>
                                 Account Management
                             </a>
+                            <a class="nav-link <?= ($this->uri->segment(2) == 'history_logs' ? 'active' : '') ?>" href="<?= base_url('main/history_logs')?>">
+                                <div class="sb-nav-link-icon"><i class="fas fa-history"></i></div>
+                                History Logs
+                            </a>
                             <a class="nav-link" href="#" id="backup">
                                 <div class="sb-nav-link-icon"><i class="fas fa-database"></i></div>
                                 Backup Database

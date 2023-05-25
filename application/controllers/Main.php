@@ -104,6 +104,15 @@ class Main extends CI_Controller
         $this->load->view('partials/__footer');
     }
 
+    public function history_logs()
+    {
+        $data['history_logs'] = $this->main->get_history();
+        $this->load->view('partials/__header');
+        $this->load->view('partials/__navbar');
+        $this->load->view('partials/__footer'); 
+        $this->load->view('history_logs', $data);
+    }
+
     public function backupDB()
     {
         $backup = $this->dbutil->backup();
