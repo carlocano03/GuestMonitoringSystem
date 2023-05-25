@@ -199,13 +199,25 @@
     }
 
     $(document).on('click', '#backup', function(){
-        backupDatabase(function(success) {
-            if (success) {
-                alert('Success');
-            } else {
-                alert('Error');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to backup the database.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, proceed'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                backupDatabase(function(success) {
+                    if (success) {
+                        alert('Success');
+                    } else {
+                        alert('Error');
+                    }
+                });
             }
-        });
+        })
     });
 
     $(document).ready(function() {
