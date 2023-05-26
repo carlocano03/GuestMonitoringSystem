@@ -14,8 +14,7 @@
         color: #fff;
     }
 
-    #tbl_sales th:nth-child(11),
-    #tbl_sales td:nth-child(11),
+   
     #tbl_sales th:nth-child(12),
     #tbl_sales td:nth-child(12),
     #tbl_sales th:nth-child(13),
@@ -23,6 +22,14 @@
         background: var(--bs-yellow);
         color: #2d3436;
     }
+
+
+#tbl_sales th:nth-child(11),
+#tbl_sales td:nth-child(11)
+ {
+    background: var(--bs-red);
+        color: #000;
+}
 
 </style>
 <div id="layoutSidenav_content">
@@ -107,9 +114,10 @@
                             <th>Status</th>
                             <th>Parent / Guardian</th>
                             <th>Qty</th>
-                            <th>Amount</th>
-                            <th>Inventory</th>
-                            <th>Discount</th>
+                            <th>Package Amount</th>
+                            <th>Inventory Amount</th>
+                            <th>Discounted Amount</th>
+                           
                             <th>Remarks</th>
                         </tr>
                     </thead>
