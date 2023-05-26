@@ -31,7 +31,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Transaction</th>
+                            <th>Activity</th>
                             <th>User</th>
                             <th>Date Transaction</th>
                         </tr>
