@@ -33,7 +33,7 @@ class Transaction extends CI_Controller
             $no++;
             $row = array();
 
-            $row[] = '<button class="btn btn-secondary btn-sm view" id="'.$list->slip_app_no.'" data-child="'.$list->child_id.'" data-service="'.$list->service.'" title="View"><i class="bi bi-eye-fill"></i></button>
+            $row[] = '<button class="btn btn-secondary btn-sm view" id="'.$list->slip_app_no.'" data-child="'.$list->child_id.'" data-service="'.$list->service.'" data-con_id="'.$list->con_id.'" title="View"><i class="bi bi-eye-fill"></i></button>
                       <button class="btn btn-primary btn-sm print" id="'.$list->transaction_no.'" data-child="'.$list->child_id.'" title="Print"><i class="bi bi-printer-fill"></i></button>
                       <button '.($list->status == 2  ? 'disabled' : '').' class="btn btn-danger btn-sm void" id="'.$list->slip_app_no.'" data-trans="'.$list->transaction_no.'"  data-service="'.$list->service.'" title="Void"><i class="bi bi-x-square-fill"></i></button>';
             $row[] = $list->transaction_no;
@@ -461,6 +461,7 @@ class Transaction extends CI_Controller
         $output_time_info = '';
         $serial_no = $this->input->post('serial_no');
         $service = $this->input->post('service');
+        $con_id = $this->input->post('con_id');
 
         switch ($service) {
             case 'INFLATABLES':
@@ -555,6 +556,24 @@ class Transaction extends CI_Controller
                 } else {
                     $disabled = '';
                 }
+
+                $sales = $this->db
+                    ->select("SUM(total_amt) as sales")
+                    ->from('consumable_stocks')
+                    ->where('con_id', $con_id)
+                    ->get()
+                    ->row();
+
+                $discount = $this->db
+                    ->select('discount_amt AS discount')
+                    ->from('consumable_stocks')
+                    ->where('con_id', $con_id)
+                    ->group_by('serial_no')
+                    ->get()
+                    ->row();
+                
+                $total_sales = $sales->sales - $discount->discount;
+
                 //$row[] = '<span class="remaining-time" data-remaining-time="' . $remaining_time . '">' . $remaining_time_formatted . '</span>';;
                 $output_time_info .= '
                     <div class="form-group mb-3">
@@ -583,7 +602,7 @@ class Transaction extends CI_Controller
 
                     <div class="text-center">
                         <label>Total Amount</label>
-                        <h4>P '.number_format($time_info->weekdays_price, 2).'</h4>
+                        <h4>P '.number_format($total_sales, 2).'</h4>
                     </div>
                     <hr>
                 ';
@@ -660,6 +679,24 @@ class Transaction extends CI_Controller
                 } else {
                     $disabled = '';
                 }
+
+                $sales = $this->db
+                    ->select("SUM(total_amt) as sales")
+                    ->from('consumable_stocks')
+                    ->where('con_id', $con_id)
+                    ->get()
+                    ->row();
+
+                $discount = $this->db
+                    ->select('discount_amt AS discount')
+                    ->from('consumable_stocks')
+                    ->where('con_id', $con_id)
+                    ->group_by('serial_no')
+                    ->get()
+                    ->row();
+                
+                $total_sales = $sales->sales - $discount->discount;
+
                 //$row[] = '<span class="remaining-time" data-remaining-time="' . $remaining_time . '">' . $remaining_time_formatted . '</span>';;
                 $output_time_info .= '
                     <div class="form-group mb-3">
@@ -687,7 +724,7 @@ class Transaction extends CI_Controller
                     <hr>
                     <div class="text-center hide_data">
                         <label>Total Amount</label>
-                        <h4>P '.number_format($time_info->weekdays_price, 2).'</h4>
+                        <h4>P '.number_format($total_sales, 2).'</h4>
                     </div>
                     <hr>
                 ';
@@ -709,6 +746,9 @@ class Transaction extends CI_Controller
         $message = '';
         $trans_no = $this->input->post('trans_no');
         $passcode = $this->input->post('passcode');
+
+        // $this->db->where('transaction_no', $trans_no);
+        // $checkout = $this->db->get('consumable_stocks')->row();
 
         $void_data = array(
             'transacation' => 'Void transaction - '. $trans_no,

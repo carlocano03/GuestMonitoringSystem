@@ -212,4 +212,11 @@ class Main_model extends CI_Model
         return $query->row();
     }
 
+    function get_history()
+    {
+        $this->db->order_by('logs_id', 'DESC');
+        $query = $this->db->get('history_logs');
+        return $query->result();
+    }
+
 }
