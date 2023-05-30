@@ -29,31 +29,13 @@ class Transaction extends CI_Controller
         $total_discount = 0;
         $total_inv_sales = 0;
         $total_amount_sales = 0;
+
+        $total_sales_amount= 0;
         foreach ($guest as $list) {
             $no++;
             $row = array();
 
-            $row[] = '<button class="btn btn-secondary btn-sm view" id="'.$list->slip_app_no.'" data-child="'.$list->child_id.'" data-service="'.$list->service.'" data-con_id="'.$list->con_id.'" title="View"><i class="bi bi-eye-fill"></i></button>
-                      <button class="btn btn-primary btn-sm print" id="'.$list->transaction_no.'" data-child="'.$list->child_id.'" title="Print"><i class="bi bi-printer-fill"></i></button>
-                      <button '.($list->status == 2  ? 'disabled' : '').' class="btn btn-danger btn-sm void" id="'.$list->slip_app_no.'" data-trans="'.$list->transaction_no.'"  data-service="'.$list->service.'" title="Void"><i class="bi bi-x-square-fill"></i></button>';
-            $row[] = $list->transaction_no;
-            $row[] = $list->slip_app_no;
-            $row[] = date('F j, Y', strtotime($list->date_added));
-            $row[] = $list->service;
-            
-            $row[] = date('g:i a', strtotime($list->time_in));
-            $row[] = date('g:i a', strtotime($list->time_out));
-
-            if ($list->extended == 'YES') {
-                $row[] = 'Extended';
-            } else {
-                $row[] = '';
-            }
-            
-            $row[] = $list->guest_fname. ' ' .$list->guest_lname;
-            $row[] = $list->qty;
-
-            $sales = $this->db
+                        $sales = $this->db
                 ->select("SUM(total_amt) as total_sales")
                 ->from('consumable_stocks')
                 ->where('type_id', 0)
@@ -62,8 +44,6 @@ class Transaction extends CI_Controller
                 ->get()
                 ->row();
             $total_amount += $sales->total_sales;
-
-            $row[] = number_format($sales->total_sales, 2);
 
             $inv = $this->db
                 ->select("SUM(total_amt) as inv_sales")
@@ -74,8 +54,6 @@ class Transaction extends CI_Controller
                 ->get()
                 ->row();
             $inv_sales += $inv->inv_sales;
-
-            $row[] = number_format($inv->inv_sales, 2);
 
             $discount = $this->db
                 ->select('discount_amt')
@@ -128,9 +106,48 @@ class Transaction extends CI_Controller
                 ->get()
                 ->row();
             //End Void
+            $total_sales_amount = $sales->total_sales + $inv->inv_sales - $discount->discount_amt;
+
+            $row[] = '<button class="btn btn-secondary btn-sm view" 
+                     id="'.$list->slip_app_no.'" 
+                     data-child="'.$list->child_id.'" 
+                     data-service="'.$list->service.'" 
+                     data-con_id="'.$list->con_id.'" 
+
+                     data-sales="'.$sales->total_sales.'"
+                     data-inv="'.$inv->inv_sales.'"
+                     data-discount="'.$discount->discount_amt.'"
+                     data-total_sales="'.$total_sales_amount.'"
+                     title="View"><i class="bi bi-eye-fill"></i></button>
+                      <button class="btn btn-primary btn-sm print" id="'.$list->transaction_no.'" data-child="'.$list->child_id.'" title="Print"><i class="bi bi-printer-fill"></i></button>
+                      <button '.($list->status == 2  ? 'disabled' : '').' class="btn btn-danger btn-sm void" id="'.$list->slip_app_no.'" data-trans="'.$list->transaction_no.'"  data-service="'.$list->service.'" title="Void"><i class="bi bi-x-square-fill"></i></button>';
+            $row[] = $list->transaction_no;
+            $row[] = $list->slip_app_no;
+            $row[] = date('F j, Y', strtotime($list->date_added));
+            $row[] = $list->service;
+            
+            $row[] = date('g:i a', strtotime($list->time_in));
+            $row[] = date('g:i a', strtotime($list->time_out));
+
+            if ($list->extended == 'YES') {
+                $row[] = 'Extended';
+            } else {
+                $row[] = '';
+            }
+            
+            $row[] = $list->guest_fname. ' ' .$list->guest_lname;
+            $row[] = $list->qty;
+
+
+            $row[] = number_format($sales->total_sales, 2);
+            $row[] = number_format($inv->inv_sales, 2);
 
             $row[] = number_format($discount->discount_amt, 2);
 
+            
+            $row[] = number_format($total_sales_amount, 2);
+
+            
             $total_sales = $total_amount + $inv_sales - $total_discount - $total_discount_void - $total_amount_void - $inv_void->inv_sales;
             $total_inv_sales = $inv_sales - $inv_void->inv_sales;
             $total_amount_sales = $total_amount - $sales_void->total_sales;
@@ -575,6 +592,13 @@ class Transaction extends CI_Controller
                 $total_sales = $sales->sales - $discount->discount;
 
                 //$row[] = '<span class="remaining-time" data-remaining-time="' . $remaining_time . '">' . $remaining_time_formatted . '</span>';;
+                $sales_amount = $this->input->post('sales');
+                $inv_amount = $this->input->post('inv');
+                $discount_amount = $this->input->post('discount');
+                $total_sales_amount = $this->input->post('total_sales');
+
+                $floatValue = floatval($inv_amount);
+                $formattedValue = number_format($floatValue, 2);
                 $output_time_info .= '
                     <div class="form-group mb-3">
                         <label>Package:</label>
@@ -601,10 +625,13 @@ class Transaction extends CI_Controller
                     <hr>
 
                     <div class="text-center">
-                        <label>Total Amount</label>
-                        <h4>P '.number_format($total_sales, 2).'</h4>
+                        <span>Sales: <b>₱ '.number_format($sales_amount, 2).'</b></span><br>
+                        <span>Inventory Sales: <b>₱ '.$formattedValue.'</b></span><br>
+                        <span>Discount: <b>₱ -'.number_format($discount_amount, 2).'</b></span><br>
+                        <hr>
+                        <h4>Total Sales: ₱ '.number_format($total_sales_amount, 2).'</h4>
                     </div>
-                    <hr>
+                    
                 ';
                 break;
 
@@ -697,6 +724,14 @@ class Transaction extends CI_Controller
                 
                 $total_sales = $sales->sales - $discount->discount;
 
+                $sales_amount = $this->input->post('sales');
+                $inv_amount = $this->input->post('inv');
+                $discount_amount = $this->input->post('discount');
+                $total_sales_amount = $this->input->post('total_sales');
+
+                $floatValue = floatval($inv_amount);
+                $formattedValue = number_format($floatValue, 2);
+
                 //$row[] = '<span class="remaining-time" data-remaining-time="' . $remaining_time . '">' . $remaining_time_formatted . '</span>';;
                 $output_time_info .= '
                     <div class="form-group mb-3">
@@ -723,8 +758,11 @@ class Transaction extends CI_Controller
                     </div>
                     <hr>
                     <div class="text-center hide_data">
-                        <label>Total Amount</label>
-                        <h4>P '.number_format($total_sales, 2).'</h4>
+                        <span>Sales: <b>₱ '.number_format($sales_amount, 2).'</b></span><br>
+                        <span>Inventory Sales: <b>₱ '.$formattedValue.'</b></span><br>
+                        <span>Discount: <b>₱ -'.number_format($discount_amount, 2).'</b></span><br>
+                        <hr>
+                        <h4>Total Sales: ₱ '.number_format($total_sales_amount, 2).'</h4>
                     </div>
                     <hr>
                 ';
