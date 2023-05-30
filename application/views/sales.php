@@ -433,7 +433,7 @@
         });
 
         $(document).on('click', '#export_files', function() {
-            var url = "<?= base_url('time_monitoring/export_time_monitoring');?>";
+            var url = "<?= base_url('transaction/export_sales');?>";
             window.location.href = url;
         });
 
