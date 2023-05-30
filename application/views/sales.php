@@ -117,7 +117,7 @@
                             <th>Package Amount</th>
                             <th>Inventory Amount</th>
                             <th>Discounted Amount</th>
-                           
+                            <th>Total Amount</th>
                             <th>Remarks</th>
                         </tr>
                     </thead>
@@ -262,7 +262,7 @@
         }, 2000);
         var tbl_sales = $('#tbl_sales').DataTable({
             "fnRowCallback": function(nRow, aData, iDisplayIndex, asd) {
-                if (aData[13] == 'Voided') { // less than 5 minutes
+                if (aData[14] == 'Voided') { // less than 5 minutes
                     $('td', nRow).css('background-color', 'rgba(249, 187, 191, 0.8)');
                 }
             },
@@ -377,6 +377,13 @@
             var serial_no = $(this).attr('id');
             var service = $(this).data('service');
             var con_id = $(this).data('con_id');
+
+            //Sales Data
+            var sales = $(this).data('sales');
+            var inv = $(this).data('inv');
+            var discount = $(this).data('discount');
+            var total_sales = $(this).data('total_sales');
+
             switch (service) {
                 case 'INFLATABLES':
                      $('.children_info').show(200);
@@ -394,7 +401,12 @@
                 data: {
                     serial_no: serial_no,
                     service: service,
-                    con_id: con_id
+                    con_id: con_id,
+
+                    sales: sales,
+                    inv: inv,
+                    discount: discount,
+                    total_sales: total_sales,
                 },
                 dataType: "json",
                 success: function(data) {
