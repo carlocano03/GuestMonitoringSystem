@@ -169,12 +169,13 @@ class Main extends CI_Controller
     public function psgc_munc()
     {
         $codes = $this->input->post('codes');
-        $results = $this->db->select('*')
-            ->from('psgc_municipal')
-            ->where("code LIKE '$codes%'")
-            ->order_by('name')
-            ->get()
-            ->result();
+
+        if ($codes == 1339) {
+            $this->db->like('code', '1339', 'after')->or_like('code', '1374', 'after')->or_like('code', '1375', 'after')->or_like('code', '1376', 'after');
+        } else {
+            $this->db->like('code', $codes, 'after');
+        }
+        $results = $this->db->select('*')->from('psgc_municipal')->order_by('name', 'ASC')->get()->result();
         return $this->output
             ->set_content_type('application/json')
             ->set_output(json_encode(['data' => $results]));

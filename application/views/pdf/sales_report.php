@@ -47,6 +47,7 @@
                 <th style="width: 5%;">Amount</th>
                 <th>Inventory Amount</th>
                 <th>Discount Amount</th>
+                <th>Discount Remarks</th>
                 <th>Remarks</th>
             </tr>
             <tbody>
@@ -131,6 +132,7 @@
                         <td><?= number_format($sales_guest->total_sales, 2)?></td>
                         <td><?= number_format($inv_guest->inv_sales, 2)?></td>
                         <td><?= number_format($discount_guest->discount_amt, 2)?></td>
+                        <td><?= $list->discount_remarks;?></td>
                         <?php
                             if ($list->Void_Stat == 2) {
                                 $status = 'Voided';
@@ -149,7 +151,8 @@
             <h5>Inventory Sales: ₱ <?= isset($inv_sales->total_inv) ? number_format($inv_sales->total_inv, 2) : '';?></h5>
             <h5>Discount: ₱ -<?= isset($total_discount) ? number_format($total_discount, 2) : '';?></h5>
             <?php
-                $total = (isset($sales->total_sales) ? $sales->total_sales : 0) + (isset($inv_sales->total_inv) ? $inv_sales->total_inv : 0) - (isset($total_discount) ? $total_discount : 0);
+            //  - (isset($total_discount) ? $total_discount : 0)
+                $total = (isset($sales->total_sales) ? $sales->total_sales : 0) + (isset($inv_sales->total_inv) ? $inv_sales->total_inv : 0);
             ?>
             <h4>Total Sales: ₱ <?= isset($total) ? number_format($total, 2) : ''?></h4>
         </div>

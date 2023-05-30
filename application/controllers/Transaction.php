@@ -35,7 +35,7 @@ class Transaction extends CI_Controller
             $no++;
             $row = array();
 
-                        $sales = $this->db
+            $sales = $this->db
                 ->select("SUM(total_amt) as total_sales")
                 ->from('consumable_stocks')
                 ->where('type_id', 0)
@@ -76,7 +76,10 @@ class Transaction extends CI_Controller
                 ->group_by('serial_no')
                 ->get()
                 ->row();
-            $total_discount_void += $discount->discount_amt;
+
+            if ($discount_void) {
+                $total_discount_void += $discount_void->discount_amt;
+            }
 
             $sales_void = $this->db
                 ->select("SUM(total_amt) as total_sales")
@@ -86,7 +89,7 @@ class Transaction extends CI_Controller
                 ->where('transaction_no', $list->transaction_no)
                 ->get()
                 ->row();
-            $total_amount_void += $sales->total_sales;
+            $total_amount_void += $sales_void->total_sales;
 
             $inv_void = $this->db
                 ->select("SUM(total_amt) as inv_sales")
@@ -138,7 +141,6 @@ class Transaction extends CI_Controller
             $row[] = $list->guest_fname. ' ' .$list->guest_lname;
             $row[] = $list->qty;
 
-
             $row[] = number_format($sales->total_sales, 2);
             $row[] = number_format($inv->inv_sales, 2);
 
@@ -148,7 +150,7 @@ class Transaction extends CI_Controller
             $row[] = number_format($total_sales_amount, 2);
 
             
-            $total_sales = $total_amount + $inv_sales - $total_discount - $total_discount_void - $total_amount_void - $inv_void->inv_sales;
+            $total_sales = $total_amount + $inv_sales - $total_amount_void - $inv_void->inv_sales;
             $total_inv_sales = $inv_sales - $inv_void->inv_sales;
             $total_amount_sales = $total_amount - $sales_void->total_sales;
             $this->db->from('consumable_stocks');
@@ -803,5 +805,116 @@ class Transaction extends CI_Controller
 
         $output['message'] = $message;
         echo json_encode($output);
+    }
+
+    public function export_sales()
+    {
+        require_once 'vendor/autoload.php';
+        $date_no = date('F j, Y');
+        $salesData = $this->transaction->export_sales();
+        $objReader = IOFactory::createReader('Xlsx');
+        $fileName = 'Sales Report.xlsx';
+        $newfileName = 'Sales Report as of_'.$date_no.'.xlsx';
+
+        $spreadsheet = $objReader->load(FCPATH . '/template_reports/'. $fileName);
+        $startRow = 2;
+	    $currentRow = 2;
+        foreach ($salesData as $list) {
+            $spreadsheet->getActiveSheet()->insertNewRowBefore($currentRow+1,1);
+
+            if ($list['service'] == 'INFLATABLES') {
+                $children = $this->db
+                    ->select("CONCAT(child_fname, ' ', child_lname) AS children")
+                    ->from('guest_children')
+                    ->where('parent_id', $list['guest_id'])
+                    ->get()
+                    ->result_array();
+                $children_names = "";
+                foreach ($children as $child) {
+                    $children_names .= $child['children'] . ', ';
+                }
+                $kids = ucwords(trim($children_names, ', '));
+            } else {
+                $kids = $list->guest_fname. ' ' .$list->guest_lname;
+            }
+
+            $total_discount = 0;
+            $sales = $this->db
+                ->select("SUM(total_amt) as total_sales")
+                ->from('consumable_stocks')
+                ->where('type_id', 0)
+                ->where('status', 0)
+                ->get()
+                ->row();
+
+            $inv_sales = $this->db
+                ->select("SUM(total_amt) as total_inv")
+                ->from('consumable_stocks')
+                ->where('type_id !=', 0)
+                ->where('status', 0)
+                ->get()
+                ->row();
+
+            $discount = $this->db
+                ->select('discount_amt')
+                ->from('consumable_stocks')
+                ->group_by('serial_no')
+                ->get()
+                ->row();
+
+            //Per row
+            $sales_guest = $this->db
+                ->select("SUM(total_amt) as total_sales")
+                ->from('consumable_stocks')
+                ->where('type_id', 0)
+                ->where('guest_id', $list['guest_id'])
+                ->get()
+                ->row();
+
+            $inv_guest = $this->db
+                ->select("SUM(total_amt) as inv_sales")
+                ->from('consumable_stocks')
+                ->where('type_id !=', 0)
+                ->where('guest_id', $list['guest_id'])
+                ->get()
+                ->row();
+
+            $discount_guest = $this->db
+                ->select('discount_amt')
+                ->from('consumable_stocks')
+                ->where('guest_id', $list['guest_id'])
+                ->group_by('serial_no')
+                ->get()
+                ->row();
+            $total_discount += $discount->discount_amt;
+
+            $spreadsheet->getActiveSheet()->setCellValue('A'.$currentRow, $list['slip_app_no']);
+            $spreadsheet->getActiveSheet()->setCellValue('B'.$currentRow, date('M j, Y', strtotime($list['date_added'])));
+            $spreadsheet->getActiveSheet()->setCellValue('C'.$currentRow, $list['admission_type']);
+            $spreadsheet->getActiveSheet()->setCellValue('D'.$currentRow, $kids);
+            $spreadsheet->getActiveSheet()->setCellValue('E'.$currentRow, ucwords($list['guest_fname']) .' '.ucwords($list['guest_lname']));
+            $spreadsheet->getActiveSheet()->setCellValue('F'.$currentRow, $list['contact_no']);
+            $spreadsheet->getActiveSheet()->setCellValue('G'.$currentRow, $list['service']);
+            $spreadsheet->getActiveSheet()->setCellValue('H'.$currentRow, number_format($sales_guest->total_sales, 2));
+            $spreadsheet->getActiveSheet()->setCellValue('I'.$currentRow, number_format($inv_guest->inv_sales, 2));
+            $spreadsheet->getActiveSheet()->setCellValue('J'.$currentRow, number_format($discount_guest->discount_amt, 2));
+            $spreadsheet->getActiveSheet()->setCellValue('K'.$currentRow, $list['discount_remarks']);
+
+            if ($list['Void_Stat'] == 2) {
+                $status = 'Voided';
+            } else {
+                $status = '';
+            }
+            $spreadsheet->getActiveSheet()->setCellValue('L'.$currentRow, $status);
+
+            $currentRow++;
+        }
+        $spreadsheet->getActiveSheet()->removeRow($currentRow,1);
+        $objWriter = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        header('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'); //mime type
+        header('Content-Disposition: attachment;filename="'.$newfileName.'"'); //tell browser what's the file name
+        header('Cache-Control: max-age=0'); //no cache
+        $objWriter->save('php://output');
+
     }
 }
