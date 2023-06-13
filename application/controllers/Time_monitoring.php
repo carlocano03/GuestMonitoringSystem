@@ -1084,12 +1084,26 @@ class Time_monitoring extends CI_Controller
         switch ($service) {
             case 'INFLATABLES':
                 $input_hours = $query->time_admission;
+                
                 if (strpos($input_hours, '.') !== false) {
                     $time_admission = $query->time_admission;
-                    $time_in = date('H:i:s', strtotime($time_out_data->time_out));
+
+                    if ($time_out_data->extend_time == NULL) {
+                        $time_in = date('H:i:s', strtotime($time_out_data->time_out));
+                    } else {
+                        $time_in = date('H:i:s', strtotime($time_out_data->extend_time));
+                    }
+
                     $time_out = date('H:i:s', strtotime('+' . intval($time_admission) . ' hour ' . intval(($time_admission - intval($time_admission)) * 60) . ' minutes', strtotime($time_in)));
                 } else {
-                    $time_in = date('H:i:s', strtotime($time_out_data->time_out));
+                    // $time_in = date('H:i:s', strtotime($time_out_data->time_out));
+
+                    if ($time_out_data->extend_time == NULL) {
+                        $time_in = date('H:i:s', strtotime($time_out_data->time_out));
+                    } else {
+                        $time_in = date('H:i:s', strtotime($time_out_data->extend_time));
+                    }
+                    
                     $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
                 }
 
@@ -1103,6 +1117,7 @@ class Time_monitoring extends CI_Controller
                     'transaction_no' => $transaction_no,
                     'serial_no' => $this->input->post('serial_no'),
                     'type_id' => 0,
+                    'pricing_id' => $pricing_id,
                     'price' => $query->weekdays_price,
                     'qty' => 1,
                     'total_amt' => $query->weekdays_price,
@@ -1129,10 +1144,23 @@ class Time_monitoring extends CI_Controller
                 $input_hours = $query->time_admission;
                 if (strpos($input_hours, '.') !== false) {
                     $time_admission = $query->time_admission;
-                    $time_in = date('H:i:s', strtotime($time_out_data->time_out));
+
+                    if ($time_out_data->extend_time == NULL) {
+                        $time_in = date('H:i:s', strtotime($time_out_data->time_out));
+                    } else {
+                        $time_in = date('H:i:s', strtotime($time_out_data->extend_time));
+                    }
+
                     $time_out = date('H:i:s', strtotime('+' . intval($time_admission) . ' hour ' . intval(($time_admission - intval($time_admission)) * 60) . ' minutes', strtotime($time_in)));
                 } else {
-                    $time_in = date('H:i:s', strtotime($time_out_data->time_out));
+                    // $time_in = date('H:i:s', strtotime($time_out_data->time_out));
+
+                    if ($time_out_data->extend_time == NULL) {
+                        $time_in = date('H:i:s', strtotime($time_out_data->time_out));
+                    } else {
+                        $time_in = date('H:i:s', strtotime($time_out_data->extend_time));
+                    }
+
                     $time_out = date('H:i:s', strtotime('+'.$query->time_admission.' hour', strtotime($time_in)));
                 }
 
@@ -1146,6 +1174,7 @@ class Time_monitoring extends CI_Controller
                     'transaction_no' => $transaction_no,
                     'serial_no' => $this->input->post('serial_no'),
                     'type_id' => 0,
+                    'pricing_id' => $pricing_id,
                     'price' => $query->weekdays_price,
                     'qty' => 1,
                     'total_amt' => $query->weekdays_price,
