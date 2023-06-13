@@ -276,6 +276,7 @@
                                         <th>Total Amount</th>
                                         <!-- <th>Remarks</th> -->
                                         <th>Action</th>
+                                        <th style="display:none;"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -723,6 +724,7 @@
             var package_amt = $('#package_price_amt').val();
             var input2 = parseFloat($('#package_price_amt').val());
             var input1 = parseFloat($('#child_count').val()); //Child count
+            var pricing_id = $('#pricing_id').val();
             //var input1 = 1 //Child count one is to one
             var sum = input1 * input2; //Total Amount per child
             
@@ -744,6 +746,7 @@
                         '<td>'+guestQty+'</td>' +
                         '<td>'+sum.toFixed(2)+'</td>' +
                         '<td><span class="remove_row">Remove</span></td>' +
+                        '<td style="display:none;">'+pricing_id+'</td>' +
                     '</tr>'
                 );
                 // $('#table_inventory tbody').append(
@@ -801,6 +804,7 @@
                         '<td>'+amt+'</td>' +
                         // '<td></td>' +
                         '<td><span class="remove_row">Remove</span></td>' +
+                        '<td style="display:none;">0</td>' +
                     '</tr>'
                 );
             }
@@ -851,6 +855,7 @@
                                     'price': $(tr).find('td:eq(3)').text(),
                                     'qty': $(tr).find('td:eq(4)').text(),
                                     'total_amt': $(tr).find('td:eq(5)').text(),
+                                    'pricing_id': $(tr).find('td:eq(7)').text(),
                                 };
                                 table_data.push(sub);
                             });
