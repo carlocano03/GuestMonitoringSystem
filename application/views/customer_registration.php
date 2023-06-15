@@ -11,13 +11,8 @@
             <div class="row">
                 <div class="col-md-8">
                     <h2 class="mt-2 text-white">Customer & Guest Registration</h2>
-                    <p class="text-green fw-bold mb-0">User Permission</p>
-                    <ol class="breadcrumb text-white">
-                        <li class="breadcrumb-item">Dashboard Modules</li>
-                        <li class="breadcrumb-item">GM Board</li>
-                        <li class="breadcrumb-item">TM Analytics</li>
-                        <li class="breadcrumb-item">Customer Registration</li>
-                    </ol>
+                    <p class="text-green fw-bold mb-0">GUEST MONITORING SYSTEM</p>
+                  
                 </div>
                 <div class="col-md-4 text-end">
                     <h2 class="mt-2 text-white"><span id="clock" class="fw-bold"></h2>
@@ -27,7 +22,9 @@
             </div>
         </div>
         <div class="container-fluid px-4 mt-4">
-            <div class="row g-1">
+        <h1> This is under development</h1>    
+        <div class="row g-1">
+               
                 <div class="col-sm-3">
                     <input type="text" name="search_value" id="search_value" class="form-control form-control-sm" placeholder="Search Here...">
                 </div>

@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="col-md-8">
                     <h2 class="mt-2 text-white">History Logs</h2>
-                    <p class="text-green fw-bold mb-0">User Permission</p>
+                    <p class="text-green fw-bold mb-0">GUEST MONITORING SYSTEM</p>
                 </div>
                 <div class="col-md-4 text-end">
                     <h2 class="mt-2 text-white"><span id="clock" class="fw-bold"></h2>
