@@ -38,9 +38,11 @@ class Main_model extends CI_Model
 
             $this->db->from('guest_details');
             $this->db->where('status', 'PRE-REGISTRATION');
+            $this->db->group_start();
             $this->db->where("guest_slip_no like '%" . $postData['search'] . "%'");
             $this->db->or_where("guest_fname like '%" . $postData['search'] . "%'");
             $this->db->or_where("guest_lname like '%" . $postData['search'] . "%'");
+            $this->db->group_end();
             $records = $this->db->get()->result();
 
             foreach ($records as $row) {

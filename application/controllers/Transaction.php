@@ -123,14 +123,21 @@ class Transaction extends CI_Controller
                      data-total_sales="'.$total_sales_amount.'"
                      title="View"><i class="bi bi-eye-fill"></i></button>
                       <button class="btn btn-primary btn-sm print" id="'.$list->transaction_no.'" data-child="'.$list->child_id.'" title="Print"><i class="bi bi-printer-fill"></i></button>
-                      <button '.($list->status == 2  ? 'disabled' : '').' class="btn btn-danger btn-sm void" id="'.$list->slip_app_no.'" data-trans="'.$list->transaction_no.'" data-time_id="'.$list->time_id.'"  data-service="'.$list->service.'" title="Void"><i class="bi bi-x-square-fill"></i></button>';
+                      <button '.($list->status == 2  ? 'disabled' : '').' class="btn btn-danger btn-sm void" id="'.$list->slip_app_no.'" data-trans="'.$list->transaction_no.'" data-service="'.$list->service.'" title="Void"><i class="bi bi-x-square-fill"></i></button>';
             $row[] = $list->transaction_no;
             $row[] = $list->slip_app_no;
             $row[] = date('F j, Y', strtotime($list->date_added));
             $row[] = $list->service;
             
             $row[] = date('g:i a', strtotime($list->time_in));
-            $row[] = date('g:i a', strtotime($list->time_out));
+
+            if($list->extend_time == NULL) {
+                $row[] = date('g:i a', strtotime($list->time_out));
+            } else {
+                $row[] = date('g:i a', strtotime($list->extend_time));
+            }
+
+            
 
             if ($list->extended == 'YES') {
                 $row[] = 'Extended';
@@ -150,7 +157,7 @@ class Transaction extends CI_Controller
             $row[] = number_format($total_sales_amount, 2);
 
             
-            $total_sales = $total_amount + $inv_sales - $total_amount_void - $inv_void->inv_sales;
+            $total_sales = $total_amount + $inv_sales - $total_amount_void - $inv_void->inv_sales - $total_discount;
             $total_inv_sales = $inv_sales - $inv_void->inv_sales;
             $total_amount_sales = $total_amount - $sales_void->total_sales;
             $this->db->from('consumable_stocks');
