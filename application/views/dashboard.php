@@ -254,7 +254,7 @@
                             <button type="button" class="btn btn-success fw-bold w-100 add_inventory"><i class="bi bi-plus-square me-2"></i>ADD TO CART</button>
                         </div>
                         <hr>
-                        <div class="fw-bold mt-3"><small>SALES INVOICE</small></div>
+                        <div class="fw-bold mt-3"><small>TRANSACTION DETAILS</small></div>
                         <p>
                         Date: <?= date('D, d F Y')?><br>
                         Jack's Adventure - SM Grand Central<br> 
@@ -353,7 +353,7 @@
                 <input type="hidden" id="guest_trans_no">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-sm print_salesInvoice"><i class="bi bi-printer-fill me-2"></i>Print Sales Invoice</button>
+                <button type="button" class="btn btn-primary btn-sm print_salesInvoice"><i class="bi bi-printer-fill me-2"></i>Print Transaction Details</button>
                 <button type="button" class="btn btn-success btn-sm print_waiver"><i class="bi bi-printer-fill me-2"></i>Print Quit Claim Waiver</button>
             </div>
             </div>
