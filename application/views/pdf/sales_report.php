@@ -94,7 +94,7 @@
                             $discount = $this->db
                                 ->select('discount_amt')
                                 ->from('consumable_stocks')
-                                ->group_by('serial_no')
+                                // ->group_by('serial_no')
                                 ->get()
                                 ->row();
 
@@ -152,7 +152,7 @@
             <h5>Discount: ₱ -<?= isset($total_discount) ? number_format($total_discount, 2) : '';?></h5>
             <?php
             //  - (isset($total_discount) ? $total_discount : 0)
-                $total = (isset($sales->total_sales) ? $sales->total_sales : 0) + (isset($inv_sales->total_inv) ? $inv_sales->total_inv : 0);
+                $total = (isset($sales->total_sales) ? $sales->total_sales : 0) + (isset($inv_sales->total_inv) ? $inv_sales->total_inv : 0) - $discount->discount_amt;
             ?>
             <h4>Total Sales: ₱ <?= isset($total) ? number_format($total, 2) : ''?></h4>
         </div>

@@ -166,6 +166,7 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="trans_no">
+                    <input type="hidden" id="children_ID">
                     <div class="text-end">
                         <small id="date_added"></small>
                     </div>
@@ -338,6 +339,7 @@
             var serial_no = $(this).attr('id');
             var service = $(this).data('service');
             var trans_no = $(this).data('trans');
+            var child_id = $(this).data('child');
 
             switch (service) {
                 case 'INFLATABLES':
@@ -365,6 +367,7 @@
                     $('#date_added').html(data.date_added);
                     $('#transactionModal').modal('show');
                     $('#trans_no').val(trans_no);
+                    $('#children_ID').val(child_id);
                 }
             });
         });
@@ -437,46 +440,11 @@
             var trans_no = $('#trans_no').val();
             $('#transaction_no').val(trans_no);
             $('#voidModal').modal('show');
-
-            // Swal.fire({
-            //     title: 'Are you sure?',
-            //     text: "You want to void this transaction!",
-            //     icon: 'question',
-            //     showCancelButton: true,
-            //     confirmButtonColor: '#3085d6',
-            //     cancelButtonColor: '#d33',
-            //     confirmButtonText: 'Yes'
-            // }).then((result) => {
-            //     if (result.isConfirmed) {
-            //         $.ajax({
-            //             url: "<?= base_url('transaction/void_trans')?>",
-            //             method: "POST",
-            //             data: {
-            //                 trans_no: trans_no
-            //             },
-            //             dataType: "json",
-            //             success: function(data) {
-            //                 if (data.message == 'Success') {
-            //                     Swal.fire(
-            //                         'Thank you!',
-            //                         'Void successfully.',
-            //                         'success'
-            //                     );
-            //                 } else {
-            //                     Swal.fire(
-            //                         'Warning!',
-            //                         'Failed to void.',
-            //                         'warning'
-            //                     );
-            //                 }
-            //             }
-            //         });
-            //     }
-            // })
         });
 
         $(document).on('click', '#void_trans', function() {
             var trans_no = $('#transaction_no').val();
+            var child_ID = $('#children_ID').val();
             var passcode = $('#passcode').val();
             Swal.fire({
                 title: 'Are you sure?',
@@ -493,7 +461,8 @@
                         method: "POST",
                         data: {
                             trans_no: trans_no,
-                            passcode: passcode
+                            passcode: passcode,
+                            child_ID: child_ID
                         },
                         dataType: "json",
                         success: function(data) {

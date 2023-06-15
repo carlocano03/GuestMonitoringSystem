@@ -66,7 +66,7 @@ class Transaction_model extends CI_Model
         $this->db
             ->select('TM.*')
             ->select('G.slip_app_no, G.guest_fname, G.guest_mname, G.guest_lname, G.service, G.contact_no, G.status, G.service')
-            ->select('CS.transaction_no, CS.type_id, CS.qty, CS.total_amt, CS.status, CS.extended, CS.con_id')
+            ->select('CS.transaction_no, CS.type_id, CS.qty, CS.total_amt, CS.status, CS.extended, CS.con_id, CS.guest_child_id')
             ->select("CONCAT(GC.child_fname, ' ', GC.child_lname) as children, GC.child_id")
             ->from($this->guest.' TM')
             ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
