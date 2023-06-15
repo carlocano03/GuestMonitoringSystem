@@ -303,7 +303,7 @@ class Time_monitoring extends CI_Controller
             case 'INFLATABLES':
                 $query = $this->db
                     ->select('G.*')
-                    ->select("CONCAT(GC.child_fname, ' ',GC.child_lname) as children, GC.child_age, GC.child_img")
+                    ->select("CONCAT(GC.child_fname, ' ',GC.child_lname) as children, GC.child_age, GC.child_img, GC.child_id")
                     ->from('guest_details G')
                     ->join('guest_children GC', 'G.guest_id = GC.parent_id', 'LEFT')
                     ->where('G.slip_app_no', $serial_no)
@@ -488,7 +488,7 @@ class Time_monitoring extends CI_Controller
                     <input type="hidden" id="package_price_amt">
                     <input type="hidden" id="package_type">
                     <div class="mx-auto">
-                        <button class="btn btn-success w-100 mb-3 btn-rounded extend_guest" '.$disabled.'
+                        <button class="btn btn-success w-100 mb-3 btn-rounded extend_guest"
                             data-guest="'.$package_promo->guest_id.'"
                             data-serial_no="'.$package_promo->serial_no.'"
                             data-price="'.$package_promo->price.'"
@@ -497,6 +497,7 @@ class Time_monitoring extends CI_Controller
                             data-pricing="'.$time_info->pricing_id.'"
                             data-service="'.$time_info->package.'"
                             data-time_id="'.$time_info->time_id.'"
+                            data-child_id="'.$list->child_id.'"
                         >EXTEND TIME</button>
                         <button class="btn btn-danger btn-rounded w-100 checkout_guest" id="'.$parent->slip_app_no.'" data-child="'.$child_id.'">CHECK OUT</button>
                     </div>
@@ -505,10 +506,18 @@ class Time_monitoring extends CI_Controller
                 break;
 
             case 'PARK':
+                // $query = $this->db
+                //     ->select('G.*')
+                //     ->from('guest_details G')
+                //     ->where('G.slip_app_no', $serial_no)
+                //     ->get();
                 $query = $this->db
                     ->select('G.*')
+                    ->select("CONCAT(GC.child_fname, ' ',GC.child_lname) as children, GC.child_age, GC.child_img, GC.child_id")
                     ->from('guest_details G')
+                    ->join('guest_children GC', 'G.guest_id = GC.parent_id', 'LEFT')
                     ->where('G.slip_app_no', $serial_no)
+                    ->where('GC.child_id', $child_id)
                     ->get();
                 if ($query->num_rows() > 0) {
                     $parent = $query->row();
@@ -685,7 +694,7 @@ class Time_monitoring extends CI_Controller
                     <input type="hidden" id="package_price_amt">
                     <input type="hidden" id="package_type">
                     <div class="mx-auto">
-                        <button class="btn btn-success w-100 mb-3 btn-rounded extend_guest" '.$disabled.'
+                        <button class="btn btn-success w-100 mb-3 btn-rounded extend_guest"
                             data-guest="'.$package_promo->guest_id.'"
                             data-serial_no="'.$package_promo->serial_no.'"
                             data-price="'.$package_promo->price.'"
@@ -694,6 +703,7 @@ class Time_monitoring extends CI_Controller
                             data-pricing="'.$time_info->pricing_id.'"
                             data-service="'.$time_info->package.'"
                             data-time_id="'.$time_info->time_id.'"
+                            data-child_id="'.$parent->child_id.'"
                         >EXTEND TIME</button>
                         <button class="btn btn-danger btn-rounded w-100 checkout_guest" id="'.$parent->slip_app_no.'" data-child="'.$child_id.'">CHECK OUT</button>
                     </div>
@@ -1071,6 +1081,7 @@ class Time_monitoring extends CI_Controller
     {
         $message = '';
         // $pricing_id = $this->input->post('pricing');
+
         $pricing_id = $this->input->post('rate_extension');
         $this->db->where('pricing_id', $pricing_id);
         $query = $this->db->get('pricing_promo')->row();
@@ -1114,6 +1125,7 @@ class Time_monitoring extends CI_Controller
                 $transaction_no = 'JCK-'.rand(10,1000);
                 $cosumable_stocks = array(
                     'guest_id' => $this->input->post('guest_id'),
+                    'guest_child_id' => $this->input->post('child_id'),
                     'transaction_no' => $transaction_no,
                     'serial_no' => $this->input->post('serial_no'),
                     'type_id' => 0,
@@ -1171,6 +1183,7 @@ class Time_monitoring extends CI_Controller
                 $transaction_no = 'JCK-'.rand(10,1000);
                 $cosumable_stocks = array(
                     'guest_id' => $this->input->post('guest_id'),
+                    'guest_child_id' => $this->input->post('child_id'),
                     'transaction_no' => $transaction_no,
                     'serial_no' => $this->input->post('serial_no'),
                     'type_id' => 0,

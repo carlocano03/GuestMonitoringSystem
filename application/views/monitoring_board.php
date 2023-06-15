@@ -502,6 +502,7 @@
             var service = $(this).data('service');
             var time_id = $(this).data('time_id');
             var rate_extension = $('#rates_extension').val();
+            var child_id = $(this).data('child_id');
 
             var package_price = $('#package_price_amt').val();
             var package_type = $('#package_type').val();
@@ -538,6 +539,7 @@
                             rate_extension: rate_extension,
                             package_price: package_price,
                             package_type: package_type,
+                            child_id: child_id,
                         },
                         dataType: "json",
                         success: function (data) {
