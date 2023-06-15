@@ -338,6 +338,9 @@
             var serial_no = $(this).attr('id');
             var service = $(this).data('service');
             var trans_no = $(this).data('trans');
+
+            console.log(time_id)
+
             switch (service) {
                 case 'INFLATABLES':
                      $('.children_info').show(200);

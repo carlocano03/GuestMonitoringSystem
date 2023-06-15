@@ -123,7 +123,7 @@ class Transaction extends CI_Controller
                      data-total_sales="'.$total_sales_amount.'"
                      title="View"><i class="bi bi-eye-fill"></i></button>
                       <button class="btn btn-primary btn-sm print" id="'.$list->transaction_no.'" data-child="'.$list->child_id.'" title="Print"><i class="bi bi-printer-fill"></i></button>
-                      <button '.($list->status == 2  ? 'disabled' : '').' class="btn btn-danger btn-sm void" id="'.$list->slip_app_no.'" data-trans="'.$list->transaction_no.'"  data-service="'.$list->service.'" title="Void"><i class="bi bi-x-square-fill"></i></button>';
+                      <button '.($list->status == 2  ? 'disabled' : '').' class="btn btn-danger btn-sm void" id="'.$list->slip_app_no.'" data-trans="'.$list->transaction_no.'" data-time_id="'.$list->time_id.'"  data-service="'.$list->service.'" title="Void"><i class="bi bi-x-square-fill"></i></button>';
             $row[] = $list->transaction_no;
             $row[] = $list->slip_app_no;
             $row[] = date('F j, Y', strtotime($list->date_added));
@@ -788,7 +788,43 @@ class Transaction extends CI_Controller
         $passcode = $this->input->post('passcode');
 
         // $this->db->where('transaction_no', $trans_no);
-        // $checkout = $this->db->get('consumable_stocks')->row();
+        // $void_pricing = $this->db->get('consumable_stocks')->row();
+
+        // if ($void_pricing->extended == 'YES') {
+        //     //get time details
+        //     $this->db->where('serial_no', $void_pricing->serial_no);
+        //     $time_info = $this->db->get('time_management')->row();
+
+        //     $extension_time = date('H:i:s', strtotime($time_info->extend_time));
+
+        //     //get pricing
+        //     $this->db->where('pricing_id', $void_pricing->pricing_id);
+        //     $time = $this->db->get('pricing_promo')->row();
+
+        //     $input_hours = $time->time_admission;
+        //     if (strpos($input_hours, '.') !== false) {
+        //         $time_admission = $time->time_admission;
+
+        //         $time_out = date('H:i:s', strtotime('-' . intval($time_admission) . ' hour ' . intval(($time_admission - intval($time_admission)) * 60) . ' minutes', strtotime($extension_time)));
+        //     }
+
+        //     $check_pass = $this->transaction->check_passcode($passcode);
+        //     if ($check_pass > 0) {
+        //         $this->db->where('transaction_no', $trans_no)->update('consumable_stocks', array('status' => 2));
+                
+        //         //update extension time
+        //         //$this->db->where('')
+
+
+        //         $this->db->insert('history_logs', $void_data);
+        //         $message = 'Success';
+        //     } else {
+        //         $message = 'Error'; 
+        //     }
+
+        // } else {
+            
+        // }
 
         $void_data = array(
             'transacation' => 'Void transaction - '. $trans_no,
@@ -802,6 +838,8 @@ class Transaction extends CI_Controller
         } else {
             $message = 'Error'; 
         }
+
+        
 
         $output['message'] = $message;
         echo json_encode($output);
