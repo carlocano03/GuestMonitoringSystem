@@ -73,13 +73,13 @@
                                 <input type="date" class="form-control form-control-sm" id="dt_to">
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                       <!-- <div class="col-sm-6">
                             <select name="filter_by" id="filter_by" class="form-select form-select-sm">
                                 <option value="">Filter by</option>
                                 <option value="INFLATABLES">Inflatables</option>
                                 <option value="PARK">Park</option>
                             </select>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
                 <div class="col-md-5">
