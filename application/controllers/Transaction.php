@@ -44,7 +44,16 @@ class Transaction extends CI_Controller
                 ->group_by('serial_no')
                 ->get()
                 ->row();
+
             $total_amount += $sales->total_sales;
+            
+            $sales_amount = $this->db
+                ->select("SUM(total_amt) as total_sales")
+                ->from('consumable_stocks')
+                ->where('type_id', 0)
+                ->where('status', 0)
+                ->get()
+                ->row();
 
             $inv = $this->db
                 ->select("SUM(total_amt) as inv_sales")
@@ -178,7 +187,7 @@ class Transaction extends CI_Controller
             "recordsTotal" => $this->transaction->count_all(),
             "recordsFiltered" => $this->transaction->count_filtered(),
             "data" => $data, 
-            "totalAmount" => number_format($total_amount_sales, 2),
+            "totalAmount" => number_format($sales_amount->total_sales, 2),
             "totalInv" => number_format($total_inv_sales, 2),
             "totalSales" => number_format($total_sales, 2),
             "total_discount" => number_format($total_discount, 2),
