@@ -73,13 +73,7 @@
                                 <input type="date" class="form-control form-control-sm" id="dt_to">
                             </div>
                         </div>
-                       <!-- <div class="col-sm-6">
-                            <select name="filter_by" id="filter_by" class="form-select form-select-sm">
-                                <option value="">Filter by</option>
-                                <option value="INFLATABLES">Inflatables</option>
-                                <option value="PARK">Park</option>
-                            </select>
-                        </div>-->
+
                     </div>
                 </div>
                 <div class="col-md-5">
@@ -91,6 +85,21 @@
                             <button class="btn btn-info btn-sm" id="export_files">EXPORT THIS FILE</button>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <select name="filter_by_sales" id="filter_by_sales" class="form-select form-select-sm">
+                        <option value="">Filter by sales</option>
+                        <option value="view_all">View All Sales</option>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <select name="filter_by" id="filter_by" class="form-select form-select-sm">
+                        <option value="">Filter by</option>
+                        <option value="INFLATABLES">Inflatables</option>
+                        <option value="PARK">Park</option>
+                    </select>
                 </div>
             </div>
 
@@ -142,6 +151,10 @@
                             <div class="text-end">
                             Discount:
                                 <b id="total_discount"></b>
+                            </div>
+                            <div class="text-end">
+                            Total Amount Void:
+                                <b id="total_amount_void"></b>
                             </div>
 
                             <hr class="mt-0 mb-2">
@@ -287,6 +300,7 @@
                     data.filter_by = $('#filter_by').val();
                     data.from = $('#dt_from').val();
                     data.to = $('#dt_to').val();
+                    data.sales = $('#filter_by_sales').val();
                 },
                 "dataSrc": function(json) {
                     $('#total_amount').text('₱ ' + json.totalAmount);
@@ -294,6 +308,7 @@
                     $('#total_sales').text('₱ ' + json.totalSales);
                     $('#total_discount').text('₱ -' + json.total_discount);
                     $('#no_transaction').text(json.no_transaction);
+                    $('#total_amount_void').text('₱ ' + json.totalAmount_void);
                 return json.data;
                 }
             },
@@ -302,6 +317,9 @@
             tbl_sales.draw();
         });
         $('#filter_by').on('change', function () {
+            tbl_sales.draw();
+        });
+        $('#filter_by_sales').on('change', function () {
             tbl_sales.draw();
         });
         $('#dt_from').on('change', function() {

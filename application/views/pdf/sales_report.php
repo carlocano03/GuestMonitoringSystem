@@ -75,6 +75,8 @@
                         ?>
                         <?php
                             $total_discount = 0;
+                            $discount_amt = 0;
+                            $amount_sales_void = 0;
                             $sales = $this->db
                                 ->select("SUM(total_amt) as total_sales")
                                 ->from('consumable_stocks')
@@ -82,6 +84,14 @@
                                 ->where('status', 0)
                                 ->get()
                                 ->row();
+
+                            $sales_amt_void = $this->db
+                                ->select("SUM(total_amt) as total_sales")
+                                ->from('consumable_stocks')
+                                ->where('status', 2)
+                                ->get()
+                                ->row();
+                            $amount_sales_void = $sales_amt_void->total_sales;
 
                             $inv_sales = $this->db
                                 ->select("SUM(total_amt) as total_inv")
@@ -97,6 +107,7 @@
                                 // ->group_by('serial_no')
                                 ->get()
                                 ->row();
+                            $discount_amt = $discount->discount_amt;
 
                             //Per row
                             $sales_guest = $this->db
@@ -150,9 +161,10 @@
             <h5 style="margin-bottom:5px;">Sales: ₱ <?= isset($sales->total_sales) ? number_format($sales->total_sales, 2) : '';?></h5>
             <h5>Inventory Sales: ₱ <?= isset($inv_sales->total_inv) ? number_format($inv_sales->total_inv, 2) : '';?></h5>
             <h5>Discount: ₱ -<?= isset($total_discount) ? number_format($total_discount, 2) : '';?></h5>
+            <h5>Total Amount Void: ₱ <?= isset($amount_sales_void) ? number_format($amount_sales_void, 2) : '';?></h5>
             <?php
             //  - (isset($total_discount) ? $total_discount : 0)
-                $total = (isset($sales->total_sales) ? $sales->total_sales : 0) + (isset($inv_sales->total_inv) ? $inv_sales->total_inv : 0) - $discount->discount_amt;
+                $total = (isset($sales->total_sales) ? $sales->total_sales : 0) + (isset($inv_sales->total_inv) ? $inv_sales->total_inv : 0) - (isset($discount_amt) ? $discount_amt : 0);
             ?>
             <h4>Total Sales: ₱ <?= isset($total) ? number_format($total, 2) : ''?></h4>
         </div>

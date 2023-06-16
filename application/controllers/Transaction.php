@@ -31,6 +31,8 @@ class Transaction extends CI_Controller
         $total_amount_sales = 0;
 
         $total_sales_amount= 0;
+        $amount_sales = 0;
+        $amount_sales_void = 0;
         foreach ($guest as $list) {
             $no++;
             $row = array();
@@ -54,6 +56,15 @@ class Transaction extends CI_Controller
                 ->where('status', 0)
                 ->get()
                 ->row();
+            $amount_sales = $sales_amount->total_sales;
+
+            $sales_amount_void = $this->db
+                ->select("SUM(total_amt) as total_sales")
+                ->from('consumable_stocks')
+                ->where('status', 2)
+                ->get()
+                ->row();
+            $amount_sales_void = $sales_amount_void->total_sales;
 
             $inv = $this->db
                 ->select("SUM(total_amt) as inv_sales")
@@ -187,7 +198,8 @@ class Transaction extends CI_Controller
             "recordsTotal" => $this->transaction->count_all(),
             "recordsFiltered" => $this->transaction->count_filtered(),
             "data" => $data, 
-            "totalAmount" => number_format($sales_amount->total_sales, 2),
+            "totalAmount" => number_format($amount_sales, 2),
+            "totalAmount_void" => number_format($amount_sales_void, 2),
             "totalInv" => number_format($total_inv_sales, 2),
             "totalSales" => number_format($total_sales, 2),
             "total_discount" => number_format($total_discount, 2),
