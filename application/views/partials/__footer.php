@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="passcodeModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #fbc531; color:#fff;">
                 <h5 class="modal-title" id="exampleModalLabel">NOTICE TO USER</h5>
@@ -14,14 +14,12 @@
                     </div>
                 </div>
                 <hr class="mt-0">
-                <form id="registerAccount" method="POST">
                     <div class="form-group mb-3">
-                        <input type="password" class="form-control" name="fullname" placeholder="Enter your passcode ****" autocomplete="off" required>
+                        <input type="password" class="form-control" id="passcode" name="passcode" placeholder="Enter your passcode ****" autocomplete="off" required>
                     </div>
                     <div class="form-group mb-3">
-                        <button class="btn btn-warning w-100 btn-rounded">SUBMIT</button>
+                        <button id="check_pass" class="btn btn-warning w-100 btn-rounded">SUBMIT</button>
                     </div>
-                </form>
             </div>
 
         </div>
@@ -254,6 +252,40 @@
             var code = elem.val();
             var text = elem.find('option:selected').text();
             $('#brgy').val(text);
+        });
+
+        $(document).on('click', '#check_pass', function() {
+            var passcode = $('#passcode').val();
+
+            if (passcode != '') {
+                $.ajax({
+                    url: "<?= base_url('main/check_pass')?>",
+                    method: "POST",
+                    data: {
+                        passcode: passcode
+                    },
+                    dataType: "json",
+                    success:function(data) {
+                        if (data.confirm == 'YES') {
+                            $('#passcodeModal').modal('hide');
+                            $('#passcode').val('');
+                            $('#discountModal').modal('show');
+                        } else {
+                            Swal.fire({
+                                title: 'Opps!',
+                                text: 'Please check your passcode',
+                                icon: 'error'
+                            });
+                        }
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: 'Opps!',
+                    text: 'Please provide a valid passcode.',
+                    icon: 'warning'
+                });
+            }
         });
     });
 </script>

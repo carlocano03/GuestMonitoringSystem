@@ -378,6 +378,7 @@
 <?php $this->load->view('webcam/camera_modal');?>
 <?php $this->load->view('modal/dashboard_modal.php');?>
 
+  
 
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -929,10 +930,10 @@
 
         $(document).on('click', '#add_discount', function() {
             if ($(this).is(':checked')) {
-                $('#discountModal').modal('show');
+                $('#passcodeModal').modal('show');
                 $('#discount_checked').val(1);
             } else {
-                $('#discountModal').modal('hide');
+                $('#passcodeModal').modal('hide');
                 $('#discount').text('');
                 $('#discount_remarks').text('');
                 $('.discount_added').hide(200);
@@ -946,6 +947,25 @@
                 $('#amount').text(totalSum.toLocaleString('en-US', {maximumFractionDigits: 2}))
                 $('#amt_total').val(totalSum);
             } 
+            
+            // if ($(this).is(':checked')) {
+            //     $('#discountModal').modal('show');
+            //     $('#discount_checked').val(1);
+            // } else {
+            //     $('#discountModal').modal('hide');
+            //     $('#discount').text('');
+            //     $('#discount_remarks').text('');
+            //     $('.discount_added').hide(200);
+            //     $('#discount_checked').val(0);
+            //     var totalSum = 0;
+            //     $('#table_inventory tbody tr.row2').each(function() {
+            //         var sumCell = $(this).find('td:eq(5)');
+            //         var sumValue = parseFloat(sumCell.text());
+            //         totalSum += sumValue;
+            //     });
+            //     $('#amount').text(totalSum.toLocaleString('en-US', {maximumFractionDigits: 2}))
+            //     $('#amt_total').val(totalSum);
+            // } 
         });
 
         $(document).on('change', '#package', function() {

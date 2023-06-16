@@ -930,5 +930,22 @@ class Main extends CI_Controller
         $mpdf->WriteHTML( $html );
         $mpdf->Output();
     }
+
+    public function check_pass()
+    {
+        $confirm = '';
+        $passcode = $this->input->post('passcode');
+
+        $this->db->where('passcode', $passcode);
+        $query = $this->db->get('user');
+
+        if ($query->num_rows() > 0) {
+            $confirm = 'YES';
+        } else {
+            $confirm = 'NO';
+        }
+        $output['confirm'] = $confirm;
+        echo json_encode($output);
+    }
 }
 //End CI_Controller

@@ -73,8 +73,14 @@ class Transaction_model extends CI_Model
             ->join('consumable_stocks CS', 'CS.guest_id = G.guest_id', 'LEFT')
             ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
             ->where('G.status', 'REGISTERED')
+            // ->where('DATE(TM.date_added)', date('Y-m-d'))
             ->group_by('CS.transaction_no');
+        
+        if ($this->input->post('sales') !== 'view_all') {
+            $this->db->where('DATE(TM.date_added)', date('Y-m-d'));
+        }
 
+        
         if ($this->input->post('filter_by')) {
             $this->db->where('G.service', $this->input->post('filter_by'));
         }
