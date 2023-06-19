@@ -206,7 +206,7 @@ class Main extends CI_Controller
 
             $row[] = $list->user_id;
             $row[] = $list->username;
-            $row[] = $list->in_word;
+            // $row[] = $list->in_word;
             $row[] = $list->fullname;
             $row[] = $list->access_level;
             $isChecked = isset($list->status) && $list->status == 'Active';
