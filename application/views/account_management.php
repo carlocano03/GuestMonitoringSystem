@@ -49,7 +49,7 @@
                         <tr>
                             <th>User ID</th>
                             <th>Username / Email</th>
-                            <th>Password</th>
+                            <!-- <th>Password</th> -->
                             <th>Fullname</th>
                             <th>User Access Level</th>
                             <th>Status</th>
@@ -109,9 +109,16 @@
                     <div class="form-group mb-3">
                         <input type="text" class="form-control" name="username" placeholder="USERNAME / EMAIL" autocomplete="off" required>
                     </div>
-                    <div class="form-group mb-3">
+                    <!-- <div class="form-group mb-3">
                         <input type="password" class="form-control" name="password" placeholder="PASSWORD" autocomplete="off" required>
+                    </div> -->
+                    <div class="input-group input-group-sm mb-3" id="show_hide_password">
+                        <input type="password" class="form-control" name="password" placeholder="PASSWORD" autocomplete="off" required>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm"><a href=""><i class="fas fa-eye" aria-hidden="true"></i></a></span>
+                        </div>
                     </div>
+
                     <div class="form-group mb-3">
                         <select name="access_level" id="access_level" class="form-select" required>
                             <option value="">USER ACCESS LEVEL</option>
@@ -120,7 +127,7 @@
                         </select>
                     </div>
                     <div class="form-group mb-3">
-                        <input type="password" readonly class="form-control" id="passcode" name="passcode" placeholder="PASSCODE IF ADMINISTRATOR ACCESS LEVEL" autocomplete="off">
+                        <input type="password" readonly class="form-control" id="pass_code" name="pass_code" placeholder="PASSCODE IF ADMINISTRATOR ACCESS LEVEL" autocomplete="off">
                     </div>
                     <div class="form-group mb-3">
                         <button class="btn btn-secondary w-100 btn-rounded">CLEAR</button>
@@ -166,18 +173,30 @@
             table_account.draw();
         });
 
+        $("#show_hide_password a").on('click', function(event) {
+            event.preventDefault();
+            if($('#show_hide_password input').attr("type") == "text"){
+                $('#show_hide_password input').attr('type', 'password');
+                $('#show_hide_password i').addClass( "fas fa-eye-slash" );
+                $('#show_hide_password i').removeClass( "fas fa-eye" );
+            }else if($('#show_hide_password input').attr("type") == "password"){
+                $('#show_hide_password input').attr('type', 'text');
+                $('#show_hide_password i').removeClass( "fas fa-eye-slash");
+                $('#show_hide_password i').addClass( "fas fa-eye" );
+            }
+        });
 
         $(document).on('change', '#access_level', function(){
             var access = $(this).val();
             switch (access) {
                 case 'Administrator':
-                    $('#passcode').attr('readonly', false);
-                    $('#passcode').attr('required', true);
+                    $('#pass_code').attr('readonly', false);
+                    $('#pass_code').attr('required', true);
                     break;
             
                 default:
-                    $('#passcode').attr('readonly', true);
-                    $('#passcode').attr('required', false);
+                    $('#pass_code').attr('readonly', true);
+                    $('#pass_code').attr('required', false);
                     break;
             }
         });

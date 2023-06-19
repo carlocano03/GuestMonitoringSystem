@@ -153,7 +153,7 @@
                         <form id="updatePricing" method="POST">
                             <input type="hidden" name="pricing_id" id="pricing_id">
                             <div class="form-group mb-3">
-                                <input type="text" class="form-control" name="admission_type" id="admission_type" placeholder="ADMISSION TYPE" required>
+                                <input type="text" class="form-control" name="admission_type" id="edit_admission_type" placeholder="ADMISSION TYPE" required>
                             </div>
                             <div class="form-group mb-3">
                                 <small>Note: To input 1 hour and 30 minutes, enter '1.5', and to input 30 minutes, enter '.5'.</small>
@@ -288,7 +288,7 @@
                         $('#pricingUpdateModal').modal('show');
                         if (Object.keys(data).length > 0) {
                             $('#pricing_id').val(data.pricing_id == null ? '' : data.pricing_id);
-                            $('#admission_type').val(data.admission_type == null ? '' : data.admission_type);
+                            $('#edit_admission_type').val(data.admission_type == null ? '' : data.admission_type);
                             $('#time').val(data.time_admission == null ? '' : data.time_admission);
                             $('#weekdays_price').val(data.weekdays_price == null ? '' : data.weekdays_price);
                             $('#weekends_price').val(data.weekends_price == null ? '' : data.weekends_price);
