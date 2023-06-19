@@ -58,10 +58,11 @@ class Main extends CI_Controller
 
     public function sales_transaction()
     {
+        $data['cashier'] = $this->main->get_cashier();
         $this->load->view('partials/__header');
         $this->load->view('partials/__navbar');
         $this->load->view('partials/__footer');
-        $this->load->view('sales');
+        $this->load->view('sales', $data);
     }
 
     public function pricing_promo()

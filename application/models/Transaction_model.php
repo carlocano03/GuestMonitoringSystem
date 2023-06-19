@@ -53,41 +53,84 @@ class Transaction_model extends CI_Model
 
     private function _get_sales_query()
     {
-        $searchValue = $this->input->post('search_value');
-        if ($searchValue) {
-            $this->db->group_start();
-            $this->db->or_like('G.guest_fname', $searchValue);
-            $this->db->or_like('G.guest_lname', $searchValue);
-            $this->db->or_like('G.guest_mname', $searchValue);
-            $this->db->or_like('G.slip_app_no', $searchValue);
-            $this->db->group_end();
+
+        if ($_SESSION['loggedIn']['access'] == 'Administrator') {
+            $searchValue = $this->input->post('search_value');
+            if ($searchValue) {
+                $this->db->group_start();
+                $this->db->or_like('G.guest_fname', $searchValue);
+                $this->db->or_like('G.guest_lname', $searchValue);
+                $this->db->or_like('G.guest_mname', $searchValue);
+                $this->db->or_like('G.slip_app_no', $searchValue);
+                $this->db->group_end();
+            }
+
+            $this->db
+                ->select('TM.*')
+                ->select('G.slip_app_no, G.guest_fname, G.guest_mname, G.guest_lname, G.service, G.contact_no, G.status, G.service')
+                ->select('CS.transaction_no, CS.type_id, CS.qty, CS.total_amt, CS.status, CS.extended, CS.con_id, CS.guest_child_id')
+                ->select("CONCAT(GC.child_fname, ' ', GC.child_lname) as children, GC.child_id")
+                ->from($this->guest.' TM')
+                ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
+                ->join('consumable_stocks CS', 'CS.guest_id = G.guest_id', 'LEFT')
+                ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
+                ->where('G.status', 'REGISTERED')
+                // ->where('DATE(TM.date_added)', date('Y-m-d'))
+                ->group_by('CS.transaction_no');
+            
+            if ($this->input->post('sales') !== 'view_all') {
+                $this->db->where('DATE(TM.date_added)', date('Y-m-d'));
+            }
+            if ($this->input->post('filter_by')) {
+                $this->db->where('G.service', $this->input->post('filter_by'));
+            }
+            if ($this->input->post('from') && $this->input->post('to')) {
+                $this->db->where('DATE(TM.date_added) >=', $this->input->post('from'));
+                $this->db->where('DATE(TM.date_added) <=', $this->input->post('to'));
+            }
+            if ($this->input->post('cashier')) {
+                $this->db->where('staff_in_charge', $this->input->post('cashier'));
+            }
+        } else {
+            $searchValue = $this->input->post('search_value');
+            if ($searchValue) {
+                $this->db->group_start();
+                $this->db->or_like('G.guest_fname', $searchValue);
+                $this->db->or_like('G.guest_lname', $searchValue);
+                $this->db->or_like('G.guest_mname', $searchValue);
+                $this->db->or_like('G.slip_app_no', $searchValue);
+                $this->db->group_end();
+            }
+
+            $this->db
+                ->select('TM.*')
+                ->select('G.slip_app_no, G.guest_fname, G.guest_mname, G.guest_lname, G.service, G.contact_no, G.status, G.service')
+                ->select('CS.transaction_no, CS.type_id, CS.qty, CS.total_amt, CS.status, CS.extended, CS.con_id, CS.guest_child_id')
+                ->select("CONCAT(GC.child_fname, ' ', GC.child_lname) as children, GC.child_id")
+                ->from($this->guest.' TM')
+                ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
+                ->join('consumable_stocks CS', 'CS.guest_id = G.guest_id', 'LEFT')
+                ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
+                ->where('G.status', 'REGISTERED')
+                ->where('TM.staff_in_charge', $_SESSION['loggedIn']['fullname'])
+                // ->where('DATE(TM.date_added)', date('Y-m-d'))
+                ->group_by('CS.transaction_no');
+            
+            if ($this->input->post('sales') !== 'view_all') {
+                $this->db->where('DATE(TM.date_added)', date('Y-m-d'));
+            }
+
+            
+            if ($this->input->post('filter_by')) {
+                $this->db->where('G.service', $this->input->post('filter_by'));
+            }
+            if ($this->input->post('from') && $this->input->post('to')) {
+                $this->db->where('DATE(TM.date_added) >=', $this->input->post('from'));
+                $this->db->where('DATE(TM.date_added) <=', $this->input->post('to'));
+            }
         }
 
-        $this->db
-            ->select('TM.*')
-            ->select('G.slip_app_no, G.guest_fname, G.guest_mname, G.guest_lname, G.service, G.contact_no, G.status, G.service')
-            ->select('CS.transaction_no, CS.type_id, CS.qty, CS.total_amt, CS.status, CS.extended, CS.con_id, CS.guest_child_id')
-            ->select("CONCAT(GC.child_fname, ' ', GC.child_lname) as children, GC.child_id")
-            ->from($this->guest.' TM')
-            ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
-            ->join('consumable_stocks CS', 'CS.guest_id = G.guest_id', 'LEFT')
-            ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
-            ->where('G.status', 'REGISTERED')
-            // ->where('DATE(TM.date_added)', date('Y-m-d'))
-            ->group_by('CS.transaction_no');
         
-        if ($this->input->post('sales') !== 'view_all') {
-            $this->db->where('DATE(TM.date_added)', date('Y-m-d'));
-        }
-
-        
-        if ($this->input->post('filter_by')) {
-            $this->db->where('G.service', $this->input->post('filter_by'));
-        }
-        if ($this->input->post('from') && $this->input->post('to')) {
-            $this->db->where('DATE(TM.date_added) >=', $this->input->post('from'));
-            $this->db->where('DATE(TM.date_added) <=', $this->input->post('to'));
-        }
         $i = 0;
         foreach ($this->guest_search as $item) // loop column 
         {

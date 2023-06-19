@@ -221,4 +221,11 @@ class Main_model extends CI_Model
         return $query->result();
     }
 
+    function get_cashier()
+    {
+        $this->db->where('access_level', 'User');
+        $this->db->where('is_deleted', NULL);
+        return $this->db->get('user')->result_array();
+    }
+
 }

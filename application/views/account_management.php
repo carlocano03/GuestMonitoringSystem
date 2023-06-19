@@ -223,8 +223,7 @@
                         );
                         $('#accountModal').modal('hide');
                         $('#registerAccount').trigger('reset');
-                        var table = $('#table_account').DataTable();
-                        table.draw();
+                        table_account.draw();
                     }
                 },
                 error: function() {
