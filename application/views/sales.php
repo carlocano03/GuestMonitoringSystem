@@ -101,6 +101,16 @@
                         <option value="PARK">Park</option>
                     </select>
                 </div>
+                <?php if ($_SESSION['loggedIn']['access'] == 'Administrator'):?>
+                    <div class="col-sm-2">
+                        <select name="filter_by_cashier" id="filter_by_cashier" class="form-select form-select-sm">
+                            <option value="">Filter by cashier</option>
+                            <?php foreach($cashier as $row):?>
+                                <option value="<?= $row['fullname']?>"><?= $row['fullname']?></option>
+                            <?php endforeach;?>
+                        </select>
+                    </div>
+                <?php endif;?>
             </div>
 
             <div class="table-responsive">
@@ -301,6 +311,7 @@
                     data.from = $('#dt_from').val();
                     data.to = $('#dt_to').val();
                     data.sales = $('#filter_by_sales').val();
+                    data.cashier = $('#filter_by_cashier').val();
                 },
                 "dataSrc": function(json) {
                     $('#total_amount').text('₱ ' + json.totalAmount);
@@ -320,6 +331,9 @@
             tbl_sales.draw();
         });
         $('#filter_by_sales').on('change', function () {
+            tbl_sales.draw();
+        });
+        $('#filter_by_cashier').on('change', function () {
             tbl_sales.draw();
         });
         $('#dt_from').on('change', function() {
