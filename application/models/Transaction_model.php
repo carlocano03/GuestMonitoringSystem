@@ -64,7 +64,6 @@ class Transaction_model extends CI_Model
                 $this->db->or_like('G.slip_app_no', $searchValue);
                 $this->db->group_end();
             }
-
             $this->db
                 ->select('TM.*')
                 ->select('G.slip_app_no, G.guest_fname, G.guest_mname, G.guest_lname, G.service, G.contact_no, G.status, G.service')
@@ -78,15 +77,17 @@ class Transaction_model extends CI_Model
                 // ->where('DATE(TM.date_added)', date('Y-m-d'))
                 ->group_by('CS.transaction_no');
             
-            if ($this->input->post('sales') !== 'view_all') {
-                $this->db->where('DATE(TM.date_added)', date('Y-m-d'));
-            }
+            // if ($this->input->post('sales') !== 'view_all') {
+            //     $this->db->where('DATE(TM.date_added)', date('Y-m-d'));
+            // }
             if ($this->input->post('filter_by')) {
                 $this->db->where('G.service', $this->input->post('filter_by'));
             }
             if ($this->input->post('from') && $this->input->post('to')) {
                 $this->db->where('DATE(TM.date_added) >=', $this->input->post('from'));
                 $this->db->where('DATE(TM.date_added) <=', $this->input->post('to'));
+            } else if ($this->input->post('sales') !== 'view_all') {
+                $this->db->where('DATE(TM.date_added)', date('Y-m-d'));
             }
             if ($this->input->post('cashier')) {
                 $this->db->where('staff_in_charge', $this->input->post('cashier'));
@@ -116,17 +117,18 @@ class Transaction_model extends CI_Model
                 // ->where('DATE(TM.date_added)', date('Y-m-d'))
                 ->group_by('CS.transaction_no');
             
-            if ($this->input->post('sales') !== 'view_all') {
-                $this->db->where('DATE(TM.date_added)', date('Y-m-d'));
-            }
+            // if ($this->input->post('sales') !== 'view_all') {
+            //     $this->db->where('DATE(TM.date_added)', date('Y-m-d'));
+            // }
 
-            
             if ($this->input->post('filter_by')) {
                 $this->db->where('G.service', $this->input->post('filter_by'));
             }
             if ($this->input->post('from') && $this->input->post('to')) {
                 $this->db->where('DATE(TM.date_added) >=', $this->input->post('from'));
                 $this->db->where('DATE(TM.date_added) <=', $this->input->post('to'));
+            } else if ($this->input->post('sales') !== 'view_all') {
+                $this->db->where('DATE(TM.date_added)', date('Y-m-d'));
             }
         }
 
