@@ -142,41 +142,77 @@
                 <hr>
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="fw-bold text-center">
-                        Total Number of Transaction
+                        Total Number of All Transaction
                         <h1><b id="no_transaction"></b></h1>
+                        Total Number of Today Transaction
+                        <h1><b id="no_transaction"></b></h1>
+                       
                     </div>
+                    
                     <div class="d-flex justify-content-between">
                         <div>
                            
                             <div class="text-end">
-                            Sales:
+                            Package Sales Today:
                                 <b id="total_amount"></b>
                             </div>
   
                             <div class="text-end">
-                            Inventory Sales:
+                            Inventory Sales Today:
                                 <b id="total_inv"></b>
                             </div>
 
                             <div class="text-end">
-                            Discount:
+                            Discount Amount Today:
                                 <b id="total_discount"></b>
                             </div>
                             <div class="text-end">
-                            Total Amount Void:
+                            Total Amount Void Today:
                                 <b id="total_amount_void"></b>
                             </div>
 
                             <hr class="mt-0 mb-2">
-                            <b>Total Sales:</b>
+                            <b>Total Sales Today:</b>
                             <span class="ms-3 ps-3"><b id="total_sales"></b></span>
                         </div>
                     </div>
-                    
+                    <!--All Transactions-->
+                    <div class="d-flex justify-content-between">
+                        <div>
+                           
+                            <div class="text-end">
+                           Package Sales (All):
+                                <b id="total_amount"></b>
+                            </div>
+  
+                            <div class="text-end">
+                             Inventory Sales (All):
+                                <b id="total_inv"></b>
+                            </div>
+
+                            <div class="text-end">
+                           Discount Amount (All):
+                                <b id="total_discount"></b>
+                            </div>
+                            <div class="text-end">
+                           Total Amount Void (All):
+                                <b id="total_amount_void"></b>
+                            </div>
+
+                            <hr class="mt-0 mb-2">
+                            <b>Total Sales (All):</b>
+                            <span class="ms-3 ps-3"><b id="total_sales"></b></span>
+                        </div>
+                    </div>
                 </div>
+                
             </div>
+          
         </div>
+        
         <!-- Main div -->
+
+        
     </main>
 
     <!-- Modal -->
