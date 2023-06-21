@@ -42,7 +42,7 @@ class User extends CI_Controller
                 'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
                 'in_word' => $this->input->post('password'),
                 'access_level' => $this->input->post('access_level'),
-                'passcode' => $this->input->post('passcode'),
+                'passcode' => $this->input->post('pass_code'),
                 'status' => 'Active',
             );
             $this->db->insert('user', $insert_account);
