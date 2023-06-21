@@ -203,7 +203,8 @@ class Transaction_model extends CI_Model
     {
         $this->db->where('passcode', $passcode);
         $query = $this->db->get('user');
-        return $query->num_rows();
+        return $query->row();
+        // return $query->num_rows();
     }
 
     function export_sales()

@@ -250,7 +250,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" style="background-color: #8E3C95; color:#fff;">
-                    <input type="password" class="form-control" id="passcode" placeholder="ENTER YOUR PASSCODE">
+                    <input type="password" class="form-control" id="passwordcode" placeholder="ENTER YOUR PASSCODE">
                     <input type="hidden" id="transaction_no">
                     <div class="mt-2">
                         <button class="btn btn-danger btn-sm w-100" id="void_trans">VOID TRANSACTION</button>
@@ -477,7 +477,7 @@
         $(document).on('click', '#void_trans', function() {
             var trans_no = $('#transaction_no').val();
             var child_ID = $('#children_ID').val();
-            var passcode = $('#passcode').val();
+            var passwordcode = $('#passwordcode').val();
             Swal.fire({
                 title: 'Are you sure?',
                 text: "You want to void this transaction!",
@@ -493,7 +493,7 @@
                         method: "POST",
                         data: {
                             trans_no: trans_no,
-                            passcode: passcode,
+                            passwordcode: passwordcode,
                             child_ID: child_ID
                         },
                         dataType: "json",
