@@ -634,16 +634,19 @@ class Main extends CI_Controller
 
         $query = $this->db
             ->select('TM.*, TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) AS remaining_time')
-            ->select("CONCAT(GC.child_fname, ' ',LEFT(GC.child_lname, 1),'.') as children, GC.child_age, GC.child_img")
-            ->select("CONCAT(G.guest_fname, ' ',G.guest_lname) as guardian, G.status, G.service")
+            ->select("CONCAT(GC.child_fname, ' ', LEFT(GC.child_lname, 1), '.') as children, GC.child_age, GC.child_img")
+            ->select("CONCAT(G.guest_fname, ' ', G.guest_lname) as guardian, G.service")
             ->from('time_management TM')
             ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
             ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
+            ->group_start()
+                ->where('(TM.extend_time IS NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) < ' . (5 * 60) . ')')
+                ->or_where('(TM.extend_time IS NOT NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.extend_time) < ' . (1 * 60) . ')')
+            ->group_end()
             ->where('DATE(TM.date_added) = CURDATE()')
-            ->where('(TM.extend_time IS NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) < ' . (5 * 60) . ')')
-            ->or_where('(TM.extend_time IS NOT NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.extend_time) < ' . (1 * 60) . ')')
-            ->where('TM.status', 'Ongoing')
+            ->where('TM.status', 'Ongoing') // Use 'TM.status' to filter based on 'Ongoing'
             ->get();
+
 
         if ($query->num_rows() > 0) { 
             foreach ($query->result() as $list) {
@@ -723,13 +726,15 @@ class Main extends CI_Controller
         $query = $this->db
             ->select('TM.*, TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) AS remaining_time')
             ->select("CONCAT(GC.child_fname, ' ',LEFT(GC.child_lname, 1),'.') as children, GC.child_age, GC.child_img")
-            ->select("CONCAT(G.guest_fname, ' ',G.guest_lname) as guardian, G.status, G.service")
+            ->select("CONCAT(G.guest_fname, ' ',G.guest_lname) as guardian, G.service")
             ->from('time_management TM')
             ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
             ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
             ->where('DATE(TM.date_added) = CURDATE()')
-            ->where('(TM.extend_time IS NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) <= ' . (15 * 60) . ' AND TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) > 0 AND TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) >= ' . (5 * 60) . ')')
-            ->or_where('(TM.extend_time IS NOT NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.extend_time) <= ' . (15 * 60) . ' AND TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) > 0 AND TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) >= ' . (5 * 60) . ')')
+            ->group_start()
+                ->where('(TM.extend_time IS NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) <= ' . (15 * 60) . ' AND TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) > 0 AND TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) >= ' . (5 * 60) . ')')
+                ->or_where('(TM.extend_time IS NOT NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.extend_time) <= ' . (15 * 60) . ' AND TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) > 0 AND TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) >= ' . (5 * 60) . ')')
+            ->group_end()
             ->where('TM.status', 'Ongoing')
             ->get();
 
@@ -810,13 +815,15 @@ class Main extends CI_Controller
         $query = $this->db
             ->select('TM.*, TIMESTAMPDIFF(SECOND, NOW(), IFNULL(TM.extend_time, TM.time_out)) AS remaining_time')
             ->select("CONCAT(GC.child_fname, ' ',LEFT(GC.child_lname, 1),'.') as children, GC.child_age, GC.child_img")
-            ->select("CONCAT(G.guest_fname, ' ',G.guest_lname) as guardian, G.status, G.service")
+            ->select("CONCAT(G.guest_fname, ' ',G.guest_lname) as guardian, G.service")
             ->from('time_management TM')
             ->join('guest_children GC', 'TM.children_id = GC.child_id', 'LEFT')
             ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
             ->where('DATE(TM.date_added) = CURDATE()')
-            ->where('(TM.extend_time IS NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) > ' . (15 * 60) . ')')
-            ->or_where('(TM.extend_time IS NOT NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.extend_time) > ' . (15 * 60) . ')')
+            ->group_start()
+                ->where('(TM.extend_time IS NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.time_out) > ' . (15 * 60) . ')')
+                ->or_where('(TM.extend_time IS NOT NULL AND TIMESTAMPDIFF(SECOND, NOW(), TM.extend_time) > ' . (15 * 60) . ')')
+            ->group_end()
             ->where('TM.status', 'Ongoing')
             ->get();
 
@@ -938,9 +945,10 @@ class Main extends CI_Controller
         $passcode = $this->input->post('passcode');
 
         $this->db->where('passcode', $passcode);
-        $query = $this->db->get('user');
+        $query = $this->db->get('user')->row();
+        $password = isset($query->passcode) ? $query->passcode : '';
 
-        if ($query->num_rows() > 0) {
+        if ($password === $passcode) {
             $confirm = 'YES';
         } else {
             $confirm = 'NO';

@@ -815,7 +815,7 @@ class Transaction extends CI_Controller
         $message = '';
         $time_out_void = NULL;
         $trans_no = $this->input->post('trans_no');
-        $passcode = $this->input->post('passcode');
+        $passcode = $this->input->post('passwordcode');
 
         $child_id = $this->input->post('child_ID');
 
@@ -860,8 +860,11 @@ class Transaction extends CI_Controller
                 'transacation' => 'Void transaction - '. $trans_no,
                 'user' => $_SESSION['loggedIn']['fullname'],
             );
-            $check_pass = $this->transaction->check_passcode($passcode);
-            if ($check_pass > 0) {
+            $this->db->where('passcode', $passcode);
+            $query = $this->db->get('user')->row();
+            $password = isset($query->passcode) ? $query->passcode : '';
+
+            if ($password === $passcode) {
                 $this->db->where('transaction_no', $trans_no)->update('consumable_stocks', array('status' => 2));
                 
                 //update extension time
@@ -879,8 +882,11 @@ class Transaction extends CI_Controller
                 'transacation' => 'Void transaction - '. $trans_no,
                 'user' => $_SESSION['loggedIn']['fullname'],
             );
-            $check_pass = $this->transaction->check_passcode($passcode);
-            if ($check_pass > 0) {
+            $this->db->where('passcode', $passcode);
+            $query = $this->db->get('user')->row();
+            $password = isset($query->passcode) ? $query->passcode : '';
+
+            if ($password === $passcode) {
                 $this->db->where('transaction_no', $trans_no)->update('consumable_stocks', array('status' => 2));
                 $this->db->insert('history_logs', $void_data);
                 $message = 'Success';
