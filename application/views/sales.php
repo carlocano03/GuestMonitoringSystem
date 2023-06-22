@@ -92,6 +92,7 @@
                     <select name="filter_by_sales" id="filter_by_sales" class="form-select form-select-sm">
                         <option value="">Filter by sales</option>
                         <option value="view_all">View All Sales</option>
+                        <option value="2">Voided Transactions</option>
                     </select>
                 </div>
                 <div class="col-sm-2">
@@ -111,12 +112,12 @@
                         </select>
                     </div>
                 <?php endif;?>
-                <div class="col-sm-2">
+                <!-- <div class="col-sm-2">
                     <select name="filter_by_voided" id="filter_by_voided" class="form-select form-select-sm">
                         <option value="">Filter by voided</option>
                         <option value="2">Voided Transactions</option>
                     </select>
-                </div>
+                </div> -->
             </div>
 
             <div class="table-responsive">
@@ -139,6 +140,7 @@
                             <th>Discounted Amount</th>
                             <th>Total Amount</th>
                             <th>Remarks</th>
+                            <th>Cashier</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -309,7 +311,30 @@
 <!-- End of layoutSidenav -->
 
 <script>
+    function get_sales() {
+        var sales = 0;
+        $.ajax({
+            url: "<?= base_url('transaction/get_sales_amount');?>",
+            method: "POST",
+            data: {
+                sales: sales,
+            },
+            dataType: "json",
+            success: function(data) {
+                $('#total_amount').text('₱ ' + data.totalAmount);
+                $('#total_inv').text('₱ ' + data.totalInv);
+                $('#total_discount').text('₱ -' + data.total_discount);
+                $('#total_amount_void').text('₱ -' + data.totalAmount_void);
+                $('#total_sales').text('₱ ' + data.totalSales);
+                
+                // $('#no_transaction').text(data.no_transaction);
+                
+            }
+        });
+    }
     $(document).ready(function() {
+        get_sales();
+
         $('#loading').show();
         setTimeout(function() {
             $('#loading').hide();
@@ -352,17 +377,17 @@
                     data.to = $('#dt_to').val();
                     data.sales = $('#filter_by_sales').val();
                     data.cashier = $('#filter_by_cashier').val();
-                    data.voided = $('#filter_by_voided').val();
-                },
-                "dataSrc": function(json) {
-                    $('#total_amount').text('₱ ' + json.totalAmount);
-                    $('#total_inv').text('₱ ' + json.totalInv);
-                    $('#total_sales').text('₱ ' + json.totalSales);
-                    $('#total_discount').text('₱ -' + json.total_discount);
-                    $('#no_transaction').text(json.no_transaction);
-                    $('#total_amount_void').text('₱ -' + json.totalAmount_void);
-                return json.data;
                 }
+
+                // "dataSrc": function(json) {
+                //     $('#total_amount').text('₱ ' + json.totalAmount);
+                //     $('#total_inv').text('₱ ' + json.totalInv);
+                //     $('#total_sales').text('₱ ' + json.totalSales);
+                //     $('#total_discount').text('₱ -' + json.total_discount);
+                //     $('#no_transaction').text(json.no_transaction);
+                //     $('#total_amount_void').text('₱ -' + json.totalAmount_void);
+                // return json.data;
+                // }
             },
 
             "footerCallback": function (row, data, start, end, display) {                
@@ -425,9 +450,6 @@
             tbl_sales.draw();
         });
         $('#filter_by_cashier').on('change', function () {
-            tbl_sales.draw();
-        });
-        $('#filter_by_voided').on('change', function () {
             tbl_sales.draw();
         });
         $('#dt_from').on('change', function() {
