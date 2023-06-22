@@ -96,7 +96,7 @@
                 </div>
                 <div class="col-sm-2">
                     <select name="filter_by" id="filter_by" class="form-select form-select-sm">
-                        <option value="">Filter by</option>
+                        <option value="">Filter by Package</option>
                         <option value="INFLATABLES">Inflatables</option>
                         <option value="PARK">Park</option>
                     </select>
