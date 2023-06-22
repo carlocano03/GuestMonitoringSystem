@@ -111,6 +111,12 @@
                         </select>
                     </div>
                 <?php endif;?>
+                <div class="col-sm-2">
+                    <select name="filter_by_voided" id="filter_by_voided" class="form-select form-select-sm">
+                        <option value="">Filter by voided</option>
+                        <option value="2">Voided Transactions</option>
+                    </select>
+                </div>
             </div>
 
             <div class="table-responsive">
@@ -145,42 +151,40 @@
                         Total Number of All Transaction
                         <h1><b id="no_transaction"></b></h1>
                         Total Number of Today Transaction
-                        <h1><b id="no_transaction"></b></h1>
-                       
+                        <h1><b id="no_transaction_today"></b></h1>
                     </div>
                     
                     <div class="d-flex justify-content-between">
                         <div>
-                           
                             <div class="text-end">
                             Package Sales Today:
-                                <b id="total_amount"></b>
+                                <b id="total_amount_today"></b>
                             </div>
   
                             <div class="text-end">
                             Inventory Sales Today:
-                                <b id="total_inv"></b>
+                                <b id="total_inv_today"></b>
                             </div>
 
                             <div class="text-end">
                             Discount Amount Today:
-                                <b id="total_discount"></b>
+                                <b id="total_discount_today"></b>
                             </div>
                             <div class="text-end">
                             Total Amount Void Today:
-                                <b id="total_amount_void"></b>
+                                <b id="total_amount_void_today"></b>
                             </div>
 
                             <hr class="mt-0 mb-2">
                             <b>Total Sales Today:</b>
-                            <span class="ms-3 ps-3"><b id="total_sales"></b></span>
+                            <span class="ms-3 ps-3"><b id="total_sales_today"></b></span>
                         </div>
                     </div>
+                    
                     <!--All Transactions-->
                     <div class="d-flex justify-content-between">
                         <div>
-                           
-                            <div class="text-end">
+                        <div class="text-end">
                            Package Sales (All):
                                 <b id="total_amount"></b>
                             </div>
@@ -205,14 +209,9 @@
                         </div>
                     </div>
                 </div>
-                
             </div>
-          
         </div>
-        
         <!-- Main div -->
-
-        
     </main>
 
     <!-- Modal -->
@@ -315,6 +314,11 @@
         setTimeout(function() {
             $('#loading').hide();
         }, 2000);
+
+        function formatNumberWithCommas(value) {
+            return value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
         var tbl_sales = $('#tbl_sales').DataTable({
             "fnRowCallback": function(nRow, aData, iDisplayIndex, asd) {
                 if (aData[14] == 'Voided') { // less than 5 minutes
@@ -348,6 +352,7 @@
                     data.to = $('#dt_to').val();
                     data.sales = $('#filter_by_sales').val();
                     data.cashier = $('#filter_by_cashier').val();
+                    data.voided = $('#filter_by_voided').val();
                 },
                 "dataSrc": function(json) {
                     $('#total_amount').text('₱ ' + json.totalAmount);
@@ -355,11 +360,61 @@
                     $('#total_sales').text('₱ ' + json.totalSales);
                     $('#total_discount').text('₱ -' + json.total_discount);
                     $('#no_transaction').text(json.no_transaction);
-                    $('#total_amount_void').text('₱ ' + json.totalAmount_void);
+                    $('#total_amount_void').text('₱ -' + json.totalAmount_void);
                 return json.data;
                 }
             },
+
+            "footerCallback": function (row, data, start, end, display) {                
+                //Do whatever you want. Example:
+                var packageAmt = 0;
+                var invAmt = 0;
+                var discountAmt = 0;
+                var totalAmt = 0;
+                var totalAmountVoid = 0;
+                var totalCount = data.length;
+                for (var i = 0; i < data.length; i++) {
+                    var packageAmtWithoutCommas = data[i][10].replace(/,/g, '');
+                    packageAmt += parseFloat(packageAmtWithoutCommas);
+
+                    var invAmtWithoutCommas = data[i][11].replace(/,/g, '');
+                    invAmt += parseFloat(invAmtWithoutCommas);
+
+                    var discountAmtWithoutCommas = data[i][12].replace(/,/g, '');
+                    discountAmt += parseFloat(discountAmtWithoutCommas);
+
+                    // var totalAmtWithoutCommas = data[i][13].replace(/,/g, '');
+                    // totalAmt += parseFloat(totalAmtWithoutCommas);
+
+                    var remarks = data[i][14];
+                    // Compute total_amount_void only if remarks is "Voided"
+                    if (remarks === 'Voided') {
+                        var totalAmountVoidWithoutCommas = data[i][13].replace(/,/g, '');
+                        var totalAmountVoidRow = parseFloat(totalAmountVoidWithoutCommas);
+                        totalAmountVoid += totalAmountVoidRow;
+                    }
+                }
+                // Display the sums with commas
+                var packageAmtFormatted = formatNumberWithCommas(packageAmt);
+                var invAmtFormatted = formatNumberWithCommas(invAmt);
+                var discountAmtFormatted = formatNumberWithCommas(discountAmt);
+                var totalAmountVoidFormatted = formatNumberWithCommas(totalAmountVoid);
+
+                totalAmt = packageAmt + invAmt - discountAmt - totalAmountVoid;
+
+                var totalAmtFormatted = formatNumberWithCommas(totalAmt);
+
+                $('#total_amount_today').text('₱ ' + packageAmtFormatted);
+                $('#total_inv_today').text('₱ ' + invAmtFormatted);
+                $('#total_discount_today').text('₱ -' + discountAmtFormatted);
+                $('#total_sales_today').text('₱ ' + totalAmtFormatted);
+
+                $('#total_amount_void_today').text('₱ -' + totalAmountVoidFormatted);
+                $('#no_transaction_today').text(totalCount);
+            }
         });
+
+
         $('#search_value').on('input', function() {
             tbl_sales.draw();
         });
@@ -370,6 +425,9 @@
             tbl_sales.draw();
         });
         $('#filter_by_cashier').on('change', function () {
+            tbl_sales.draw();
+        });
+        $('#filter_by_voided').on('change', function () {
             tbl_sales.draw();
         });
         $('#dt_from').on('change', function() {
@@ -555,5 +613,6 @@
                 }
             })
         });
+
     });
 </script>
