@@ -46,17 +46,17 @@ class Transaction extends CI_Controller
                 ->group_by('serial_no')
                 ->get()
                 ->row();
-
             $total_amount += $sales->total_sales;
             
             $sales_amount = $this->db
                 ->select("SUM(total_amt) as total_sales")
                 ->from('consumable_stocks')
                 ->where('type_id', 0)
-                ->where('status', 0)
+                ->where('transaction_no', $list->transaction_no)
+                // ->where('status', 0)
                 ->get()
                 ->row();
-            $amount_sales = $sales_amount->total_sales;
+            $amount_sales += $sales_amount->total_sales;
 
             $sales_amount_void = $this->db
                 ->select("SUM(total_amt) as total_sales")
@@ -64,7 +64,7 @@ class Transaction extends CI_Controller
                 ->where('status', 2)
                 ->get()
                 ->row();
-            $amount_sales_void = $sales_amount_void->total_sales;
+            
 
             $inv = $this->db
                 ->select("SUM(total_amt) as inv_sales")
@@ -178,8 +178,8 @@ class Transaction extends CI_Controller
             $row[] = number_format($total_sales_amount, 2);
 
             
-            $total_sales = $total_amount + $inv_sales - $total_amount_void - $inv_void->inv_sales - $total_discount;
-            $total_inv_sales = $inv_sales - $inv_void->inv_sales;
+            
+            $total_inv_sales = $inv_sales;
             $total_amount_sales = $total_amount - $sales_void->total_sales - $total_amount_void;
             $this->db->from('consumable_stocks');
             $this->db->group_by('transaction_no');
@@ -187,9 +187,15 @@ class Transaction extends CI_Controller
 
             if ($list->status == 2) {
                 $row[] = 'Voided';
+                $amount_sales_void += $total_sales_amount;
             } else {
                 $row[] = '';
             }
+            
+            // $amount_sales_void = $sales_amount_void->total_sales - $total_discount;
+            
+            //$total_sales = $total_amount + $inv_sales - $total_amount_void - $inv_void->inv_sales - $total_discount;
+            $total_sales = $amount_sales + $total_inv_sales - $amount_sales_void - $total_discount;
 
             $data[] = $row;
         }

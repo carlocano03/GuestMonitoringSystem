@@ -90,7 +90,10 @@ class Transaction_model extends CI_Model
                 $this->db->where('DATE(TM.date_added)', date('Y-m-d'));
             }
             if ($this->input->post('cashier')) {
-                $this->db->where('staff_in_charge', $this->input->post('cashier'));
+                $this->db->where('TM.staff_in_charge', $this->input->post('cashier'));
+            }
+            if ($this->input->post('voided')) {
+                $this->db->where('CS.status', $this->input->post('voided'));
             }
         } else {
             $searchValue = $this->input->post('search_value');
