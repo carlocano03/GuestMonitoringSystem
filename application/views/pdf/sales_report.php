@@ -34,6 +34,14 @@
         <h5><?= date('D F j, Y h:i a')?></h5>
         <hr>
     </div>
+    <?php
+        if ($dt_from != '' && $dt_to != '') {
+            $date_range = '<h5>Date From: '.date('F j, Y', strtotime($dt_from)).' To: '.date('F j, Y', strtotime($dt_to)).'</h5>';
+        } else {
+            $date_range = '';
+        }
+    ?>
+    <?= $date_range;?>
     <div class="body">
         <table id="tbl_body" width="100%">
             <tr>
@@ -109,6 +117,7 @@
                                 ->get()
                                 ->row();
                             $discount_amt = $discount->discount_amt;
+                            
 
                             //Per row
                             $sales_guest = $this->db
@@ -134,7 +143,14 @@
                                 ->group_by('serial_no')
                                 ->get()
                                 ->row();
-                            $total_discount += $discount->discount_amt;
+
+                            $discount_total = $this->db
+                                ->select_sum("discount_amt", "total_discount")
+                                ->from('consumable_stocks')
+                                ->where('type_id', 0)
+                                ->get()
+                                ->row();
+                            $total_discount = $discount_total->total_discount;
                         ?>
 
                         <td><?= ucwords($kids)?></td>
@@ -165,7 +181,7 @@
             <h5>Total Amount Void: ₱ -<?= isset($amount_sales_void) ? number_format($amount_sales_void, 2) : '';?></h5>
             <?php
             //  - (isset($total_discount) ? $total_discount : 0)
-                $total = (isset($total_sales_amt) ? $total_sales_amt : 0) + (isset($inv_sales->total_inv) ? $inv_sales->total_inv : 0) - (isset($discount_amt) ? $discount_amt : 0) - (isset($amount_sales_void) ? $amount_sales_void : 0);
+                $total = (isset($total_sales_amt) ? $total_sales_amt : 0) + (isset($inv_sales->total_inv) ? $inv_sales->total_inv : 0) - (isset($total_discount) ? $total_discount : 0) - (isset($amount_sales_void) ? $amount_sales_void : 0);
             ?>
             <h4>Total Sales: ₱ <?= isset($total) ? number_format($total, 2) : ''?></h4>
         </div>

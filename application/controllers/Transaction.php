@@ -176,7 +176,7 @@ class Transaction extends CI_Controller
 
             
             $row[] = number_format($total_sales_amount, 2);
-
+            
             
             
             $total_inv_sales = $inv_sales;
@@ -191,7 +191,7 @@ class Transaction extends CI_Controller
             } else {
                 $row[] = '';
             }
-            
+            $row[] = $list->staff_in_charge;
             // $amount_sales_void = $sales_amount_void->total_sales - $total_discount;
             
             //$total_sales = $total_amount + $inv_sales - $total_amount_void - $inv_void->inv_sales - $total_discount;
@@ -214,6 +214,53 @@ class Transaction extends CI_Controller
         echo json_encode($output);
     }
 
+    public function get_sales_amount()
+    {
+        $sales = $this->input->post('sales');
+
+        if ($sales == 0) {
+            $sales = $this->db
+                ->select("SUM(total_amt) as total_sales")
+                ->from('consumable_stocks')
+                ->where('type_id', 0)
+                ->get()
+                ->row();
+
+            $inv_sales = $this->db
+                ->select("SUM(total_amt) as total_inv_sales")
+                ->from('consumable_stocks')
+                ->where('type_id !=', 0)
+                ->get()
+                ->row();
+
+            $discount = $this->db
+                ->select_sum("discount_amt", "total_discount")
+                ->from('consumable_stocks')
+                ->where('type_id', 0)
+                ->get()
+                ->row();
+
+            $void = $this->db
+                ->select("SUM(total_amt) as total_void")
+                ->from('consumable_stocks')
+                ->where('status', 2)
+                ->get()
+                ->row();
+
+            $total_sales_amount = 0;
+
+            $total_sales_amount = $sales->total_sales + $inv_sales->total_inv_sales - $void->total_void - $discount->total_discount;
+        }
+        $output = array(
+            'totalAmount' => number_format($sales->total_sales, 2),
+            'totalInv' => number_format($inv_sales->total_inv_sales, 2),
+            'total_discount' => number_format($discount->total_discount, 2),
+            'totalAmount_void' => number_format($void->total_void, 2),
+            'totalSales' => number_format($total_sales_amount, 2),
+        );
+        echo json_encode($output);
+    }
+
     public function sales_report()
     {
         require_once 'vendor/autoload.php';
@@ -221,7 +268,8 @@ class Transaction extends CI_Controller
         $dt_to = $this->uri->segment(4);
 
         $data['transaction'] = $this->transaction->get_transaction($dt_from, $dt_to);
-
+        $data['dt_from'] = $dt_from;
+        $data['dt_to'] = $dt_to;
         $mpdf = new \Mpdf\Mpdf( [ 
             'format' => 'A4-L',
             'margin_top' => 5,

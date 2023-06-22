@@ -67,7 +67,7 @@ class Transaction_model extends CI_Model
             $this->db
                 ->select('TM.*')
                 ->select('G.slip_app_no, G.guest_fname, G.guest_mname, G.guest_lname, G.service, G.contact_no, G.status, G.service')
-                ->select('CS.transaction_no, CS.type_id, CS.qty, CS.total_amt, CS.status, CS.extended, CS.con_id, CS.guest_child_id')
+                ->select('CS.transaction_no, CS.type_id, CS.qty, CS.total_amt, CS.status, CS.extended, CS.con_id, CS.guest_child_id, CS.date_transaction')
                 ->select("CONCAT(GC.child_fname, ' ', GC.child_lname) as children, GC.child_id")
                 ->from($this->guest.' TM')
                 ->join('guest_details G', 'TM.guest_id = G.guest_id', 'LEFT')
@@ -77,9 +77,6 @@ class Transaction_model extends CI_Model
                 // ->where('DATE(TM.date_added)', date('Y-m-d'))
                 ->group_by('CS.transaction_no');
             
-            // if ($this->input->post('sales') !== 'view_all') {
-            //     $this->db->where('DATE(TM.date_added)', date('Y-m-d'));
-            // }
             if ($this->input->post('filter_by')) {
                 $this->db->where('G.service', $this->input->post('filter_by'));
             }
@@ -88,12 +85,12 @@ class Transaction_model extends CI_Model
                 $this->db->where('DATE(TM.date_added) <=', $this->input->post('to'));
             } else if ($this->input->post('sales') !== 'view_all') {
                 $this->db->where('DATE(TM.date_added)', date('Y-m-d'));
-            }
+            } 
             if ($this->input->post('cashier')) {
                 $this->db->where('TM.staff_in_charge', $this->input->post('cashier'));
             }
-            if ($this->input->post('voided')) {
-                $this->db->where('CS.status', $this->input->post('voided'));
+            if ($this->input->post('sales')) {
+                $this->db->where('CS.status', $this->input->post('sales'));
             }
         } else {
             $searchValue = $this->input->post('search_value');
@@ -120,10 +117,6 @@ class Transaction_model extends CI_Model
                 // ->where('DATE(TM.date_added)', date('Y-m-d'))
                 ->group_by('CS.transaction_no');
             
-            // if ($this->input->post('sales') !== 'view_all') {
-            //     $this->db->where('DATE(TM.date_added)', date('Y-m-d'));
-            // }
-
             if ($this->input->post('filter_by')) {
                 $this->db->where('G.service', $this->input->post('filter_by'));
             }
@@ -132,6 +125,9 @@ class Transaction_model extends CI_Model
                 $this->db->where('DATE(TM.date_added) <=', $this->input->post('to'));
             } else if ($this->input->post('sales') !== 'view_all') {
                 $this->db->where('DATE(TM.date_added)', date('Y-m-d'));
+            } 
+            if ($this->input->post('sales')) {
+                $this->db->where('CS.status', $this->input->post('sales'));
             }
         }
 
