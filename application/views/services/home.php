@@ -25,7 +25,7 @@
                             <div class="carousel-caption d-none d-md-block">
                                
                                
-                                <button style="width: 70%; background-color:#8f3f97; border-radius:100px; color:#ffcc00; font-size:30px;" class="btn-register">START YOUR ADVENTURE</button>
+                                <a href="<?= base_url('home/services');?>" style="width: 70%; background-color:#8f3f97; border-radius:100px; color:#ffcc00; font-size:30px;" class="btn-register">START YOUR ADVENTURE</a>
                                
                             </div>
                         </div>
@@ -37,7 +37,7 @@
                             <div class="carousel-caption d-none d-md-block">
                                 
                                
-                                <button style="width: 70%; background-color:#8f3f97; border-radius:100px; color:#ffcc00; font-size:30px;" class="btn-register">START YOUR ADVENTURE</button>
+                            <a href="<?= base_url('home/services');?>" style="width: 70%; background-color:#8f3f97; border-radius:100px; color:#ffcc00; font-size:30px;" class="btn-register">START YOUR ADVENTURE</a>
                                 <div class="mb-2">
                                
                             </div>
@@ -58,11 +58,3 @@
             </div>
         </div>
     </main>
-
-    <script>
-        $(document).ready(function() {
-            $(document).on('click', '.btn-register', function() {
-                window.location.href = "<?= base_url('home/services')?>";
-            });
-        });
-    </script>
