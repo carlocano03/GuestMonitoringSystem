@@ -184,7 +184,7 @@
                     </div>
                     
                     <!--All Transactions-->
-                    <div class="d-flex justify-content-between">
+                    <!-- <div class="d-flex justify-content-between">
                         <div>
                         <div class="text-end">
                            Package Sales (All):
@@ -209,7 +209,7 @@
                             <b>Total Sales (All):</b>
                             <span class="ms-3 ps-3"><b id="total_sales"></b></span>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
