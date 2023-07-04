@@ -90,7 +90,9 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-line"></i></div>
                                 Sales & Transaction
                             </a>
-                            <!--  <a class="nav-link <?= ($this->uri->segment(2) == 'pricing_promo' ? 'active' : '') ?>" href="<?= base_url('main/pricing_promo')?>">
+
+                            <!--<a class="nav-link <?= ($this->uri->segment(2) == 'pricing_promo' ? 'active' : '') ?>" href="<?= base_url('main/pricing_promo')?>">
+
                                 <div class="sb-nav-link-icon"><i class="fas fa-money-check"></i></div>
                                 Pricing & Promo
                             </a>
@@ -101,7 +103,7 @@
                             <a class="nav-link" href="#" id="backup">
                                 <div class="sb-nav-link-icon"><i class="fas fa-database"></i></div>
                                 Backup Database
-                            </a>
+                            </a>-->
                         <?php endif;?>
                         
                         <!-- <a class="nav-link" href="#">
