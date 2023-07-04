@@ -86,18 +86,20 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-user-clock"></i></div>
                                 Time Monitoring 
                             </a>
-                            <a class="nav-link <?= ($this->uri->segment(2) == 'sales_transaction' ? 'active' : '') ?>" href="<?= base_url('main/sales_transaction')?>">
+                           <a class="nav-link <?= ($this->uri->segment(2) == 'sales_transaction' ? 'active' : '') ?>" href="<?= base_url('main/sales_transaction')?>">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-line"></i></div>
                                 Sales & Transaction
                             </a>
+
                             <!--<a class="nav-link <?= ($this->uri->segment(2) == 'pricing_promo' ? 'active' : '') ?>" href="<?= base_url('main/pricing_promo')?>">
+
                                 <div class="sb-nav-link-icon"><i class="fas fa-money-check"></i></div>
                                 Pricing & Promo
                             </a>
                             <a class="nav-link <?= ($this->uri->segment(2) == 'inventory' ? 'active' : '') ?>" href="<?= base_url('main/inventory')?>">
                                 <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
                                 Inventory Module
-                            </a>
+                            </a> -->
                             <a class="nav-link" href="#" id="backup">
                                 <div class="sb-nav-link-icon"><i class="fas fa-database"></i></div>
                                 Backup Database

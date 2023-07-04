@@ -227,7 +227,8 @@
                     <b>Registration Date:</b> <span id="date_reg"></span>
                     <h5 class="text-green">REGISTRATION NO.</h5>
                     <h4 id="reg_no"></h4>
-                    <button class="btn btn-primary w-100 mb-3" id="print_slip">PRINT</button>
+                    <h1>Thank you! Proceed to Cashier </h1>
+                    <!--<button class="btn btn-primary w-100 mb-3" id="print_slip">PRINT</button>-->
                     <!--<div class="text-center">
                         <img src="<?= base_url('assets/img/jacks-loading.gif') ?>" alt="" width="200">
                     </div>-->
