@@ -103,7 +103,7 @@
                             <a class="nav-link" href="#" id="backup">
                                 <div class="sb-nav-link-icon"><i class="fas fa-database"></i></div>
                                 Backup Database
-                            </a>-->
+                            </a>
                         <?php endif;?>
                         
                         <!-- <a class="nav-link" href="#">
